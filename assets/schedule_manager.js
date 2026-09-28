@@ -280,6 +280,12 @@ function saveScheduleData(data) {
     console.error("Error guardando en localStorage:", e);
   }
   renderAllScheduleComponents();
+
+  // Sincronización automática con la Nube (Firebase Firestore)
+  if (typeof window !== "undefined" && window.RitmoFirebase && window.RitmoFirebase.isConfigured()) {
+    window.RitmoFirebase.saveScheduleToCloud(data);
+  }
+
   showToastNotification("¡Horarios y textos actualizados con éxito! ✨");
 }
 
@@ -1843,7 +1849,27 @@ function renderAllScheduleComponents() {
   applyScheduleLevelFilter();
 }
 
+// Sincronización en tiempo real de horarios desde Firebase Firestore (Nube)
+function initCloudScheduleSync() {
+  if (typeof window === "undefined" || !window.RitmoFirebase) return;
+  if (!window.RitmoFirebase.isConfigured()) return;
+
+  window.RitmoFirebase.listenSchedule(function (cloudData) {
+    if (cloudData && typeof cloudData === "object") {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData));
+      } catch (e) {}
+      currentSchedule = cloudData;
+      renderAllScheduleComponents();
+      if (typeof populateEditorFields === "function" && typeof activeEditorDay !== "undefined") {
+        populateEditorFields(activeEditorDay);
+      }
+    }
+  });
+}
+
 // Inicialización automática
 document.addEventListener("DOMContentLoaded", () => {
   renderAllScheduleComponents();
+  initCloudScheduleSync();
 });

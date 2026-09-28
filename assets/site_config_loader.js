@@ -156,6 +156,12 @@ function saveSiteConfig(newConfig) {
     localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(newConfig));
     window.SITE_CONFIG = newConfig;
     applySiteConfigToDOM(newConfig);
+
+    // Sincronización automática con la Nube (Firebase Firestore)
+    if (typeof window !== "undefined" && window.RitmoFirebase && window.RitmoFirebase.isConfigured()) {
+      window.RitmoFirebase.saveSiteConfigToCloud(newConfig);
+    }
+
     return true;
   } catch (e) {
     console.error("Error al guardar site config:", e);
@@ -573,10 +579,40 @@ if (typeof window !== "undefined") {
   });
 }
 
+// Sincronización en tiempo real desde Firebase Firestore (Nube)
+function initCloudSiteConfigSync() {
+  if (typeof window === "undefined" || !window.RitmoFirebase) return;
+  if (!window.RitmoFirebase.isConfigured()) return;
+
+  window.RitmoFirebase.listenSiteConfig(function (cloudData) {
+    if (cloudData && typeof cloudData === "object") {
+      var localRaw = localStorage.getItem(SITE_CONFIG_STORAGE_KEY);
+      var shouldApply = true;
+      if (localRaw) {
+        try {
+          var local = JSON.parse(localRaw);
+          if (local._updatedAt && cloudData._updatedAt && Number(local._updatedAt) > Number(cloudData._updatedAt)) {
+            shouldApply = false;
+          }
+        } catch(e) {}
+      }
+      if (shouldApply) {
+        var merged = Object.assign({}, DEFAULT_SITE_CONFIG, cloudData);
+        try {
+          localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(merged));
+        } catch (e) {}
+        window.SITE_CONFIG = merged;
+        applySiteConfigToDOM(merged);
+      }
+    }
+  });
+}
+
 // Inicializar en DOMContentLoaded
 if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     applySiteConfigToDOM();
     syncRemoteSiteConfig();
+    initCloudSiteConfigSync();
   });
 }

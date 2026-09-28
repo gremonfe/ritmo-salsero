@@ -85,6 +85,10 @@
     }
   </style>
 
+  <!-- Firebase SDK (v10 compat) para sincronización en tiempo real en la nube -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="./assets/firebase_config.js"></script>
   <script src="./assets/schedule_manager.js"></script>
   <script src="./assets/site_config_loader.js"></script>
 </head>
@@ -145,6 +149,10 @@
       </div>
 
       <div class="flex items-center gap-2.5">
+        <button type="button" onclick="switchTab('cloud')" id="top-cloud-status-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs font-semibold hover:border-amber-400/50 transition-all cursor-pointer" title="Configuración de sincronización en tiempo real">
+          <span id="top-cloud-status-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span id="top-cloud-status-text" class="text-slate-300">Nube: Verificando...</span>
+        </button>
         <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition-all">
           <span>👁️</span> Ver Sitio Web
         </a>
@@ -194,6 +202,9 @@
             </button>
             <button onclick="switchTab('security')" id="tab-btn-security" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
               <span class="text-base">🔐</span> Seguridad & Respaldos
+            </button>
+            <button onclick="switchTab('cloud')" id="tab-btn-cloud" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-amber-300 hover:text-white">
+              <span class="text-base">☁️</span> Nube & Móviles (Firebase)
             </button>
           </nav>
 
@@ -886,6 +897,143 @@
           </div>
         </section>
 
+        <!-- ========================================== -->
+        <!-- TAB 10: NUBE & MÓVILES (FIREBASE FIRESTORE) -->
+        <!-- ========================================== -->
+        <section id="tab-cloud" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Sincronización en la Nube (Firebase Firestore)</h2>
+                <p class="text-xs text-slate-400">Permite que cualquier cambio que hagas en la computadora se refleje al instante en los celulares de tus alumnos y viceversa, sin tener que subir archivos a Git.</p>
+              </div>
+              <span class="text-2xl">☁️</span>
+            </div>
+
+            <!-- Card 1: Estado de la Conexión -->
+            <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <div id="cloud-badge-icon" class="w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/30 flex items-center justify-center text-xl">
+                    ☁️
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span id="cloud-status-title" class="text-sm font-bold text-white">Estado de la Nube</span>
+                      <span id="cloud-status-pill" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">Verificando...</span>
+                    </div>
+                    <p id="cloud-status-description" class="text-xs text-slate-400 mt-0.5">Comprobando conexión con Firebase Firestore...</p>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                  <button type="button" onclick="testFirebaseConnection()" class="flex-1 sm:flex-initial px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-1.5">
+                    <span>🧪</span> Probar Conexión
+                  </button>
+                  <button type="button" onclick="uploadCurrentDataToCloud()" class="flex-1 sm:flex-initial px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black shadow-lg shadow-amber-500/20 transition-all flex items-center justify-center gap-1.5">
+                    <span>☁️</span> Subir Todo a la Nube
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-800/80">
+                <button type="button" onclick="downloadDataFromCloud()" class="px-3.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-semibold border border-slate-700/60 transition-all flex items-center gap-1.5">
+                  <span>📥</span> Descargar de la Nube a este Navegador
+                </button>
+                <button type="button" onclick="downloadFirebaseConfigFile()" class="px-3.5 py-1.5 rounded-lg bg-slate-800/70 hover:bg-slate-800 text-amber-300 hover:text-amber-200 text-xs font-semibold border border-amber-500/30 transition-all flex items-center gap-1.5">
+                  <span>📄</span> Descargar firebase_config.js listo para Git
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Asistente Rápido: Pegar Configuración de Firebase -->
+            <div class="space-y-4">
+              <div class="p-5 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-900 to-slate-900 border border-amber-500/30 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h3 class="text-sm font-bold text-amber-300 flex items-center gap-2">
+                    <span>🪄</span> Asistente Rápido: Pega tu bloque de Firebase
+                  </h3>
+                  <span class="text-[10px] uppercase font-bold text-slate-400">Recomendado</span>
+                </div>
+                <p class="text-xs text-slate-300">
+                  Copia el bloque <code class="text-amber-300 bg-slate-950 px-1.5 py-0.5 rounded">firebaseConfig = { ... }</code> de la consola de Firebase y pégalo aquí abajo. Nuestro asistente extraerá automáticamente todas las claves por ti:
+                </p>
+                <textarea id="cloud-paste-box" rows="4" placeholder="const firebaseConfig = {
+  apiKey: &quot;AIzaSy...&quot;,
+  authDomain: &quot;ritmo-salsero.firebaseapp.com&quot;,
+  projectId: &quot;ritmo-salsero&quot;,
+  storageBucket: &quot;ritmo-salsero.appspot.com&quot;,
+  messagingSenderId: &quot;123456789&quot;,
+  appId: &quot;1:123456789:web:...&quot;
+};" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-amber-200 font-mono text-xs focus:border-amber-400 focus:outline-none"></textarea>
+                <div class="flex justify-end">
+                  <button type="button" onclick="handleAutoExtractFirebaseConfig()" class="btn-gold px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                    <span>⚡</span> Detectar y Conectar Automáticamente
+                  </button>
+                </div>
+              </div>
+
+              <!-- Formulario de Claves Individuales -->
+              <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-4">
+                <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                  O ingresa tus credenciales manualmente:
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">API Key</label>
+                    <input type="text" id="cloud-apiKey" placeholder="AIzaSy..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Project ID</label>
+                    <input type="text" id="cloud-projectId" placeholder="ritmo-salsero-xxxx" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Auth Domain (opcional)</label>
+                    <input type="text" id="cloud-authDomain" placeholder="ritmo-salsero.firebaseapp.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Storage Bucket (opcional)</label>
+                    <input type="text" id="cloud-storageBucket" placeholder="ritmo-salsero.appspot.com" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Messaging Sender ID (opcional)</label>
+                    <input type="text" id="cloud-messagingSenderId" placeholder="123456789" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">App ID (opcional)</label>
+                    <input type="text" id="cloud-appId" placeholder="1:123456789:web:abcdef..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white font-mono text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+                  <button type="button" onclick="clearCloudConfig()" class="px-4 py-2 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800 text-xs font-bold transition-all flex items-center gap-1.5">
+                    <span>🗑️</span> Desconectar / Limpiar Claves
+                  </button>
+                  <button type="button" onclick="handleManualSaveCloudConfig()" class="btn-gold px-5 py-2 rounded-xl text-xs uppercase tracking-wider flex items-center gap-2">
+                    <span>💾</span> Guardar Credenciales y Conectar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Card 3: Guía Rápida Paso a Paso -->
+              <div class="p-5 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3 text-xs text-slate-300">
+                <h4 class="font-bold text-white flex items-center gap-2 text-sm">
+                  <span>📖</span> ¿Cómo obtener estas claves gratis en 2 minutos?
+                </h4>
+                <ol class="space-y-2 list-decimal list-inside text-slate-300 leading-relaxed">
+                  <li>Ingresa a <a href="https://console.firebase.google.com" target="_blank" class="text-amber-400 underline font-semibold">console.firebase.google.com</a> con cualquier cuenta de Google.</li>
+                  <li>Haz clic en <strong>"Crear un proyecto"</strong> y ponle de nombre <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">ritmo-salsero</code> (desmarca Google Analytics para crearlo más rápido).</li>
+                  <li>En el menú izquierdo ve a <strong>Compilación &gt; Firestore Database</strong> y haz clic en <strong>"Crear base de datos"</strong> (puedes elegir ubicación predeterminada y modo de prueba).</li>
+                  <li>En la pestaña <strong>"Reglas"</strong> de Firestore, copia y pega las reglas del archivo <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">firestore.rules</code> del proyecto para permitir lectura pública y publicación de cambios.</li>
+                  <li>Ve a la configuración del proyecto ⚙️ (arriba a la izquierda) &gt; baja a <strong>"Tus apps"</strong> &gt; haz clic en el icono Web <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">&lt;/&gt;</code> &gt; copia el bloque <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">firebaseConfig</code> y pégalo en el Asistente Rápido de arriba.</li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
       </main>
     </div>
   </div>
@@ -1039,6 +1187,8 @@
         dashboard.classList.remove("hidden");
         loadFormFieldsFromConfig();
         highlightActiveLogoButton();
+        if (typeof updateCloudUIStatus === "function") updateCloudUIStatus();
+        if (typeof syncCloudDataToAdminIfNewer === "function") syncCloudDataToAdminIfNewer();
       } else {
         loginScreen.classList.remove("hidden");
         dashboard.classList.add("hidden");
@@ -1363,7 +1513,11 @@
       } catch (e) {}
 
       updateCallBtnActiveBadge(callBtnEnabled);
-      showAdminToast("¡Cambios guardados y publicados en la web! ✨", "🚀");
+      if (window.RitmoFirebase && window.RitmoFirebase.isConfigured()) {
+        showAdminToast("¡Cambios guardados y sincronizados en la Nube! ☁️✨", "🚀");
+      } else {
+        showAdminToast("¡Cambios guardados en este navegador! ✨ (Conecta Firebase para móviles)", "💾");
+      }
     }
 
     // Descargar site_config.json directamente para sincronización con Netlify y celulares
@@ -1532,6 +1686,429 @@
       const withSample = document.getElementById("cfg-bannerTextWithSample")?.value || "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.";
       const withoutSample = document.getElementById("cfg-bannerTextWithoutSample")?.value || "🎉 ¡Inscripciones abiertas este mes! Consulta horarios e inscríbete por WhatsApp.";
       preview.textContent = isFreeSample ? withSample : withoutSample;
+    }
+
+    // ==========================================
+    // SINCRONIZACIÓN EN LA NUBE CON FIREBASE FIRESTORE
+    // ==========================================
+
+    function updateCloudUIStatus() {
+      const isConfigured = Boolean(window.RitmoFirebase && window.RitmoFirebase.isConfigured());
+      const dot = document.getElementById("top-cloud-status-dot");
+      const text = document.getElementById("top-cloud-status-text");
+      const icon = document.getElementById("cloud-badge-icon");
+      const pill = document.getElementById("cloud-status-pill");
+      const desc = document.getElementById("cloud-status-description");
+
+      const cfg = (window.RitmoFirebase && window.RitmoFirebase.getConfig()) || {};
+
+      const apiKeyInp = document.getElementById("cloud-apiKey");
+      const projIdInp = document.getElementById("cloud-projectId");
+      const authDomInp = document.getElementById("cloud-authDomain");
+      const storBktInp = document.getElementById("cloud-storageBucket");
+      const msgSndInp = document.getElementById("cloud-messagingSenderId");
+      const appIdInp = document.getElementById("cloud-appId");
+
+      if (apiKeyInp && cfg.apiKey) apiKeyInp.value = cfg.apiKey;
+      if (projIdInp && cfg.projectId) projIdInp.value = cfg.projectId;
+      if (authDomInp && cfg.authDomain) authDomInp.value = cfg.authDomain;
+      if (storBktInp && cfg.storageBucket) storBktInp.value = cfg.storageBucket;
+      if (msgSndInp && cfg.messagingSenderId) msgSndInp.value = cfg.messagingSenderId;
+      if (appIdInp && cfg.appId) appIdInp.value = cfg.appId;
+
+      if (isConfigured) {
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400";
+        if (text) {
+          text.textContent = "Nube: Conectada ☁️";
+          text.className = "text-emerald-300 font-semibold";
+        }
+        if (icon) icon.className = "w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xl shadow-lg shadow-emerald-500/20";
+        if (pill) {
+          pill.textContent = "🟢 Conectado a Firestore";
+          pill.className = "text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+        }
+        if (desc) {
+          desc.textContent = "Sincronización en tiempo real activa. Todos los cambios guardados se propagan de inmediato a celulares y computadoras.";
+        }
+      } else {
+        if (dot) dot.className = "w-2 h-2 rounded-full bg-amber-400";
+        if (text) {
+          text.textContent = "Nube: Modo Local";
+          text.className = "text-amber-300 font-semibold";
+        }
+        if (icon) icon.className = "w-10 h-10 rounded-xl bg-amber-400/20 border border-amber-400/30 text-amber-400 flex items-center justify-center text-xl";
+        if (pill) {
+          pill.textContent = "🟡 Modo Local (Sin Nube)";
+          pill.className = "text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40";
+        }
+        if (desc) {
+          desc.textContent = "Los cambios sólo se guardan en este navegador. Pega tus claves de Firebase abajo para sincronizar con celulares sin Git.";
+        }
+      }
+    }
+
+    // Auto-extraer configuración pegada en el textarea
+    function handleAutoExtractFirebaseConfig() {
+      const pasteBox = document.getElementById("cloud-paste-box");
+      if (!pasteBox) return;
+      const raw = pasteBox.value.trim();
+      if (!raw) {
+        alert("Por favor pega primero el bloque firebaseConfig copiado de la consola de Firebase.");
+        return;
+      }
+
+      let parsedConfig = {};
+
+      try {
+        const asJson = JSON.parse(raw);
+        if (asJson && (asJson.apiKey || asJson.projectId)) {
+          parsedConfig = asJson;
+        }
+      } catch (e) {}
+
+      const extractKey = (name) => {
+        const regex = new RegExp(`['"]?${name}['"]?\\s*:\\s*['"\`]([^'"\`]+)['"\`]`, 'i');
+        const match = raw.match(regex);
+        return match ? match[1].trim() : "";
+      };
+
+      if (!parsedConfig.apiKey) parsedConfig.apiKey = extractKey("apiKey");
+      if (!parsedConfig.projectId) parsedConfig.projectId = extractKey("projectId");
+      if (!parsedConfig.authDomain) parsedConfig.authDomain = extractKey("authDomain");
+      if (!parsedConfig.storageBucket) parsedConfig.storageBucket = extractKey("storageBucket");
+      if (!parsedConfig.messagingSenderId) parsedConfig.messagingSenderId = extractKey("messagingSenderId");
+      if (!parsedConfig.appId) parsedConfig.appId = extractKey("appId");
+
+      if (!parsedConfig.apiKey || !parsedConfig.projectId) {
+        alert("No se pudieron detectar las claves 'apiKey' y 'projectId' en el texto pegado.\n\nAsegúrate de copiar el bloque completo: const firebaseConfig = { ... } desde la consola de Firebase.");
+        return;
+      }
+
+      try {
+        window.RitmoFirebase.saveCustomConfig(parsedConfig);
+        updateCloudUIStatus();
+        showAdminToast("¡Firebase conectado con éxito! 🎉", "⚡");
+        testFirebaseConnection();
+      } catch (err) {
+        alert("Error al conectar con Firebase: " + err.message);
+      }
+    }
+
+    // Guardar manualmente credenciales ingresadas en campos
+    function handleManualSaveCloudConfig() {
+      const apiKey = (document.getElementById("cloud-apiKey")?.value || "").trim();
+      const projectId = (document.getElementById("cloud-projectId")?.value || "").trim();
+      const authDomain = (document.getElementById("cloud-authDomain")?.value || "").trim();
+      const storageBucket = (document.getElementById("cloud-storageBucket")?.value || "").trim();
+      const messagingSenderId = (document.getElementById("cloud-messagingSenderId")?.value || "").trim();
+      const appId = (document.getElementById("cloud-appId")?.value || "").trim();
+
+      if (!apiKey || !projectId) {
+        alert("Debes ingresar al menos el API Key y el Project ID de Firebase.");
+        return;
+      }
+
+      const cfg = { apiKey, projectId, authDomain, storageBucket, messagingSenderId, appId };
+
+      try {
+        window.RitmoFirebase.saveCustomConfig(cfg);
+        updateCloudUIStatus();
+        showAdminToast("Credenciales de Firebase guardadas y conectadas. ☁️", "✓");
+        testFirebaseConnection();
+      } catch (err) {
+        alert("Error al guardar: " + err.message);
+      }
+    }
+
+    // Probar conexión en vivo con Firestore
+    async function testFirebaseConnection() {
+      if (!window.RitmoFirebase || !window.RitmoFirebase.isConfigured()) {
+        alert("Primero debes configurar tu Project ID y API Key de Firebase.");
+        return;
+      }
+
+      const desc = document.getElementById("cloud-status-description");
+      if (desc) desc.textContent = "Probando conexión con Firestore en tiempo real...";
+
+      const start = Date.now();
+      const db = window.RitmoFirebase.getDb();
+      if (!db) {
+        alert("No se pudo iniciar el cliente de Firestore. Revisa que las claves sean válidas.");
+        updateCloudUIStatus();
+        return;
+      }
+
+      try {
+        await db.collection("ritmo_salsero").doc("site_config").get();
+        const elapsed = Date.now() - start;
+        showAdminToast(`¡Conexión con Firestore exitosa! (${elapsed} ms) ⚡`, "🟢");
+        updateCloudUIStatus();
+      } catch (err) {
+        console.error("Error al conectar con Firestore:", err);
+        alert("Error conectando con Firestore:\n" + err.message + "\n\n💡 Revisa que en Firebase Console hayas creado la base de datos (Cloud Firestore) y que las Reglas de seguridad permitan lectura y escritura.");
+        updateCloudUIStatus();
+      }
+    }
+
+    // Subir toda la configuración y horarios a la Nube (Migración en 1 clic)
+    async function uploadCurrentDataToCloud() {
+      if (!window.RitmoFirebase || !window.RitmoFirebase.isConfigured()) {
+        alert("Primero ingresa y conecta tus credenciales de Firebase.");
+        return;
+      }
+
+      const btn = (typeof event !== "undefined" && event) ? event.currentTarget : null;
+      if (btn) btn.disabled = true;
+
+      try {
+        const cfg = getSiteConfig();
+        const okCfg = await window.RitmoFirebase.saveSiteConfigToCloud(cfg);
+
+        let okSched = true;
+        if (typeof currentSchedule !== "undefined") {
+          okSched = await window.RitmoFirebase.saveScheduleToCloud(currentSchedule);
+        }
+
+        if (okCfg && okSched) {
+          showAdminToast("¡Toda tu configuración y horarios se subieron a la Nube! ☁️✨", "🚀");
+        } else {
+          showAdminToast("Se subieron los datos con advertencias. Revisa la consola.", "⚠️");
+        }
+      } catch (err) {
+        alert("Error al subir a la Nube: " + err.message);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    // Descargar datos de la nube a este navegador
+    async function downloadDataFromCloud() {
+      if (!window.RitmoFirebase || !window.RitmoFirebase.isConfigured()) {
+        alert("Primero conecta tus credenciales de Firebase.");
+        return;
+      }
+
+      try {
+        const cloudCfg = await window.RitmoFirebase.fetchSiteConfigOnce();
+        if (cloudCfg) {
+          saveSiteConfig(cloudCfg);
+          loadFormFieldsFromConfig();
+          highlightActiveLogoButton();
+        }
+
+        const cloudSched = await window.RitmoFirebase.fetchScheduleOnce();
+        if (cloudSched) {
+          localStorage.setItem("ritmo_salsero_schedule_v2", JSON.stringify(cloudSched));
+          if (typeof currentSchedule !== "undefined") {
+            currentSchedule = cloudSched;
+            renderAllScheduleComponents();
+          }
+        }
+
+        showAdminToast("¡Datos de la Nube descargados y aplicados a este navegador! 📥✨", "✓");
+      } catch (err) {
+        alert("Error al descargar de la nube: " + err.message);
+      }
+    }
+
+    // Descargar archivo firebase_config.js listo para Git
+    function downloadFirebaseConfigFile() {
+      const cfg = (window.RitmoFirebase && window.RitmoFirebase.getConfig()) || {};
+      const fileContent = `/**
+ * RITMO SALSERO - CONFIGURACIÓN DE FIREBASE FIRESTORE
+ * Generado desde el Panel de Administración de Ritmo Salsero
+ */
+
+(function (window) {
+  var DEFAULT_FIREBASE_CONFIG = ${JSON.stringify(cfg, null, 2)};
+
+  var STORAGE_KEY_FIREBASE = "ritmo_firebase_config";
+  var _db = null;
+
+  function getStoredFirebaseConfig() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY_FIREBASE);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.projectId && parsed.apiKey) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_FIREBASE_CONFIG;
+  }
+
+  function isConfigValid(cfg) {
+    if (!cfg) return false;
+    var pid = (cfg.projectId || "").trim();
+    var key = (cfg.apiKey || "").trim();
+    return Boolean(pid && key && pid.indexOf("TU_") === -1);
+  }
+
+  function initFirestore() {
+    if (_db) return _db;
+    if (typeof firebase === "undefined" || !firebase.firestore) return null;
+    var cfg = getStoredFirebaseConfig();
+    if (!isConfigValid(cfg)) return null;
+    try {
+      var app = (!firebase.apps || !firebase.apps.length) ? firebase.initializeApp(cfg) : firebase.app();
+      _db = firebase.firestore(app);
+      window.firebaseDb = _db;
+      return _db;
+    } catch (err) {
+      console.error("[Ritmo Firebase] Error al inicializar Firestore:", err);
+      return null;
+    }
+  }
+
+  window.RitmoFirebase = {
+    getConfig: function () { return getStoredFirebaseConfig(); },
+    isConfigured: function () { return isConfigValid(getStoredFirebaseConfig()); },
+    getDb: function () { return initFirestore(); },
+    saveCustomConfig: function (newConfig) {
+      localStorage.setItem(STORAGE_KEY_FIREBASE, JSON.stringify(newConfig));
+      _db = null;
+      return initFirestore();
+    },
+    clearCustomConfig: function () {
+      localStorage.removeItem(STORAGE_KEY_FIREBASE);
+      _db = null;
+    },
+    saveSiteConfigToCloud: async function (siteConfigData) {
+      var db = initFirestore();
+      if (!db) return false;
+      try {
+        var toSave = Object.assign({}, siteConfigData);
+        toSave._updatedAt = Date.now();
+        await db.collection("ritmo_salsero").doc("site_config").set(toSave, { merge: true });
+        return true;
+      } catch (e) {
+        console.error("Error guardando site_config en la nube:", e);
+        return false;
+      }
+    },
+    saveScheduleToCloud: async function (scheduleData) {
+      var db = initFirestore();
+      if (!db) return false;
+      try {
+        var toSave = Object.assign({}, scheduleData);
+        toSave._updatedAt = Date.now();
+        await db.collection("ritmo_salsero").doc("schedule").set(toSave, { merge: true });
+        return true;
+      } catch (e) {
+        console.error("Error guardando schedule en la nube:", e);
+        return false;
+      }
+    },
+    listenSiteConfig: function (callback) {
+      var db = initFirestore();
+      if (!db) return null;
+      try {
+        return db.collection("ritmo_salsero").doc("site_config").onSnapshot(function (docSnap) {
+          if (docSnap && docSnap.exists && typeof callback === "function") {
+            callback(docSnap.data());
+          }
+        });
+      } catch (e) { return null; }
+    },
+    listenSchedule: function (callback) {
+      var db = initFirestore();
+      if (!db) return null;
+      try {
+        return db.collection("ritmo_salsero").doc("schedule").onSnapshot(function (docSnap) {
+          if (docSnap && docSnap.exists && typeof callback === "function") {
+            callback(docSnap.data());
+          }
+        });
+      } catch (e) { return null; }
+    },
+    fetchSiteConfigOnce: async function () {
+      var db = initFirestore();
+      if (!db) return null;
+      try {
+        var docSnap = await db.collection("ritmo_salsero").doc("site_config").get();
+        return docSnap.exists ? docSnap.data() : null;
+      } catch (e) { return null; }
+    },
+    fetchScheduleOnce: async function () {
+      var db = initFirestore();
+      if (!db) return null;
+      try {
+        var docSnap = await db.collection("ritmo_salsero").doc("schedule").get();
+        return docSnap.exists ? docSnap.data() : null;
+      } catch (e) { return null; }
+    }
+  };
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initFirestore);
+    } else {
+      initFirestore();
+    }
+  }
+})(window);
+`;
+      const blob = new Blob([fileContent], { type: "application/javascript" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "firebase_config.js";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showAdminToast("¡firebase_config.js descargado! Cópialo a /assets/ si quieres subirlo a Git.", "📄");
+    }
+
+    // Desconectar Firebase y limpiar claves
+    function clearCloudConfig() {
+      if (confirm("¿Estás seguro de desconectar Firebase en este navegador y volver al modo puramente local?")) {
+        window.RitmoFirebase.clearCustomConfig();
+        const ids = ["cloud-apiKey", "cloud-projectId", "cloud-authDomain", "cloud-storageBucket", "cloud-messagingSenderId", "cloud-appId", "cloud-paste-box"];
+        ids.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        updateCloudUIStatus();
+        showAdminToast("Firebase desconectado. Modo local activado.", "🔄");
+      }
+    }
+
+    // Sincronizar desde la nube al abrir admin en un dispositivo nuevo o si la nube es más reciente
+    async function syncCloudDataToAdminIfNewer() {
+      if (!window.RitmoFirebase || !window.RitmoFirebase.isConfigured()) return;
+      try {
+        const cloudCfg = await window.RitmoFirebase.fetchSiteConfigOnce();
+        if (cloudCfg && cloudCfg._updatedAt) {
+          const localCfg = getSiteConfig();
+          if (!localCfg._updatedAt || Number(cloudCfg._updatedAt) > Number(localCfg._updatedAt)) {
+            saveSiteConfig(cloudCfg);
+            loadFormFieldsFromConfig();
+            highlightActiveLogoButton();
+          }
+        }
+        const cloudSched = await window.RitmoFirebase.fetchScheduleOnce();
+        if (cloudSched && cloudSched._updatedAt) {
+          const localRaw = localStorage.getItem("ritmo_salsero_schedule_v2");
+          let shouldUpdate = true;
+          if (localRaw) {
+            try {
+              const local = JSON.parse(localRaw);
+              if (local._updatedAt && Number(local._updatedAt) >= Number(cloudSched._updatedAt)) {
+                shouldUpdate = false;
+              }
+            } catch(e) {}
+          }
+          if (shouldUpdate) {
+            localStorage.setItem("ritmo_salsero_schedule_v2", JSON.stringify(cloudSched));
+            if (typeof currentSchedule !== "undefined") {
+              currentSchedule = cloudSched;
+              renderAllScheduleComponents();
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("[Admin] Aviso en sincronización inicial con la Nube:", e);
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {

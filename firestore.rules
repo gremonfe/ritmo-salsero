@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Reglas de Seguridad para Ritmo Salsero
+    // ===============================================================
+    // Permite lectura pública para que cualquier alumno o visitante desde
+    // su teléfono o computadora reciba en tiempo real los avisos, precios y horarios.
+    // Permite escritura en la colección ritmo_salsero para el panel de administración.
+    // ===============================================================
+
+    match /ritmo_salsero/{document=**} {
+      // Lectura pública de horarios, avisos, precios y configuración del sitio
+      allow read: if true;
+
+      // Escritura permitida para guardar desde el panel de control administrativo
+      allow write: if true;
+    }
+
+    // Regla de denegación por defecto para cualquier otra colección no autorizada
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
