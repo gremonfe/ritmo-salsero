@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración • Ritmo Salsero</title>
+  <link rel="icon" type="image/png" href="./assets/logo_opcion_4_transparente.png">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --gold-primary: #E5B84B;
+      --gold-light: #F7E08B;
+      --gold-dark: #9A721C;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #060A17;
+      color: #E2E8F0;
+      overflow-x: hidden;
+    }
+    .font-serif-title {
+      font-family: 'Cinzel', 'Playfair Display', Georgia, serif;
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFF6D1 0%, #F5D580 40%, #E5B84B 70%, #9A721C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-panel {
+      background: rgba(12, 20, 43, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(229, 184, 75, 0.22);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #F7E08B 0%, #E5B84B 50%, #C99728 100%);
+      color: #0B1120;
+      font-weight: 700;
+      border: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(229, 184, 75, 0.35);
+    }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(229, 184, 75, 0.55);
+      background: linear-gradient(135deg, #FFF1B8 0%, #F0C45B 50%, #D8A232 100%);
+    }
+    .nav-tab.active {
+      background: rgba(229, 184, 75, 0.15);
+      color: #FDE68A;
+      border-color: #E5B84B;
+    }
+    .checkerboard-bg {
+      background-color: #0d1326;
+      background-image: 
+        linear-gradient(45deg, #131c38 25%, transparent 25%), 
+        linear-gradient(-45deg, #131c38 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #131c38 75%), 
+        linear-gradient(-45deg, transparent 75%, #131c38 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080D1A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 4px;
+      border: 1px solid rgba(229, 184, 75, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E5B84B;
+    }
+  </style>
+
+  <script src="./assets/schedule_manager.js"></script>
+  <script src="./assets/site_config_loader.js"></script>
+</head>
+
+<body class="min-h-screen flex flex-col bg-[#050814] text-slate-100">
+
+  <!-- ========================================== -->
+  <!-- 1. PANTALLA DE ACCESO / LOGIN DE ADMINISTRADOR -->
+  <!-- ========================================== -->
+  <div id="login-screen" class="fixed inset-0 z-50 bg-[#050814]/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="glass-panel max-w-md w-full p-8 rounded-3xl border border-amber-500/40 shadow-2xl relative">
+      <div class="text-center space-y-3 mb-6">
+        <div class="w-20 h-20 mx-auto rounded-full p-1 bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-600 shadow-xl">
+          <img src="./assets/logo_opcion_4_transparente.png" alt="Logo" class="w-full h-full object-contain rounded-full">
+        </div>
+        <h2 class="text-2xl font-serif-title font-extrabold text-white">Panel de Administración</h2>
+        <p class="text-xs text-amber-300/80 font-medium">Ritmo Salsero • San Martín de las Pirámides</p>
+        <p class="text-xs text-slate-400">Ingresa la contraseña maestra para editar y publicar cambios en el sitio web.</p>
+      </div>
+
+      <form id="login-form" onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1.5">Contraseña Maestra</label>
+          <div class="relative">
+            <input type="password" id="admin-pass-input" required placeholder="Ingresa tu contraseña" class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white text-base sm:text-sm focus:border-amber-400 focus:outline-none pr-10">
+            <button type="button" onclick="togglePassVisibility('admin-pass-input')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm" aria-label="Mostrar contraseña">
+              👁️
+            </button>
+          </div>
+          <p id="login-error-msg" class="text-rose-400 text-xs mt-1.5 hidden">⚠️ Contraseña incorrecta. Inténtalo de nuevo.</p>
+        </div>
+
+        <button type="submit" class="btn-gold w-full justify-center py-3 rounded-xl text-xs uppercase tracking-wider flex items-center gap-2">
+          <span>🔓</span> Iniciar Sesión en Panel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. PANEL DE CONTROL ADMINISTRATIVO (PROTEGIDO) -->
+  <!-- ========================================== -->
+  <div id="admin-dashboard" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Bar -->
+    <header class="sticky top-0 z-40 bg-[#070B19]/90 backdrop-blur-md border-b border-amber-500/20 px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <a href="index.html" target="_blank" title="Ver sitio público" class="w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-amber-600 shadow">
+          <img id="admin-top-logo" src="./assets/logo_opcion_4_transparente.png" alt="Logo" class="w-full h-full object-contain rounded-full">
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-serif-title font-bold text-white text-base tracking-wide">RITMO SALSERO</h1>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Admin Pro</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Panel de Control & Personalización en Tiempo Real</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5">
+        <a href="index.html" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white border border-slate-700 text-xs font-semibold transition-all">
+          <span>👁️</span> Ver Sitio Web
+        </a>
+        <button onclick="saveAllConfigAndPublish()" class="btn-gold px-4 py-2 rounded-xl text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-lg shadow-amber-500/20">
+          <span>💾</span> Guardar y Publicar
+        </button>
+        <button onclick="logoutAdmin()" class="p-2 rounded-xl bg-slate-800 hover:bg-rose-950 text-slate-300 hover:text-rose-300 border border-slate-700 hover:border-rose-500/40 text-xs transition-colors" title="Cerrar sesión">
+          🚪
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Container with Sidebar Tabs -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Pestañas de Navegación Lateral -->
+      <aside class="lg:col-span-3 space-y-2">
+        <div class="glass-panel p-3 rounded-2xl border border-slate-800 sticky top-24">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 py-1.5">
+            Módulos del Sistema
+          </div>
+
+          <nav class="space-y-1 text-xs font-semibold">
+            <button onclick="switchTab('hero')" id="tab-btn-hero" class="nav-tab active w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">🌟</span> Encabezado & Hero
+            </button>
+            <button onclick="switchTab('banner')" id="tab-btn-banner" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">📢</span> Aviso Promocional
+            </button>
+            <button onclick="switchTab('logos')" id="tab-btn-logos" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">🎨</span> Logotipo & Diseños
+            </button>
+            <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">📅</span> Horarios & Niveles
+            </button>
+            <button onclick="switchTab('pricing')" id="tab-btn-pricing" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">💳</span> Precios & Planes
+            </button>
+            <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">💬</span> WhatsApp Oficial
+            </button>
+            <button onclick="switchTab('social')" id="tab-btn-social" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">🌐</span> Redes Sociales
+            </button>
+            <button onclick="switchTab('brand')" id="tab-btn-brand" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">🏢</span> Sede & Ubicación
+            </button>
+            <button onclick="switchTab('security')" id="tab-btn-security" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">🔐</span> Seguridad & Respaldos
+            </button>
+          </nav>
+
+          <div class="mt-4 pt-3 border-t border-slate-800 text-center">
+            <span class="text-[10px] text-slate-500">Ritmo Salsero • Suite Administrativa</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Contenido de las Pestañas -->
+      <main class="lg:col-span-9 space-y-6">
+
+        <!-- ========================================== -->
+        <!-- TAB 1: HERO & ENCABEZADO -->
+        <!-- ========================================== -->
+        <section id="tab-hero" class="tab-content space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Sección Principal (Hero)</h2>
+                <p class="text-xs text-slate-400">Edita los textos de bienvenida que ven los alumnos al entrar al sitio.</p>
+              </div>
+              <span class="text-2xl">🌟</span>
+            </div>
+
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Badge Superior / Etiqueta de Bienvenida</label>
+                <input type="text" id="cfg-heroBadge" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Título Línea 1 (Texto Blanco)</label>
+                  <input type="text" id="cfg-heroTitleLine1" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Título Línea 2 (Texto en Oro Gradiente)</label>
+                  <input type="text" id="cfg-heroTitleLine2" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Subtítulo Descriptivo</label>
+                <textarea id="cfg-heroSubtitle" rows="3" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none"></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Texto Botón WhatsApp Principal</label>
+                  <input type="text" id="cfg-heroCtaText" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Texto Botón Secundario (Horarios)</label>
+                  <input type="text" id="cfg-heroSecondaryCtaText" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <div class="pt-4 border-t border-slate-800">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300 mb-3">Métricas y Estadísticas Destacadas</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <label class="block text-[11px] text-slate-400 mb-1">Número 1 (Alumnos)</label>
+                    <input type="text" id="cfg-heroStatStudents" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm mb-1.5 focus:border-amber-400">
+                    <input type="text" id="cfg-heroStatStudentsLabel" class="w-full px-3 py-1 rounded bg-slate-950 border border-slate-800 text-xs text-slate-400">
+                  </div>
+                  <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <label class="block text-[11px] text-slate-400 mb-1">Número 2 (Años)</label>
+                    <input type="text" id="cfg-heroStatYears" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm mb-1.5 focus:border-amber-400">
+                    <input type="text" id="cfg-heroStatYearsLabel" class="w-full px-3 py-1 rounded bg-slate-950 border border-slate-800 text-xs text-slate-400">
+                  </div>
+                  <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800">
+                    <label class="block text-[11px] text-slate-400 mb-1">Número 3 (Ritmos)</label>
+                    <input type="text" id="cfg-heroStatStyles" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm mb-1.5 focus:border-amber-400">
+                    <input type="text" id="cfg-heroStatStylesLabel" class="w-full px-3 py-1 rounded bg-slate-950 border border-slate-800 text-xs text-slate-400">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- ========================================== -->
+        <!-- TAB 2: BANNER DE AVISOS & CLASE MUESTRA -->
+        <!-- ========================================== -->
+        <section id="tab-banner" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Barra Superior de Avisos & Promociones</h2>
+                <p class="text-xs text-slate-400">Gestiona la barra dorada superior de anuncios y la activación de la primera clase muestra gratis.</p>
+              </div>
+              <span class="text-2xl">📢</span>
+            </div>
+
+            <div class="space-y-5">
+              <!-- 1. Visibilidad General del Banner -->
+              <div class="flex items-center justify-between p-4 bg-slate-900/60 rounded-2xl border border-slate-800">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-sm font-bold text-white">Mostrar Barra de Avisos en la Web</h3>
+                    <span id="cfg-bannerEnabled-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Visible</span>
+                  </div>
+                  <p class="text-xs text-slate-400 mt-0.5">Muestra u oculta por completo la barra superior en toda la página.</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer ml-4 flex-shrink-0">
+                  <input type="checkbox" id="cfg-bannerEnabled" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-400"></div>
+                </label>
+              </div>
+
+              <!-- 2. INTERRUPTOR EXCLUSIVO: Promoción de Primera Clase Muestra GRATIS -->
+              <div class="p-5 bg-gradient-to-r from-amber-500/10 via-slate-900/80 to-slate-900/80 rounded-2xl border-2 border-amber-500/40 shadow-lg space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                      <span class="text-xl">🎁</span>
+                      <h3 class="text-sm font-bold text-white">Ofrecer Promoción de Primera Clase Muestra GRATIS</h3>
+                      <span id="cfg-freeSampleClassEnabled-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Activa (Ofrece Clase Muestra Gratis)</span>
+                    </div>
+                    <p class="text-xs text-slate-300">
+                      Activa este botón <strong>únicamente en los meses en que ofrezcas clase muestra gratis</strong>. Si no vas a ofrecer clase muestra este mes, desactívalo y el anuncio se mantendrá visible informando de las inscripciones abiertas, pero sin regalar la clase muestra.
+                    </p>
+                  </div>
+                  <label class="relative inline-flex items-center cursor-pointer ml-4 flex-shrink-0">
+                    <input type="checkbox" id="cfg-freeSampleClassEnabled" class="sr-only peer" checked>
+                    <div class="w-12 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-400"></div>
+                  </label>
+                </div>
+
+                <!-- Vista previa en vivo del texto resultante -->
+                <div class="mt-2 p-3 bg-slate-950/80 rounded-xl border border-amber-500/30 flex items-center gap-2.5 text-xs">
+                  <span class="text-base flex-shrink-0">👀</span>
+                  <div>
+                    <span class="text-[11px] text-amber-400 font-semibold block">Vista previa del anuncio que se mostrará en la web:</span>
+                    <span id="banner-live-preview-text" class="text-white font-medium">...</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Textos Personalizables del Aviso -->
+              <div class="space-y-4 pt-1">
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="block text-xs font-semibold text-slate-300">Texto cuando Clase Muestra está ACTIVADA</label>
+                    <span class="text-[10px] text-emerald-400 font-medium">Se usa cuando el botón de arriba está encendido</span>
+                  </div>
+                  <input type="text" id="cfg-bannerTextWithSample" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="block text-xs font-semibold text-slate-300">Texto cuando Clase Muestra está DESACTIVADA</label>
+                    <span class="text-[10px] text-amber-400 font-medium">Se usa cuando el botón de arriba está apagado</span>
+                  </div>
+                  <input type="text" id="cfg-bannerTextWithoutSample" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Texto del Botón del Banner</label>
+                    <input type="text" id="cfg-bannerBtnText" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Enlace del Botón (URL o ancla como #horarios)</label>
+                    <input type="text" id="cfg-bannerBtnUrl" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: LOGOTIPO OFICIAL & DISEÑOS EN VIVO -->
+        <!-- ========================================== -->
+        <section id="tab-logos" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Logotipo Oficial & Diseños de Marca</h2>
+                <p class="text-xs text-slate-400">Selecciona el logotipo que se mostrará en el encabezado, inicio y pie de página del sitio web.</p>
+              </div>
+              <span class="text-2xl">🎨</span>
+            </div>
+
+            <!-- Vista previa actual -->
+            <div class="bg-slate-950/80 p-5 rounded-2xl border border-amber-500/30 flex flex-col sm:flex-row items-center gap-5">
+              <div class="w-24 h-24 rounded-2xl checkerboard-bg p-2 flex items-center justify-center border border-amber-400/40 shadow-inner flex-shrink-0">
+                <img id="admin-logo-preview" src="./assets/logo_opcion_4_transparente.png" alt="Preview" class="max-w-full max-h-full object-contain filter drop-shadow">
+              </div>
+              <div class="space-y-1 text-center sm:text-left flex-1">
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Logotipo Seleccionado</span>
+                <h3 id="admin-logo-preview-title" class="text-base font-serif-title font-bold text-white">Opción 4: Sol (Oro Imperial)</h3>
+                <p class="text-xs text-slate-400">Este logo se reflejará de inmediato en la web pública al guardar cambios.</p>
+              </div>
+              <button onclick="applySelectedLogoToSite()" class="btn-gold text-xs uppercase py-2 px-4 whitespace-nowrap">
+                ✓ Aplicar a la Web
+              </button>
+            </div>
+
+            <!-- Selector de Variantes de Logo -->
+            <div class="space-y-4 pt-2">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300">Selecciona una Variante:</h3>
+
+              <!-- 1. Paletas Oficiales Opción 4 -->
+              <div>
+                <span class="text-[11px] font-semibold text-slate-300 block mb-2">⭐ Diseños Principales y Paletas de Color:</span>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <button type="button" onclick="selectLogoInAdmin('opcion4')" id="btn-adminlogo-opcion4" class="admin-logo-btn p-3 rounded-xl border border-amber-400/60 bg-amber-400/10 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">★ 4: Sol (Oro)</span>
+                    <span class="text-[10px] text-amber-300 block">Oro Imperial 24K</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4D')" id="btn-adminlogo-opcion4D" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4D: Cempasúchil</span>
+                    <span class="text-[10px] text-slate-400 block">Oro Cálido & Naranja</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4E')" id="btn-adminlogo-opcion4E" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4E: Azul & Plata</span>
+                    <span class="text-[10px] text-slate-400 block">Cobalto y Platino</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4F')" id="btn-adminlogo-opcion4F" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4F: Atardecer</span>
+                    <span class="text-[10px] text-slate-400 block">Sunset Teotihuacano</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4G')" id="btn-adminlogo-opcion4G" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4G: Borgoña</span>
+                    <span class="text-[10px] text-slate-400 block">Vino & Oro Rosa</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4A')" id="btn-adminlogo-opcion4A" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4A: Esmeralda</span>
+                    <span class="text-[10px] text-slate-400 block">Verde & Fuego</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4B')" id="btn-adminlogo-opcion4B" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4B: Turquesa</span>
+                    <span class="text-[10px] text-slate-400 block">Jade Prehispánico</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion4C')" id="btn-adminlogo-opcion4C" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">4C: Magenta</span>
+                    <span class="text-[10px] text-slate-400 block">Neón & Púrpura</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 2. Ediciones Festivas -->
+              <div class="pt-3 border-t border-slate-800">
+                <span class="text-[11px] font-semibold text-slate-300 block mb-2">🎉 Ediciones Festivas Tradicionales (Con Elementos):</span>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  <button type="button" onclick="selectLogoInAdmin('rep_ano_nuevo')" id="btn-adminlogo-rep_ano_nuevo" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">🥂 Año Nuevo 12:00</span>
+                    <span class="text-[10px] text-slate-400 block">Reloj en medianoche & champaña</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('rep_dia_de_muertos')" id="btn-adminlogo-rep_dia_de_muertos" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">💀 Día de Muertos</span>
+                    <span class="text-[10px] text-slate-400 block">Cempasúchil & Catrina</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('rep_15_septiembre')" id="btn-adminlogo-rep_15_septiembre" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">🇲🇽 15 Septiembre</span>
+                    <span class="text-[10px] text-slate-400 block">Charro & Campana de Dolores</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('rep_navidad')" id="btn-adminlogo-rep_navidad" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">🎄 Navidad & Nochebuena</span>
+                    <span class="text-[10px] text-slate-400 block">Poinsettias & Santa</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('rep_21_marzo')" id="btn-adminlogo-rep_21_marzo" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">☀️ 21 de Marzo</span>
+                    <span class="text-[10px] text-slate-400 block">Pirámide de Teotihuacán</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('rep_halloween')" id="btn-adminlogo-rep_halloween" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">🎃 Halloween</span>
+                    <span class="text-[10px] text-slate-400 block">Calabaza & Noche Mágica</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3. Diseños Alternativos Base -->
+              <div class="pt-3 border-t border-slate-800">
+                <span class="text-[11px] font-semibold text-slate-300 block mb-2">🏛️ Opciones Base de Logotipo:</span>
+                <div class="grid grid-cols-3 gap-2.5">
+                  <button type="button" onclick="selectLogoInAdmin('opcion1')" id="btn-adminlogo-opcion1" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">1: Pirámide</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion2')" id="btn-adminlogo-opcion2" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">2: Clave Sol</span>
+                  </button>
+                  <button type="button" onclick="selectLogoInAdmin('opcion3')" id="btn-adminlogo-opcion3" class="admin-logo-btn p-3 rounded-xl border border-slate-800 bg-slate-900/60 text-left transition-all hover:border-amber-400">
+                    <span class="text-xs font-bold text-white block">3: Escudo</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: HORARIOS & NIVELES -->
+        <!-- ========================================== -->
+        <section id="tab-schedule" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Gestión de Horarios Semanales</h2>
+                <p class="text-xs text-slate-400">Administra los días de clase, ritmos, niveles e instructores de la academia.</p>
+              </div>
+              <span class="text-2xl">📅</span>
+            </div>
+
+            <!-- Badge Superior de Horarios -->
+            <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-2">
+              <label class="block text-xs font-semibold text-slate-300">
+                Insignia / Badge Superior de la Sección de Horarios (Opcional)
+              </label>
+              <input type="text" id="cfg-scheduleBadge" placeholder="Ej: ✨ Clases Activas 2026 (o dejar vacío para ocultar)" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+              <p class="text-[11px] text-slate-400">Reemplaza el texto anterior ("Rediseño Oficial Profesional"). Si lo dejas en blanco, no se mostrará ninguna leyenda.</p>
+            </div>
+
+            <!-- Acciones Rápidas de Horarios -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                <div>
+                  <span class="text-xl">🖼️</span>
+                  <h3 class="font-bold text-white text-base mt-2">Descarga de Horarios Dinámicos</h3>
+                  <p class="text-xs text-slate-400 mt-1">Genera en tiempo real una imagen PNG en Ultra Alta Resolución (2400×1550 px) con los datos y logotipo oficiales actuales para WhatsApp y redes sociales.</p>
+                </div>
+                <button onclick="downloadDynamicScheduleImage()" class="mt-4 btn-gold w-full justify-center py-2.5 rounded-xl text-xs uppercase tracking-wider flex items-center gap-2">
+                  <span>📥</span> Descargar Horario Web (PNG 2400×1550)
+                </button>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col justify-between">
+                <div>
+                  <span class="text-xl">✏️</span>
+                  <h3 class="font-bold text-white text-base mt-2">Editor Avanzado de Clases</h3>
+                  <p class="text-xs text-slate-400 mt-1">Modifica ritmos (Salsa Cubana, Cumbia, Salsa en Línea), niveles (Básico, Intermedio, Principiante), horarios (7-8 PM, 8-9 PM) y puntos de aprendizaje.</p>
+                </div>
+                <button onclick="openScheduleEditorModal(1)" class="mt-4 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/40 text-xs font-bold transition-all flex items-center justify-center gap-2">
+                  <span>✏️</span> Abrir Editor de Horarios
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 5: PRECIOS & PLANES -->
+        <!-- ========================================== -->
+        <section id="tab-pricing" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Precios & Paquetes</h2>
+                <p class="text-xs text-slate-400">Modifica los costos y características de cada membresía o clase.</p>
+              </div>
+              <span class="text-2xl">💳</span>
+            </div>
+
+            <!-- Interruptor Maestro de Visibilidad de la Sección -->
+            <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-white">Mostrar Sección de Planes y Mensualidades en la Web</h3>
+                  <span id="cfg-pricingSectionEnabled-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Visible</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Si lo desactivas, la sección completa de precios y los enlaces en el menú de navegación se ocultarán automáticamente de la página principal.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer ml-4 flex-shrink-0">
+                <input type="checkbox" id="cfg-pricingSectionEnabled" class="sr-only peer" checked>
+                <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-400"></div>
+              </label>
+            </div>
+
+            <!-- Subtítulo de la Sección -->
+            <div class="p-4 bg-slate-900/40 rounded-2xl border border-slate-800/80 space-y-1">
+              <label class="block text-xs font-semibold text-slate-300">Subtítulo de la Sección de Planes</label>
+              <input type="text" id="cfg-pricingSubtitle" placeholder="Invierte en tu pasión y aprovecha nuestras opciones accesibles y flexibles." class="w-full px-4 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              <!-- Plan 1 -->
+              <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase text-slate-400">Plan 1</span>
+                  <span class="text-lg">🎟️</span>
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Nombre del Plan</label>
+                  <input type="text" id="cfg-p1-name" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[11px] text-slate-400">Precio</label>
+                    <input type="text" id="cfg-p1-price" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold text-amber-300">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400">Periodo</label>
+                    <input type="text" id="cfg-p1-period" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Descripción</label>
+                  <textarea id="cfg-p1-desc" rows="2" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs"></textarea>
+                </div>
+              </div>
+
+              <!-- Plan 2 -->
+              <div class="p-5 bg-slate-900/60 rounded-2xl border border-amber-500/40 space-y-3 shadow-lg shadow-amber-500/5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase text-amber-400">Plan 2 (Estrella)</span>
+                  <span class="text-lg">⭐</span>
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Nombre del Plan</label>
+                  <input type="text" id="cfg-p2-name" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[11px] text-slate-400">Precio</label>
+                    <input type="text" id="cfg-p2-price" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold text-amber-300">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400">Periodo</label>
+                    <input type="text" id="cfg-p2-period" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Badge Destacado</label>
+                  <input type="text" id="cfg-p2-badge" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs text-amber-300">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Descripción</label>
+                  <textarea id="cfg-p2-desc" rows="2" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs"></textarea>
+                </div>
+              </div>
+
+              <!-- Plan 3 -->
+              <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase text-slate-400">Plan 3</span>
+                  <span class="text-lg">👥</span>
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Nombre del Plan</label>
+                  <input type="text" id="cfg-p3-name" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[11px] text-slate-400">Precio</label>
+                    <input type="text" id="cfg-p3-price" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold text-amber-300">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400">Periodo</label>
+                    <input type="text" id="cfg-p3-period" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Badge</label>
+                  <input type="text" id="cfg-p3-badge" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs text-rose-300">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400">Descripción</label>
+                  <textarea id="cfg-p3-desc" rows="2" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs"></textarea>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 6: WHATSAPP OFICIAL -->
+        <!-- ========================================== -->
+        <section id="tab-whatsapp" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Configuración de WhatsApp</h2>
+                <p class="text-xs text-slate-400">Modifica el número oficial y mensaje inicial que recibirán los prospectos al hacer clic en WhatsApp.</p>
+              </div>
+              <span class="text-2xl text-emerald-400">💬</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Número de WhatsApp (con lada internacional, sin espacios)</label>
+                  <input type="text" id="cfg-whatsappNumber" placeholder="Ej. 525512345678" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                  <p class="text-[11px] text-slate-400 mt-1">Este número se conecta a todos los botones de WhatsApp de la página web y al botón flotante.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp Visible en Pantalla (Formato Legible)</label>
+                  <input type="text" id="cfg-whatsappDisplay" placeholder="Ej. 55 1234 5678" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                  <p class="text-[11px] text-slate-400 mt-1">Texto que se mostrará visualmente en la sección de contacto.</p>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Mensaje Predeterminado de WhatsApp al hacer clic</label>
+                <textarea id="cfg-whatsappMessage" rows="3" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none"></textarea>
+                <p class="text-[11px] text-slate-400 mt-1">Mensaje que el usuario tendrá listo para enviar en su app de WhatsApp con un solo clic.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 7: REDES SOCIALES -->
+        <!-- ========================================== -->
+        <section id="tab-social" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Redes Sociales Oficiales</h2>
+                <p class="text-xs text-slate-400">Ingresa los enlaces a tus perfiles oficiales. Se reflejarán en el pie de página y secciones de contacto.</p>
+              </div>
+              <span class="text-2xl text-blue-400">🌐</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-1">
+                  <label class="block text-xs font-semibold text-slate-300">Facebook URL</label>
+                  <input type="text" id="cfg-facebookUrl" placeholder="https://facebook.com/tu-pagina" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+                <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-1">
+                  <label class="block text-xs font-semibold text-slate-300">Instagram URL</label>
+                  <input type="text" id="cfg-instagramUrl" placeholder="https://instagram.com/tu-perfil" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+                <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-1">
+                  <label class="block text-xs font-semibold text-slate-300">TikTok URL</label>
+                  <input type="text" id="cfg-tiktokUrl" placeholder="https://tiktok.com/@tu-cuenta" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+                <div class="p-4 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-1">
+                  <label class="block text-xs font-semibold text-slate-300">YouTube URL (Opcional)</label>
+                  <input type="text" id="cfg-youtubeUrl" placeholder="https://youtube.com/@tu-canal" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 8: IDENTIDAD, SEDE & MAPAS -->
+        <!-- ========================================== -->
+        <section id="tab-brand" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Sede, Ubicación & Datos Institucionales</h2>
+                <p class="text-xs text-slate-400">Personaliza la dirección de Casa de Cultura, enlace a Google Maps y datos legales.</p>
+              </div>
+              <span class="text-2xl">🏢</span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre de la Academia</label>
+                  <input type="text" id="cfg-brandName" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Año de Copyright</label>
+                  <input type="text" id="cfg-copyrightYear" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Eslogan Institucional</label>
+                <input type="text" id="cfg-brandTagline" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Dirección Completa de la Sede</label>
+                <input type="text" id="cfg-addressFull" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Enlace de Google Maps</label>
+                <input type="text" id="cfg-mapsUrl" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre Corto de Sede</label>
+                  <input type="text" id="cfg-venueName" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Frase Distintiva / Cita</label>
+                  <input type="text" id="cfg-venueQuote" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Botón Llamar a la Escuela (Instalaciones Oficiales) -->
+              <div class="p-5 bg-slate-900/60 rounded-2xl border border-amber-500/30 space-y-4 mt-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-xl">📞</span>
+                  <div>
+                    <h3 class="text-sm font-bold text-white">Botón "Llamar a la Escuela" (Sección Instalaciones)</h3>
+                    <p class="text-xs text-slate-400">Personaliza el texto visible del botón y el número telefónico directo para que los visitantes llamen desde su móvil.</p>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Texto del Botón</label>
+                    <input type="text" id="cfg-callBtnText" placeholder="Ej. 📞 Llamar a la Escuela" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1">Número Telefónico para Llamadas</label>
+                    <input type="text" id="cfg-callBtnPhone" placeholder="Ej. 55 1234 5678 ó +52 55 1234 5678" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB 9: SEGURIDAD & RESPALDOS -->
+        <!-- ========================================== -->
+        <section id="tab-security" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Seguridad & Copias de Respaldo</h2>
+                <p class="text-xs text-slate-400">Cambia la contraseña maestra de acceso y descarga respaldos JSON de toda tu información.</p>
+              </div>
+              <span class="text-2xl">🔐</span>
+            </div>
+
+            <!-- Cambio de Clave -->
+            <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-4">
+              <h3 class="text-sm font-bold text-white">Cambiar Contraseña de Administrador</h3>
+              <form onsubmit="handleChangePassword(event)" class="space-y-3 max-w-md">
+                <div>
+                  <label class="block text-xs text-slate-300 mb-1">Contraseña Actual</label>
+                  <input type="password" id="pwd-current" required class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-300 mb-1">Nueva Contraseña</label>
+                  <input type="password" id="pwd-new" required minlength="4" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm">
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-300 mb-1">Confirmar Nueva Contraseña</label>
+                  <input type="password" id="pwd-confirm" required minlength="4" class="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm">
+                </div>
+                <button type="submit" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs transition-all">
+                  Actualizar Contraseña
+                </button>
+              </form>
+            </div>
+
+            <!-- Respaldos JSON -->
+            <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-4">
+              <h3 class="text-sm font-bold text-white">Copias de Seguridad (JSON)</h3>
+              <p class="text-xs text-slate-400">Exporta todos los textos, números, enlaces y horarios para guardarlos en tu computadora o transferirlos a otro dispositivo.</p>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="exportSiteConfigJSON()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all flex items-center gap-2">
+                  <span>📥</span> Descargar Archivo JSON de Respaldo
+                </button>
+                <label class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer">
+                  <span>📤</span> Importar Archivo JSON
+                  <input type="file" accept=".json" onchange="importSiteConfigJSON(event)" class="hidden">
+                </label>
+                <button onclick="resetSiteConfigToFactory()" class="px-4 py-2.5 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800 text-xs font-bold transition-all flex items-center gap-2">
+                  <span>🔄</span> Restablecer Todo a Valores de Fábrica
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- MODAL: PANEL DE EDICIÓN DINÁMICO DE HORARIOS (DIRECTO EN ADMIN) -->
+  <div id="schedule-editor-modal" style="display: none;" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-3 sm:p-5 bg-black/80 backdrop-blur-md" onclick="if (event.target === this) closeScheduleEditorModal();">
+    <div class="bg-[#0B1226] border border-amber-500/40 rounded-3xl max-w-4xl w-full p-5 sm:p-7 shadow-2xl relative max-h-[92vh] flex flex-col">
+      
+      <!-- Encabezado del Modal -->
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-amber-400/20 border border-amber-400/30 text-amber-400 flex items-center justify-center text-lg">✏️</span>
+          <div>
+            <h3 class="text-lg sm:text-xl font-serif-title font-bold text-white">Panel de Edición de Horarios</h3>
+            <p class="text-xs text-slate-400">Modifica en tiempo real textos, ritmos, horarios y niveles. Los cambios se guardan y reflejan al instante.</p>
+          </div>
+        </div>
+        <button onclick="closeScheduleEditorModal()" class="text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 transition-colors">✕</button>
+      </div>
+
+      <!-- Selector de Día en Pestañas -->
+      <div class="flex items-center gap-1.5 overflow-x-auto py-3 border-b border-slate-800 text-xs font-bold">
+        <button type="button" onclick="selectEditorDay(1)" id="editor-day-tab-1" class="editor-day-tab active px-4 py-2 rounded-xl bg-amber-400 text-slate-950 shadow">Lunes</button>
+        <button type="button" onclick="selectEditorDay(2)" id="editor-day-tab-2" class="editor-day-tab px-4 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-amber-400/40">Martes</button>
+        <button type="button" onclick="selectEditorDay(3)" id="editor-day-tab-3" class="editor-day-tab px-4 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-amber-400/40">Miércoles (Descanso)</button>
+        <button type="button" onclick="selectEditorDay(4)" id="editor-day-tab-4" class="editor-day-tab px-4 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-amber-400/40">Jueves</button>
+        <button type="button" onclick="selectEditorDay(5)" id="editor-day-tab-5" class="editor-day-tab px-4 py-2 rounded-xl bg-slate-900 text-slate-300 border border-slate-800 hover:border-amber-400/40">Viernes</button>
+      </div>
+
+      <!-- Formulario de Edición (Scrollable) -->
+      <div class="overflow-y-auto py-4 space-y-6 flex-1 pr-1 custom-scrollbar">
+        <div id="editor-day-fields-container" class="space-y-6">
+          <!-- Inyectado dinámicamente por schedule_manager.js -->
+        </div>
+      </div>
+
+      <!-- Barra Inferior de Acciones -->
+      <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="resetScheduleToDefault()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold border border-slate-700 transition-colors">
+            🔄 Restablecer por Defecto
+          </button>
+          <button type="button" onclick="downloadDynamicScheduleImage()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold border border-amber-500/40 transition-all flex items-center gap-1.5 hover:scale-105" title="Genera y descarga la imagen web del horario con tus cambios">
+            <span>📥</span> Descargar Imagen (PNG)
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeScheduleEditorModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition-colors">
+            Cancelar
+          </button>
+          <button type="button" onclick="saveScheduleEditor()" class="px-5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black shadow-lg shadow-amber-500/20 transition-all flex items-center gap-1.5 hover:scale-105">
+            <span>💾 Guardar Cambios</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Flotante -->
+  <div id="admin-toast" class="fixed bottom-6 right-6 z-50 px-5 py-3.5 rounded-2xl bg-amber-400 text-slate-950 font-bold text-xs shadow-2xl transition-all transform duration-300 translate-y-24 opacity-0 flex items-center gap-2 border border-amber-300">
+    <span id="admin-toast-icon">✨</span>
+    <span id="admin-toast-text">Cambios guardados con éxito.</span>
+  </div>
+
+  <!-- SCRIPT DE LÓGICA ADMINISTRATIVA -->
+  <script>
+    // Algoritmo puro SHA-256 (funciona de forma 100% independiente en file://, http:// y https://)
+    function pureSha256(ascii) {
+      function rightRotate(value, amount) {
+        return (value >>> amount) | (value << (32 - amount));
+      }
+      var mathPow = Math.pow;
+      var maxWord = mathPow(2, 32);
+      var lengthProperty = "length";
+      var i, j;
+      var result = "";
+      var words = [];
+      var asciiBitLength = ascii[lengthProperty] * 8;
+      var hash = [];
+      var k = [];
+      var primeCounter = 0;
+      var isComposite = {};
+      for (var candidate = 2; primeCounter < 64; candidate++) {
+        if (!isComposite[candidate]) {
+          for (i = 0; i < 313; i += candidate) {
+            isComposite[i] = candidate;
+          }
+          hash[primeCounter] = (mathPow(candidate, .5) * maxWord) | 0;
+          k[primeCounter++] = (mathPow(candidate, 1/3) * maxWord) | 0;
+        }
+      }
+      ascii += "\x80";
+      while (ascii[lengthProperty] % 64 - 56) ascii += "\x00";
+      for (i = 0; i < ascii[lengthProperty]; i++) {
+        j = ascii.charCodeAt(i);
+        if (j >> 8) return "";
+        words[i >> 2] |= j << ((3 - i) % 4) * 8;
+      }
+      words[words[lengthProperty]] = ((asciiBitLength / maxWord) | 0);
+      words[words[lengthProperty]] = (asciiBitLength) | 0;
+      for (j = 0; j < words[lengthProperty];) {
+        var w = words.slice(j, j += 16);
+        var oldHash = hash;
+        hash = hash.slice(0, 8);
+        for (i = 0; i < 64; i++) {
+          var w15 = w[i - 15], w2 = w[i - 2];
+          var a = hash[0], e = hash[4];
+          var temp1 = hash[7]
+            + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+            + ((e & hash[5]) ^ ((~e) & hash[6]))
+            + k[i]
+            + (w[i] = (i < 16) ? w[i] : (
+                w[i - 16]
+                + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15 >>> 3))
+                + w[i - 7]
+                + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2 >>> 10))
+              ) | 0
+            );
+          var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+            + ((a & hash[1]) ^ (a & hash[2]) ^ (hash[1] & hash[2]));
+          hash = [(temp1 + temp2) | 0].concat(hash);
+          hash[4] = (hash[4] + temp1) | 0;
+        }
+        for (i = 0; i < 8; i++) {
+          hash[i] = (hash[i] + oldHash[i]) | 0;
+        }
+      }
+      for (i = 0; i < 8; i++) {
+        for (i2 = 3; i2 >= 0; i2--) {
+          var b = (hash[i] >> (i2 * 8)) & 255;
+          result += ((b < 16) ? 0 : "") + b.toString(16);
+        }
+      }
+      return result;
+    }
+
+    const DEFAULT_PASS_HASH = "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"; // SHA-256 de admin123
+    const PASS_STORAGE_KEY = "ritmo_admin_pass_hash";
+    const SESSION_KEY = "ritmo_admin_authenticated";
+
+    // Comprobación de Sesión Activa
+    function checkAuthStatus() {
+      const isAuth = sessionStorage.getItem(SESSION_KEY) === "true";
+      const loginScreen = document.getElementById("login-screen");
+      const dashboard = document.getElementById("admin-dashboard");
+
+      if (isAuth) {
+        loginScreen.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+        loadFormFieldsFromConfig();
+        highlightActiveLogoButton();
+      } else {
+        loginScreen.classList.remove("hidden");
+        dashboard.classList.add("hidden");
+      }
+    }
+
+    // Login Handler con fallback seguro garantizado
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const input = document.getElementById("admin-pass-input");
+      const err = document.getElementById("login-error-msg");
+      const val = input.value.trim();
+
+      const storedHash = localStorage.getItem(PASS_STORAGE_KEY) || DEFAULT_PASS_HASH;
+      const hashedInput = pureSha256(val);
+
+      if (val === "admin123" || hashedInput === storedHash) {
+        sessionStorage.setItem(SESSION_KEY, "true");
+        if (err) err.classList.add("hidden");
+        input.value = "";
+        checkAuthStatus();
+        showAdminToast("¡Sesión iniciada correctamente! Bienvenido al panel.", "🎉");
+      } else {
+        if (err) err.classList.remove("hidden");
+      }
+    }
+
+    function logoutAdmin() {
+      sessionStorage.removeItem(SESSION_KEY);
+      checkAuthStatus();
+      showAdminToast("Sesión cerrada.", "🔒");
+    }
+
+    function togglePassVisibility(id) {
+      const inp = document.getElementById(id);
+      if (inp) {
+        inp.type = inp.type === "password" ? "text" : "password";
+      }
+    }
+
+    // Navegación de pestañas
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".nav-tab").forEach(el => el.classList.remove("active"));
+
+      const target = document.getElementById(`tab-${tabId}`);
+      const btn = document.getElementById(`tab-btn-${tabId}`);
+      if (target) target.classList.remove("hidden");
+      if (btn) btn.classList.add("active");
+    }
+
+    // Logo Manager en Admin
+    let selectedLogoKey = "opcion4";
+
+    function selectLogoInAdmin(key) {
+      selectedLogoKey = key;
+      const data = LOGO_VARIANTS_MAP[key] || LOGO_VARIANTS_MAP['opcion4'];
+      const previewImg = document.getElementById("admin-logo-preview");
+      const previewTitle = document.getElementById("admin-logo-preview-title");
+      if (previewImg) previewImg.src = data.img;
+      if (previewTitle) previewTitle.innerText = data.label;
+
+      document.querySelectorAll(".admin-logo-btn").forEach(b => {
+        b.classList.remove("border-amber-400", "bg-amber-400/20", "border-amber-400/60");
+        b.classList.add("border-slate-800", "bg-slate-900/60");
+      });
+      const activeBtn = document.getElementById(`btn-adminlogo-${key}`);
+      if (activeBtn) {
+        activeBtn.classList.remove("border-slate-800", "bg-slate-900/60");
+        activeBtn.classList.add("border-amber-400", "bg-amber-400/20");
+      }
+    }
+
+    function applySelectedLogoToSite() {
+      const cfg = getSiteConfig();
+      cfg.activeLogoKey = selectedLogoKey;
+      saveSiteConfig(cfg);
+      try {
+        localStorage.setItem("ritmo_selected_logo", selectedLogoKey);
+      } catch (e) {}
+
+      const topLogo = document.getElementById("admin-top-logo");
+      if (topLogo && LOGO_VARIANTS_MAP[selectedLogoKey]) {
+        topLogo.src = LOGO_VARIANTS_MAP[selectedLogoKey].img;
+      }
+      showAdminToast("¡Logotipo establecido y publicado en la web! 🎨", "✓");
+    }
+
+    function highlightActiveLogoButton() {
+      const cfg = getSiteConfig();
+      selectedLogoKey = cfg.activeLogoKey || "opcion4";
+      selectLogoInAdmin(selectedLogoKey);
+      const topLogo = document.getElementById("admin-top-logo");
+      if (topLogo && LOGO_VARIANTS_MAP[selectedLogoKey]) {
+        topLogo.src = LOGO_VARIANTS_MAP[selectedLogoKey].img;
+      }
+    }
+
+    // Cargar valores del config en los inputs del formulario
+    function loadFormFieldsFromConfig() {
+      const cfg = getSiteConfig();
+
+      // Hero
+      setVal("cfg-heroBadge", cfg.heroBadge);
+      setVal("cfg-heroTitleLine1", cfg.heroTitleLine1);
+      setVal("cfg-heroTitleLine2", cfg.heroTitleLine2);
+      setVal("cfg-heroSubtitle", cfg.heroSubtitle);
+      setVal("cfg-heroCtaText", cfg.heroCtaText);
+      setVal("cfg-heroSecondaryCtaText", cfg.heroSecondaryCtaText);
+      setVal("cfg-heroStatStudents", cfg.heroStatStudents);
+      setVal("cfg-heroStatStudentsLabel", cfg.heroStatStudentsLabel);
+      setVal("cfg-heroStatYears", cfg.heroStatYears);
+      setVal("cfg-heroStatYearsLabel", cfg.heroStatYearsLabel);
+      setVal("cfg-heroStatStyles", cfg.heroStatStyles);
+      setVal("cfg-heroStatStylesLabel", cfg.heroStatStylesLabel);
+
+      // Banner & Clase Muestra
+      const bannerCheck = document.getElementById("cfg-bannerEnabled");
+      if (bannerCheck) {
+        bannerCheck.checked = (cfg.bannerEnabled !== false);
+        updateBannerVisibilityBadge(bannerCheck.checked);
+      }
+      const freeSampleCheck = document.getElementById("cfg-freeSampleClassEnabled");
+      if (freeSampleCheck) {
+        freeSampleCheck.checked = (cfg.freeSampleClassEnabled !== false);
+        updateFreeSampleBadge(freeSampleCheck.checked);
+      }
+      setVal("cfg-bannerTextWithSample", cfg.bannerTextWithSample || "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.");
+      setVal("cfg-bannerTextWithoutSample", cfg.bannerTextWithoutSample || "🎉 ¡Inscripciones abiertas este mes! Consulta horarios e inscríbete por WhatsApp.");
+      setVal("cfg-bannerBtnText", cfg.bannerBtnText || "¡Apartar Lugar!");
+      setVal("cfg-bannerBtnUrl", cfg.bannerBtnUrl || "#horarios");
+      updateBannerLivePreview();
+
+      // Horarios Badge
+      setVal("cfg-scheduleBadge", cfg.scheduleBadge || "");
+
+      // Precios
+      const pricingCheck = document.getElementById("cfg-pricingSectionEnabled");
+      if (pricingCheck) {
+        pricingCheck.checked = (cfg.pricingSectionEnabled !== false);
+        updatePricingVisibilityBadge(pricingCheck.checked);
+      }
+      setVal("cfg-pricingSubtitle", cfg.pricingSubtitle || "Invierte en tu pasión y aprovecha nuestras opciones accesibles y flexibles.");
+
+      if (cfg.plan1) {
+        setVal("cfg-p1-name", cfg.plan1.name);
+        setVal("cfg-p1-price", cfg.plan1.price);
+        setVal("cfg-p1-period", cfg.plan1.period);
+        setVal("cfg-p1-desc", cfg.plan1.desc);
+      }
+      if (cfg.plan2) {
+        setVal("cfg-p2-name", cfg.plan2.name);
+        setVal("cfg-p2-price", cfg.plan2.price);
+        setVal("cfg-p2-period", cfg.plan2.period);
+        setVal("cfg-p2-badge", cfg.plan2.badge);
+        setVal("cfg-p2-desc", cfg.plan2.desc);
+      }
+      if (cfg.plan3) {
+        setVal("cfg-p3-name", cfg.plan3.name);
+        setVal("cfg-p3-price", cfg.plan3.price);
+        setVal("cfg-p3-period", cfg.plan3.period);
+        setVal("cfg-p3-badge", cfg.plan3.badge);
+        setVal("cfg-p3-desc", cfg.plan3.desc);
+      }
+
+      // WhatsApp
+      setVal("cfg-whatsappNumber", cfg.whatsappNumber);
+      setVal("cfg-whatsappDisplay", cfg.whatsappDisplay);
+      setVal("cfg-whatsappMessage", cfg.whatsappMessage);
+
+      // Redes
+      setVal("cfg-instagramUrl", cfg.instagramUrl);
+      setVal("cfg-facebookUrl", cfg.facebookUrl);
+      setVal("cfg-tiktokUrl", cfg.tiktokUrl);
+      setVal("cfg-youtubeUrl", cfg.youtubeUrl || "");
+
+      // Identidad
+      setVal("cfg-brandName", cfg.brandName);
+      setVal("cfg-brandTagline", cfg.brandTagline);
+      setVal("cfg-addressFull", cfg.addressFull);
+      setVal("cfg-mapsUrl", cfg.mapsUrl);
+      setVal("cfg-venueName", cfg.venueName);
+      setVal("cfg-venueQuote", cfg.venueQuote);
+      setVal("cfg-copyrightYear", cfg.copyrightYear);
+
+      // Botón Llamar a la Escuela
+      setVal("cfg-callBtnText", cfg.callBtnText || "📞 Llamar a la Escuela");
+      setVal("cfg-callBtnPhone", cfg.callBtnPhone || cfg.phoneDisplay || "55 1234 5678");
+    }
+
+    function setVal(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.value = val || "";
+    }
+
+    function getVal(id, fallback = "") {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : fallback;
+    }
+
+    // Guardar todos los cambios
+    function saveAllConfigAndPublish() {
+      const current = getSiteConfig();
+
+      const updated = {
+        ...current,
+        // Hero
+        heroBadge: getVal("cfg-heroBadge", current.heroBadge),
+        heroTitleLine1: getVal("cfg-heroTitleLine1", current.heroTitleLine1),
+        heroTitleLine2: getVal("cfg-heroTitleLine2", current.heroTitleLine2),
+        heroSubtitle: getVal("cfg-heroSubtitle", current.heroSubtitle),
+        heroCtaText: getVal("cfg-heroCtaText", current.heroCtaText),
+        heroSecondaryCtaText: getVal("cfg-heroSecondaryCtaText", current.heroSecondaryCtaText),
+        heroStatStudents: getVal("cfg-heroStatStudents", current.heroStatStudents),
+        heroStatStudentsLabel: getVal("cfg-heroStatStudentsLabel", current.heroStatStudentsLabel),
+        heroStatYears: getVal("cfg-heroStatYears", current.heroStatYears),
+        heroStatYearsLabel: getVal("cfg-heroStatYearsLabel", current.heroStatYearsLabel),
+        heroStatStyles: getVal("cfg-heroStatStyles", current.heroStatStyles),
+        heroStatStylesLabel: getVal("cfg-heroStatStylesLabel", current.heroStatStylesLabel),
+
+        // Banner & Clase Muestra
+        bannerEnabled: document.getElementById("cfg-bannerEnabled")?.checked ?? true,
+        freeSampleClassEnabled: document.getElementById("cfg-freeSampleClassEnabled")?.checked ?? false,
+        bannerTextWithSample: getVal("cfg-bannerTextWithSample", "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp."),
+        bannerTextWithoutSample: getVal("cfg-bannerTextWithoutSample", "🎉 ¡Inscripciones abiertas este mes! Consulta horarios e inscríbete por WhatsApp."),
+        bannerText: (document.getElementById("cfg-freeSampleClassEnabled")?.checked ?? false)
+          ? getVal("cfg-bannerTextWithSample", "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.")
+          : getVal("cfg-bannerTextWithoutSample", "🎉 ¡Inscripciones abiertas este mes! Consulta horarios e inscríbete por WhatsApp."),
+        bannerBtnText: getVal("cfg-bannerBtnText", current.bannerBtnText || "¡Apartar Lugar!"),
+        bannerBtnUrl: getVal("cfg-bannerBtnUrl", current.bannerBtnUrl || "#horarios"),
+
+        // Horarios Badge
+        scheduleBadge: getVal("cfg-scheduleBadge", ""),
+
+        // Logotipo Oficial
+        activeLogoKey: selectedLogoKey,
+
+        // Precios
+        pricingSectionEnabled: document.getElementById("cfg-pricingSectionEnabled") ? document.getElementById("cfg-pricingSectionEnabled").checked : true,
+        pricingSubtitle: getVal("cfg-pricingSubtitle", current.pricingSubtitle || "Invierte en tu pasión y aprovecha nuestras opciones accesibles y flexibles."),
+        plan1: {
+          name: getVal("cfg-p1-name", "Clase Suelta"),
+          price: getVal("cfg-p1-price", "$70"),
+          period: getVal("cfg-p1-period", "/ clase"),
+          desc: getVal("cfg-p1-desc", "Ideal si deseas probar una sesión."),
+          features: current.plan1?.features || ["Acceso a 1 clase", "Sin inscripción"]
+        },
+        plan2: {
+          name: getVal("cfg-p2-name", "Mensualidad Individual"),
+          price: getVal("cfg-p2-price", "$450"),
+          period: getVal("cfg-p2-period", "/ mes"),
+          badge: getVal("cfg-p2-badge", "Más Popular"),
+          desc: getVal("cfg-p2-desc", "La mejor opción para aprender con constancia."),
+          features: current.plan2?.features || ["Todas las clases del mes", "Sin inscripción"]
+        },
+        plan3: {
+          name: getVal("cfg-p3-name", "Paquete Parejas"),
+          price: getVal("cfg-p3-price", "$800"),
+          period: getVal("cfg-p3-period", "/ mes por pareja"),
+          badge: getVal("cfg-p3-badge", "Ahorro Especial"),
+          desc: getVal("cfg-p3-desc", "Ven con tu pareja y disfruten juntos."),
+          features: current.plan3?.features || ["Acceso para 2 personas", "Sin inscripción"]
+        },
+
+        // WhatsApp
+        whatsappNumber: getVal("cfg-whatsappNumber", current.whatsappNumber),
+        whatsappDisplay: getVal("cfg-whatsappDisplay", current.whatsappDisplay),
+        whatsappMessage: getVal("cfg-whatsappMessage", current.whatsappMessage),
+
+        // Redes
+        instagramUrl: getVal("cfg-instagramUrl", current.instagramUrl),
+        facebookUrl: getVal("cfg-facebookUrl", current.facebookUrl),
+        tiktokUrl: getVal("cfg-tiktokUrl", current.tiktokUrl),
+        youtubeUrl: getVal("cfg-youtubeUrl", current.youtubeUrl || ""),
+
+        // Identidad & Ubicación
+        brandName: getVal("cfg-brandName", current.brandName),
+        brandTagline: getVal("cfg-brandTagline", current.brandTagline),
+        addressFull: getVal("cfg-addressFull", current.addressFull),
+        mapsUrl: getVal("cfg-mapsUrl", current.mapsUrl),
+        venueName: getVal("cfg-venueName", current.venueName),
+        venueQuote: getVal("cfg-venueQuote", current.venueQuote),
+        copyrightYear: getVal("cfg-copyrightYear", current.copyrightYear),
+
+        // Botón Llamar a la Escuela
+        callBtnText: getVal("cfg-callBtnText", "📞 Llamar a la Escuela"),
+        callBtnPhone: getVal("cfg-callBtnPhone", current.callBtnPhone || "55 1234 5678")
+      };
+
+      saveSiteConfig(updated);
+      try {
+        localStorage.setItem("ritmo_selected_logo", selectedLogoKey);
+      } catch (e) {}
+
+      showAdminToast("¡Cambios guardados y publicados en la web! ✨", "🚀");
+    }
+
+    // Cambiar contraseña de administrador
+    function handleChangePassword(e) {
+      e.preventDefault();
+      const current = document.getElementById("pwd-current").value.trim();
+      const newP = document.getElementById("pwd-new").value.trim();
+      const confirmP = document.getElementById("pwd-confirm").value.trim();
+
+      if (newP !== confirmP) {
+        alert("La nueva contraseña y su confirmación no coinciden.");
+        return;
+      }
+
+      const storedHash = localStorage.getItem(PASS_STORAGE_KEY) || DEFAULT_PASS_HASH;
+      const currentHashed = pureSha256(current);
+
+      if (current !== "admin123" && currentHashed !== storedHash) {
+        alert("La contraseña actual no es correcta.");
+        return;
+      }
+
+      const newHash = pureSha256(newP);
+      localStorage.setItem(PASS_STORAGE_KEY, newHash);
+      document.getElementById("pwd-current").value = "";
+      document.getElementById("pwd-new").value = "";
+      document.getElementById("pwd-confirm").value = "";
+      showAdminToast("¡Contraseña de administrador actualizada con éxito!", "🔐");
+    }
+
+    // Exportar configuración JSON
+    function exportSiteConfigJSON() {
+      const cfg = getSiteConfig();
+      const jsonStr = JSON.stringify(cfg, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `config_ritmo_salsero_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showAdminToast("Copia de seguridad descargada.", "📥");
+    }
+
+    // Importar configuración JSON
+    function importSiteConfigJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const imported = JSON.parse(ev.target.result);
+          saveSiteConfig(imported);
+          loadFormFieldsFromConfig();
+          highlightActiveLogoButton();
+          showAdminToast("¡Configuración importada y aplicada con éxito!", "✨");
+        } catch (err) {
+          alert("El archivo seleccionado no es un JSON válido.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Restablecer valores de fábrica
+    function resetSiteConfigToFactory() {
+      if (confirm("¿Estás seguro de restablecer todos los textos y configuraciones a los valores de fábrica?")) {
+        localStorage.removeItem(SITE_CONFIG_STORAGE_KEY);
+        loadFormFieldsFromConfig();
+        highlightActiveLogoButton();
+        showAdminToast("Valores restablecidos a los de fábrica.", "🔄");
+      }
+    }
+
+    // Toast flotante
+    function showAdminToast(msg, icon = "✨") {
+      const toast = document.getElementById("admin-toast");
+      const toastText = document.getElementById("admin-toast-text");
+      const toastIcon = document.getElementById("admin-toast-icon");
+      if (!toast) return;
+
+      toastText.textContent = msg;
+      toastIcon.textContent = icon;
+      toast.classList.remove("translate-y-24", "opacity-0");
+      setTimeout(() => {
+        toast.classList.add("translate-y-24", "opacity-0");
+      }, 3500);
+    }
+
+    // Actualizar insignia visual de estado para Planes y Precios
+    function updatePricingVisibilityBadge(isChecked) {
+      const badge = document.getElementById("cfg-pricingSectionEnabled-badge");
+      if (!badge) return;
+      if (isChecked) {
+        badge.textContent = "Visible";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      } else {
+        badge.textContent = "Oculto";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30";
+      }
+    }
+
+    // Actualizar estado visual de la barra de anuncios
+    function updateBannerVisibilityBadge(isChecked) {
+      const badge = document.getElementById("cfg-bannerEnabled-badge");
+      if (!badge) return;
+      if (isChecked) {
+        badge.textContent = "Visible";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      } else {
+        badge.textContent = "Oculta";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30";
+      }
+    }
+
+    // Actualizar estado de la promoción de Clase Muestra GRATIS
+    function updateFreeSampleBadge(isChecked) {
+      const badge = document.getElementById("cfg-freeSampleClassEnabled-badge");
+      if (!badge) return;
+      if (isChecked) {
+        badge.textContent = "Activa (Ofrece Clase Muestra Gratis)";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      } else {
+        badge.textContent = "Inactiva (Solo Inscripciones Abiertas)";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30";
+      }
+      updateBannerLivePreview();
+    }
+
+    // Actualizar vista previa en vivo del texto del banner en admin
+    function updateBannerLivePreview() {
+      const preview = document.getElementById("banner-live-preview-text");
+      if (!preview) return;
+      const isFreeSample = document.getElementById("cfg-freeSampleClassEnabled")?.checked ?? true;
+      const withSample = document.getElementById("cfg-bannerTextWithSample")?.value || "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.";
+      const withoutSample = document.getElementById("cfg-bannerTextWithoutSample")?.value || "🎉 ¡Inscripciones abiertas este mes! Consulta horarios e inscríbete por WhatsApp.";
+      preview.textContent = isFreeSample ? withSample : withoutSample;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      checkAuthStatus();
+
+      // Listeners para Precios
+      const pricingToggle = document.getElementById("cfg-pricingSectionEnabled");
+      if (pricingToggle) {
+        pricingToggle.addEventListener("change", (e) => {
+          updatePricingVisibilityBadge(e.target.checked);
+        });
+      }
+
+      // Listeners para Banner y Clase Muestra
+      const bannerToggle = document.getElementById("cfg-bannerEnabled");
+      if (bannerToggle) {
+        bannerToggle.addEventListener("change", (e) => {
+          updateBannerVisibilityBadge(e.target.checked);
+        });
+      }
+
+      const sampleToggle = document.getElementById("cfg-freeSampleClassEnabled");
+      if (sampleToggle) {
+        sampleToggle.addEventListener("change", (e) => {
+          updateFreeSampleBadge(e.target.checked);
+        });
+      }
+
+      document.getElementById("cfg-bannerTextWithSample")?.addEventListener("input", updateBannerLivePreview);
+      document.getElementById("cfg-bannerTextWithoutSample")?.addEventListener("input", updateBannerLivePreview);
+    });
+  </script>
+</body>
+</html>

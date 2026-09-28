@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ritmo Salsero | Escuela de Baile - Salsa y Cumbia en San Martín de las Pirámides</title>
+  <meta name="description" content="Aprende a bailar Salsa y Cumbia en San Martín de las Pirámides. Clases para principiantes, intermedios y avanzados en Casa de Cultura Neteotiloyan. ¡Vive el ritmo!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    :root {
+      --bg-dark: #070B19;
+      --bg-card: rgba(14, 23, 49, 0.75);
+      --bg-card-hover: rgba(22, 36, 74, 0.85);
+      --gold-primary: #E5B84B;
+      --gold-light: #F7E08B;
+      --gold-dark: #B38626;
+      --blue-night: #0D1B3E;
+      --blue-accent: #2563EB;
+      --blue-cyan: #38BDF8;
+      --salsa-coral: #E11D48;
+      --cumbia-emerald: #059669;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --border-glow: rgba(229, 184, 75, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .font-serif-title {
+      font-family: 'Cinzel', Georgia, serif;
+    }
+
+    .font-script {
+      font-family: 'Great Vibes', 'Brush Script MT', cursive;
+    }
+
+    /* Fondo estrellado dinámico */
+    .stars-bg {
+      background-color: #070B19;
+      background: radial-gradient(ellipse at 50% 15%, #0e172e 0%, #070B19 65%, #040711 100%);
+      position: relative;
+    }
+
+    .star-twinkle {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 4px #F7E08B); }
+    }
+
+    /* Efectos de brillo dorado y neón */
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FFF1B8 0%, #E5B84B 50%, #B38626 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gold-glow {
+      box-shadow: 0 0 25px rgba(229, 184, 75, 0.35);
+    }
+
+    .gold-border {
+      border: 1px solid rgba(229, 184, 75, 0.3);
+    }
+
+    .gold-border-highlight {
+      border: 2px solid #E5B84B;
+      box-shadow: 0 0 15px rgba(229, 184, 75, 0.4);
+    }
+
+    /* Glassmorphism */
+    .glass-panel {
+      background: var(--bg-card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+    }
+
+    .glass-panel-gold {
+      background: linear-gradient(135deg, rgba(22, 35, 72, 0.8) 0%, rgba(10, 17, 38, 0.85) 100%);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--border-glow);
+      border-radius: 16px;
+    }
+
+    /* Badges de Ritmos */
+    .badge-salsa {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.25) 0%, rgba(159, 18, 57, 0.4) 100%);
+      border: 1px solid rgba(225, 29, 72, 0.6);
+      color: #FECDD3;
+    }
+
+    .badge-cumbia {
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.25) 0%, rgba(4, 120, 87, 0.4) 100%);
+      border: 1px solid rgba(5, 150, 105, 0.6);
+      color: #A7F3D0;
+    }
+
+    .badge-descanso {
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px dashed rgba(148, 163, 184, 0.3);
+      color: #94A3B8;
+    }
+
+    /* Transición suave para cards de clase */
+    .class-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+
+    .class-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-primary);
+      box-shadow: 0 10px 25px -5px rgba(229, 184, 75, 0.25);
+    }
+
+    /* Botones */
+    .btn-gold {
+      background: linear-gradient(135deg, #F7E08B 0%, #E5B84B 50%, #C99728 100%);
+      color: #0B1120;
+      font-weight: 700;
+      border: none;
+      padding: 0.75rem 1.75rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(229, 184, 75, 0.35);
+    }
+
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(229, 184, 75, 0.55);
+      background: linear-gradient(135deg, #FFF1B8 0%, #F0C45B 50%, #D8A232 100%);
+    }
+
+    .btn-outline-gold {
+      background: transparent;
+      color: var(--gold-light);
+      border: 1.5px solid var(--gold-primary);
+      padding: 0.75rem 1.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-outline-gold:hover {
+      background: rgba(229, 184, 75, 0.15);
+      color: #FFF;
+      border-color: #FFF;
+      transform: translateY(-2px);
+    }
+
+    /* Animaciones */
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(1.03); }
+    }
+
+    .animate-pulse-subtle {
+      animation: pulse-subtle 3s infinite ease-in-out;
+    }
+
+    /* Modal Styles */
+    .hidden {
+      display: none !important;
+    }
+    .modal-backdrop {
+      background: rgba(5, 9, 21, 0.85);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #080D1A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1E293B;
+      border-radius: 4px;
+      border: 1px solid rgba(229, 184, 75, 0.2);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E5B84B;
+    }
+
+    @keyframes spin-halo {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .conic-halo {
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(229, 184, 75, 0.85) 60deg, transparent 120deg, rgba(56, 189, 248, 0.6) 180deg, transparent 240deg, rgba(229, 184, 75, 0.85) 300deg, transparent 360deg);
+      animation: spin-halo 15s linear infinite;
+    }
+    .conic-halo-flame {
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(244, 63, 94, 0.85) 60deg, transparent 120deg, rgba(245, 158, 11, 0.9) 180deg, transparent 240deg, rgba(244, 63, 94, 0.85) 300deg, transparent 360deg);
+      animation: spin-halo 8s linear infinite;
+    }
+    .conic-halo-cyan {
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(56, 189, 248, 0.85) 90deg, transparent 180deg, rgba(229, 184, 75, 0.85) 270deg, transparent 360deg);
+      animation: spin-halo 12s linear infinite reverse;
+    }
+  </style>
+  <script src="./assets/schedule_manager.js"></script>
+  <script src="./assets/site_config_loader.js"></script>
+</head>
+
+<body class="stars-bg min-h-screen flex flex-col">
+  <!-- Dynamic Starlight Canvas Background -->
+  <div id="stars-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+  <!-- BANNER DE AVISOS Y PROMOCIONES (EDITABLE DESDE ADMIN) -->
+  <div id="promo-banner" class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-bold text-xs py-2 px-4 shadow-md transition-all relative z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+      <div class="flex items-center gap-2">
+        <span class="text-sm">📣</span>
+        <span id="promo-banner-text">🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.</span>
+      </div>
+      <a id="promo-banner-btn" href="#horarios" class="px-3.5 py-1 rounded-full bg-slate-950 text-amber-300 hover:bg-slate-900 hover:text-white text-[11px] font-extrabold transition-all whitespace-nowrap shadow">
+        ¡Apartar Lugar!
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER / NAVBAR -->
+  <header class="sticky top-0 z-40 bg-[#070B19]/85 backdrop-blur-md border-b border-amber-500/20 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Brand & Logo -->
+      <a href="#inicio" class="flex items-center gap-3.5 group text-decoration-none">
+        <div class="relative w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-600 shadow-md group-hover:scale-105 transition-transform duration-300">
+          <img id="nav-logo" src="./assets/logo_opcion_4_transparente.png" alt="Logo Ritmo Salsero" class="w-full h-full object-contain rounded-full">
+        </div>
+        <div>
+          <span class="block font-serif-title font-extrabold text-xl tracking-wider text-white group-hover:text-amber-400 transition-colors">
+            RITMO <span class="gold-gradient-text">SALSERO</span>
+          </span>
+          <span class="block text-[11px] font-medium tracking-widest uppercase text-amber-300/80 -mt-1">
+            San Martín de las Pirámides
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#inicio" class="text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Inicio</a>
+        <a href="#horarios" class="text-sm font-semibold text-amber-400 flex items-center gap-1.5 transition-colors">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+          Horarios Pro
+        </a>
+        <a href="#ritmos" class="text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Ritmos y Niveles</a>
+        <a href="#promociones" class="nav-link-planes text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Planes</a>
+        
+        <a href="#ubicacion" class="text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Ubicación</a>
+      </nav>
+
+      <!-- CTA Button -->
+      <div class="hidden sm:flex items-center gap-3">
+        <button onclick="openBookingModal('General')" class="btn-gold text-xs uppercase tracking-wider py-2.5 px-5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span id="nav-sample-class-btn-text">Clase Muestra</span>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-300 hover:text-amber-400 hover:bg-slate-800/60 focus:outline-none" aria-label="Abrir menú">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0A1024] border-b border-amber-500/20 px-4 pt-2 pb-6 space-y-3">
+      <a href="#inicio" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-amber-400 font-medium">Inicio</a>
+      <a href="#horarios" onclick="toggleMobileMenu()" class="block py-2 text-amber-400 font-semibold">Horarios Semanales</a>
+      <a href="#ritmos" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-amber-400 font-medium">Ritmos y Niveles</a>
+      <a href="#promociones" onclick="toggleMobileMenu()" class="nav-link-planes block py-2 text-slate-200 hover:text-amber-400 font-medium">Planes y Precios</a>
+      <a href="#ubicacion" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-amber-400 font-medium">Ubicación (Casa de Cultura)</a>
+      <div class="pt-2">
+        <button onclick="openBookingModal('General'); toggleMobileMenu()" class="btn-gold w-full justify-center text-xs uppercase tracking-wider py-3">
+          <span id="mobile-sample-class-btn-text">¡Apartar Clase Muestra!</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow z-10">
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Text Content -->
+          <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-wider">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <span id="hero-badge-text">Sede Oficial: Casa de Cultura Neteotiloyan</span>
+            </div>
+
+            <h1 id="hero-title-text" class="text-4xl sm:text-5xl lg:text-6xl font-serif-title font-extrabold text-white tracking-tight leading-none">
+              Aprende a Bailar <span class="gold-gradient-text">Salsa & Cumbia</span>
+            </h1>
+
+            <p id="hero-subtitle-text" class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+              En <strong class="text-white font-semibold">Ritmo Salsero</strong> te enseñamos a bailar con técnica real, soltura y pasión bajo el cielo de las Pirámides. ¡No necesitas pareja ni experiencia previa!
+            </p>
+
+            <!-- Highlights Pill List -->
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+              <div class="flex items-center gap-2 bg-slate-800/50 border border-slate-700/60 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200">
+                <span class="text-amber-400">✨</span>
+                <span>Principiantes, Intermedios y Avanzados</span>
+              </div>
+              <div class="flex items-center gap-2 bg-slate-800/50 border border-slate-700/60 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200">
+                <span class="text-amber-400">🕺</span>
+                <span>Lunes, Martes, Jueves y Viernes</span>
+              </div>
+              <div class="flex items-center gap-2 bg-slate-800/50 border border-slate-700/60 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200">
+                <span class="text-amber-400">📍</span>
+                <span>San Martín de las Pirámides, Edomex</span>
+              </div>
+            </div>
+
+            <!-- CTA Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+              <a id="hero-secondary-cta-btn" href="#horarios" class="btn-gold w-full sm:w-auto justify-center text-sm py-3.5 px-8">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>Ver Horarios Semanales</span>
+              </a>
+              <a id="hero-cta-btn" href="https://wa.me/?text=Hola%20Ritmo%20Salsero,%20quiero%20informaci%C3%B3n%20sobre%20las%20clases%20de%20Salsa%20y%20Cumbia" target="_blank" class="dynamic-wa-link btn-outline-gold w-full sm:w-auto justify-center text-sm py-3.5 px-8">
+                <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                <span>WhatsApp Oficial</span>
+              </a>
+            </div>
+
+            <!-- Social Proof -->
+            <div class="pt-4 flex items-center justify-center lg:justify-start gap-4 text-xs text-slate-400">
+              <div class="flex -space-x-2 overflow-hidden">
+                <span class="inline-block h-8 w-8 rounded-full ring-2 ring-slate-900 bg-amber-500/80 text-black font-bold flex items-center justify-center text-xs">💃</span>
+                <span class="inline-block h-8 w-8 rounded-full ring-2 ring-slate-900 bg-blue-500/80 text-white font-bold flex items-center justify-center text-xs">🕺</span>
+                <span class="inline-block h-8 w-8 rounded-full ring-2 ring-slate-900 bg-rose-500/80 text-white font-bold flex items-center justify-center text-xs">⭐</span>
+              </div>
+              <div>
+                <p class="font-medium text-slate-200">¡Comunidad salsera activa en Teotihuacán!</p>
+                <p class="text-amber-400/90 font-semibold">"Son los mejores" — Casa de Cultura</p>
+              </div>
+            </div>
+
+            <!-- Redes Sociales Oficiales del Hero (Dinámicas desde Admin) -->
+            <div id="hero-social-bar" class="pt-4 flex items-center gap-3 flex-wrap">
+              <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                <span>🌐</span>
+                <span>Síguenos en redes:</span>
+              </span>
+              <div class="flex items-center gap-2">
+                <!-- Facebook -->
+                <a id="hero-social-facebook" href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-facebook w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-blue-500 hover:bg-blue-600/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group" title="Facebook Oficial" aria-label="Facebook">
+                  <svg class="w-4 h-4 fill-current text-[#1877F2] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+                <!-- Instagram -->
+                <a id="hero-social-instagram" href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-instagram w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-pink-500 hover:bg-pink-600/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group" title="Instagram Oficial" aria-label="Instagram">
+                  <svg class="w-4 h-4 fill-current text-[#E4405F] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  </svg>
+                </a>
+                <!-- TikTok -->
+                <a id="hero-social-tiktok" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-tiktok w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-cyan-400 hover:bg-cyan-500/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group" title="TikTok Oficial" aria-label="TikTok">
+                  <svg class="w-4 h-4 fill-current text-white group-hover:text-cyan-400 transition-colors" viewBox="0 0 24 24">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.81 4.47 6.27 6.27 0 0 0 1.88-4.47V8.62a8.28 8.28 0 0 0 4.8 1.54V6.71a4.77 4.77 0 0 1-.9-.02z"/>
+                  </svg>
+                </a>
+                <!-- YouTube -->
+                <a id="hero-social-youtube" href="" target="_blank" rel="noopener noreferrer" class="dynamic-social-youtube w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-red-500 hover:bg-red-600/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group hidden" title="Canal de YouTube" aria-label="YouTube">
+                  <svg class="w-4 h-4 fill-current text-[#FF0000] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Graphic: Emblem Integrated with Solar Animation -->
+          <div class="lg:col-span-5 flex flex-col items-center justify-center mt-6 lg:mt-0">
+            <div class="relative w-72 sm:w-84 md:w-96 aspect-square flex items-center justify-center group">
+              <!-- Animated Solar Conic Halo (Spins directly behind the sun rays) -->
+              <div id="hero-logo-halo" class="conic-halo absolute -inset-2 sm:-inset-4 rounded-full blur-xl opacity-90 transition-opacity duration-700 pointer-events-none"></div>
+              
+              <!-- Ambient Core Glow -->
+              <div id="hero-logo-glow" class="absolute inset-2 sm:inset-4 rounded-full bg-gradient-to-tr from-amber-500/40 via-amber-300/30 to-amber-600/40 blur-2xl transition-all duration-700 animate-pulse-subtle pointer-events-none"></div>
+              
+              <!-- Main Sun Logo Image (Scaled to blend seamlessly into the sun animation) -->
+              <div class="relative w-full h-full flex items-center justify-center p-2 z-10">
+                <img id="hero-logo" src="./assets/logo_opcion_4_transparente.png" alt="Logo Oficial Ritmo Salsero" class="w-full h-full object-contain scale-110 sm:scale-120 group-hover:scale-125 transition-transform duration-700 filter drop-shadow-[0_10px_35px_rgba(245,158,11,0.6)]">
+              </div>
+
+              <!-- Decorative Badge Orbit (Salsa & Cumbia) -->
+              <div class="absolute -top-2 -right-1 z-20 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-slate-950 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-xl border border-amber-300 transform rotate-6 hover:rotate-0 transition-transform">
+                Salsa & Cumbia
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE "CLASE DE HOY" DYNAMIC NOTIFICATION BAR -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-12">
+      <div id="live-today-banner" class="glass-panel-gold p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
+        <div class="flex items-center gap-3.5">
+          <div class="w-10 h-10 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-bold text-lg">
+            📅
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="live-day-tag" class="text-xs font-black uppercase px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">HOY</span>
+              <span id="live-day-name" class="font-serif-title font-bold text-amber-200 text-base">Cargando horario de hoy...</span>
+            </div>
+            <p id="live-day-classes" class="text-xs sm:text-sm text-slate-300 mt-0.5">Identificando clases programadas para esta noche en Casa de Cultura...</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto">
+          <button id="live-today-action-btn" onclick="openBookingModal('Hoy')" class="btn-gold text-xs uppercase py-2 px-5 w-full md:w-auto justify-center flex items-center gap-2">
+            Asistir Hoy
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: REDISEÑO DE HORARIOS PROFESIONAL -->
+    <section id="horarios" class="py-12 sm:py-16 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-3 mb-10">
+          <div id="schedule-badge-container" class="hidden inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-widest">
+            <span id="schedule-badge-text"></span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif-title font-extrabold text-white">
+            Horarios Semanales <span class="gold-gradient-text">Ritmo Salsero</span>
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base">
+            Diseñados para tu comodidad: clases de 1 hora distribuidas estratégicamente de lunes a viernes en dos bloques nocturnos.
+          </p>
+        </div>
+
+        <!-- Controls Bar: View Toggle & Filters -->
+        <div class="mb-8 space-y-3">
+          
+          <!-- Top Row: View Switcher and Action Download Button -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-900/70 p-3 rounded-2xl border border-slate-800 backdrop-blur-md">
+            <!-- View Switcher Tabs -->
+            <div class="flex items-center bg-slate-950/90 p-1 rounded-xl border border-slate-800/80 w-full sm:w-auto">
+              <button id="view-tab-grid" onclick="switchScheduleView('grid')" class="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 bg-amber-400 text-slate-950 shadow-md flex items-center justify-center gap-1.5 sm:gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="hidden sm:inline">Vista Semanal (Parrilla)</span>
+                <span class="sm:hidden">Parrilla Semanal</span>
+              </button>
+              <button id="view-tab-cards" onclick="switchScheduleView('cards')" class="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 sm:gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                <span class="hidden sm:inline">Vista por Días</span>
+                <span class="sm:hidden">Por Días</span>
+              </button>
+            </div>
+
+            <!-- Quick Downloads -->
+            <div class="w-full sm:w-auto">
+              <button id="btn-download-dynamic-schedule" onclick="downloadDynamicScheduleImage()" class="w-full sm:w-auto text-xs text-slate-950 bg-gradient-to-r from-amber-400 to-amber-300 hover:from-amber-300 hover:to-amber-200 font-extrabold flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl transition-all shadow-lg shadow-amber-500/20 whitespace-nowrap cursor-pointer hover:scale-105 active:scale-95" title="Genera y descarga una imagen actualizada con todos los cambios de horarios y textos">
+                <svg class="w-4 h-4 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                </svg>
+                <span>Descargar Horario Web (PNG)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Level Filters Bar -->
+          <div class="flex items-center gap-2 overflow-x-auto p-2.5 bg-slate-900/60 rounded-2xl border border-amber-500/20 shadow-md">
+            <span class="text-xs font-bold text-amber-300 uppercase tracking-wider pl-1.5 whitespace-nowrap flex items-center gap-1.5 flex-shrink-0">
+              <span>🎯</span>
+              <span>Filtrar por nivel:</span>
+            </span>
+            <div id="schedule-filters-container" class="flex items-center gap-1.5 flex-nowrap sm:flex-wrap">
+              <button type="button" onclick="setScheduleLevelFilter('all')" class="schedule-filter-btn active text-xs font-bold px-3.5 py-1.5 rounded-xl border border-amber-400 bg-amber-400 text-slate-950 whitespace-nowrap transition-all shadow-md scale-105 cursor-pointer" data-filter="all">
+                ✨ Todos los Niveles
+              </button>
+              <button type="button" onclick="setScheduleLevelFilter('principiante')" class="schedule-filter-btn text-xs font-semibold px-3 py-1.5 rounded-xl border border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-500/20 hover:border-emerald-400 whitespace-nowrap transition-all cursor-pointer hover:scale-105 active:scale-95" data-filter="principiante">
+                🌱 Principiantes / Desde Cero
+              </button>
+              <button type="button" onclick="setScheduleLevelFilter('intermedio')" class="schedule-filter-btn text-xs font-semibold px-3 py-1.5 rounded-xl border border-blue-500/40 bg-blue-950/40 text-blue-300 hover:bg-blue-500/20 hover:border-blue-400 whitespace-nowrap transition-all cursor-pointer hover:scale-105 active:scale-95" data-filter="intermedio">
+                ⚡ Nivel Intermedio
+              </button>
+              <button type="button" onclick="setScheduleLevelFilter('multinivel')" class="schedule-filter-btn text-xs font-semibold px-3 py-1.5 rounded-xl border border-amber-500/40 bg-amber-950/40 text-amber-300 hover:bg-amber-500/20 hover:border-amber-400 whitespace-nowrap transition-all cursor-pointer hover:scale-105 active:scale-95" data-filter="multinivel">
+                👥 Multinivel / Social (Cumbia)
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Swipe indicator for mobile users when viewing grid table -->
+        <div class="sm:hidden mb-2.5 px-3.5 py-2 rounded-xl bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs flex items-center justify-between gap-2 shadow-sm">
+          <span class="flex items-center gap-1.5 font-semibold">
+            <span>↔</span>
+            <span>Desliza horizontalmente para ver toda la semana</span>
+          </span>
+          <span class="text-[10px] uppercase font-black px-2 py-0.5 rounded bg-amber-400/20 text-amber-200">Lun - Vie</span>
+        </div>
+
+        <!-- 1. VISTA SEMANAL EN PARRILLA (GRID PRO TABLE) -->
+        <div id="schedule-grid-view" class="overflow-x-auto rounded-2xl border border-amber-500/30 glass-panel shadow-2xl relative">
+          <table class="w-full text-left border-collapse min-w-[760px]">
+            <thead>
+              <tr class="bg-gradient-to-r from-[#0C152E] via-[#132247] to-[#0C152E] border-b border-amber-500/20">
+                <th class="p-4 sm:p-5 font-serif-title text-amber-400 text-sm font-bold uppercase tracking-wider w-36 sticky left-0 z-20 bg-[#0C152E] border-r border-amber-500/20 shadow-md">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>HORA</span>
+                  </div>
+                </th>
+                <th class="p-4 sm:p-5 font-serif-title text-white text-sm font-bold text-center tracking-wider">
+                  <div class="day-col-header" data-day="1">LUNES</div>
+                </th>
+                <th class="p-4 sm:p-5 font-serif-title text-white text-sm font-bold text-center tracking-wider">
+                  <div class="day-col-header" data-day="2">MARTES</div>
+                </th>
+                <th class="p-4 sm:p-5 font-serif-title text-slate-400 text-sm font-bold text-center tracking-wider bg-slate-950/20">
+                  <div class="day-col-header" data-day="3">MIÉRCOLES</div>
+                </th>
+                <th class="p-4 sm:p-5 font-serif-title text-white text-sm font-bold text-center tracking-wider">
+                  <div class="day-col-header" data-day="4">JUEVES</div>
+                </th>
+                <th class="p-4 sm:p-5 font-serif-title text-white text-sm font-bold text-center tracking-wider">
+                  <div class="day-col-header" data-day="5">VIERNES</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="schedule-table-body" class="divide-y divide-slate-800/80">
+              
+              <!-- FILA 1: 7:00 PM A 8:00 PM -->
+              <tr class="hover:bg-slate-900/40 transition-colors">
+                <!-- Columna Hora (Fijada a la izquierda en scroll horizontal móvil) -->
+                <td class="p-4 sm:p-5 align-middle sticky left-0 z-10 bg-[#081024] border-r border-amber-500/20 shadow-md">
+                  <div class="font-serif-title font-bold text-amber-300 text-sm sm:text-base">7:00 PM</div>
+                  <div class="text-[11px] text-slate-400 uppercase tracking-widest">a 8:00 PM</div>
+                  <div class="mt-2 inline-flex items-center gap-1 text-[10px] text-amber-400/90 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 60 minutos
+                  </div>
+                </td>
+
+                <!-- Lunes 7:00 PM: Salsa Intermedio -->
+                <td class="p-3 align-middle schedule-cell" data-class="salsa-intermedio" data-title="Salsa Cubana" data-level="Nivel Intermedio" data-badge="Nivel Intermedio">
+                  <div onclick="openClassDetailModal('salsa-intermedio', 'Lunes', '7:00 PM a 8:00 PM')" class="class-card p-3.5 rounded-xl border border-blue-500/40 bg-gradient-to-br from-blue-950/60 to-slate-900/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Nivel Intermedio</span>
+                      <span class="text-sm">⚡</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Salsa</h3>
+                    <p class="text-xs text-blue-200 font-medium">Figuras, vueltas y ritmo</p>
+                    <div class="mt-2.5 pt-2 border-t border-blue-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Lunes</span>
+                      <span class="text-amber-400 font-semibold group-hover:underline">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Martes 7:00 PM: Salsa Principiante -->
+                <td class="p-3 align-middle schedule-cell" data-class="salsa-principiante" data-title="Salsa Cubana" data-level="Nivel Básico" data-badge="¡Desde Cero!">
+                  <div onclick="openClassDetailModal('salsa-principiante', 'Martes', '7:00 PM a 8:00 PM')" class="class-card p-3.5 rounded-xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 to-slate-900/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">¡Desde Cero!</span>
+                      <span class="text-sm">🌱</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Salsa</h3>
+                    <p class="text-xs text-emerald-200 font-medium">Principiantes sin experiencia</p>
+                    <div class="mt-2.5 pt-2 border-t border-emerald-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Martes</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Miércoles 7:00 PM: Descanso -->
+                <td class="p-3 align-middle text-center bg-slate-950/20 schedule-cell" data-class="descanso">
+                  <div class="p-4 rounded-xl border border-dashed border-slate-800 text-slate-500 text-xs">
+                    <span class="block text-lg mb-1">🌙</span>
+                    <span class="font-medium">Sin Clases</span>
+                    <span class="block text-[10px] text-slate-600 mt-1">Día de descanso</span>
+                  </div>
+                </td>
+
+                <!-- Jueves 7:00 PM: Salsa Intermedio -->
+                <td class="p-3 align-middle schedule-cell" data-class="salsa-intermedio" data-title="Salsa Cubana" data-level="Nivel Intermedio" data-badge="Nivel Intermedio">
+                  <div onclick="openClassDetailModal('salsa-intermedio', 'Jueves', '7:00 PM a 8:00 PM')" class="class-card p-3.5 rounded-xl border border-blue-500/40 bg-gradient-to-br from-blue-950/60 to-slate-900/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Nivel Intermedio</span>
+                      <span class="text-sm">⚡</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Salsa</h3>
+                    <p class="text-xs text-blue-200 font-medium">Conducción y fluidez</p>
+                    <div class="mt-2.5 pt-2 border-t border-blue-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Jueves</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Viernes 7:00 PM: Salsa Principiante -->
+                <td class="p-3 align-middle schedule-cell" data-class="salsa-principiante" data-title="Salsa Cubana" data-level="Nivel Básico" data-badge="¡Desde Cero!">
+                  <div onclick="openClassDetailModal('salsa-principiante', 'Viernes', '7:00 PM a 8:00 PM')" class="class-card p-3.5 rounded-xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/60 to-slate-900/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">¡Desde Cero!</span>
+                      <span class="text-sm">🌱</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Salsa</h3>
+                    <p class="text-xs text-emerald-200 font-medium">Técnica y paso básico</p>
+                    <div class="mt-2.5 pt-2 border-t border-emerald-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Viernes</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- FILA 2: 8:00 PM A 9:00 PM -->
+              <tr class="hover:bg-slate-900/40 transition-colors">
+                <!-- Columna Hora (Fijada a la izquierda en scroll horizontal móvil) -->
+                <td class="p-4 sm:p-5 align-middle sticky left-0 z-10 bg-[#081024] border-r border-amber-500/20 shadow-md">
+                  <div class="font-serif-title font-bold text-amber-300 text-sm sm:text-base">8:00 PM</div>
+                  <div class="text-[11px] text-slate-400 uppercase tracking-widest">a 9:00 PM</div>
+                  <div class="mt-2 inline-flex items-center gap-1 text-[10px] text-amber-400/90 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> 60 minutos
+                  </div>
+                </td>
+
+                <!-- Lunes 8:00 PM: Cumbia Intermedio -->
+                <td class="p-3 align-middle schedule-cell" data-class="cumbia" data-title="Cumbia" data-level="Todos los Niveles" data-badge="Todos los Niveles">
+                  <div onclick="openClassDetailModal('cumbia', 'Lunes', '8:00 PM a 9:00 PM')" class="class-card p-3.5 rounded-xl border border-amber-500/40 bg-gradient-to-br from-amber-950/50 via-slate-900/80 to-slate-950 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Cumbia Sabrosa</span>
+                      <span class="text-sm">🥁</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Cumbia</h3>
+                    <p class="text-xs text-amber-200 font-medium">Nivel Intermedio</p>
+                    <div class="mt-2.5 pt-2 border-t border-amber-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Lunes</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Martes 8:00 PM: Salsa Avanzado -->
+                <td class="p-3 align-middle schedule-cell" data-class="salsa-principiante" data-title="Salsa en Línea" data-level="Nivel Principiante" data-badge="Principiante">
+                  <div onclick="openClassDetailModal('salsa-avanzado', 'Martes', '8:00 PM a 9:00 PM')" class="class-card p-3.5 rounded-xl border border-rose-500/40 bg-gradient-to-br from-rose-950/60 to-slate-900/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Nivel Avanzado</span>
+                      <span class="text-sm">🔥</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Salsa</h3>
+                    <p class="text-xs text-rose-200 font-medium">Shines, giros y estilo</p>
+                    <div class="mt-2.5 pt-2 border-t border-rose-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Martes</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Miércoles 8:00 PM: Descanso -->
+                <td class="p-3 align-middle text-center bg-slate-950/20 schedule-cell" data-class="descanso">
+                  <div class="p-4 rounded-xl border border-dashed border-slate-800 text-slate-500 text-xs">
+                    <span class="block text-lg mb-1">🌙</span>
+                    <span class="font-medium">Sin Clases</span>
+                    <span class="block text-[10px] text-slate-600 mt-1">Día de descanso</span>
+                  </div>
+                </td>
+
+                <!-- Jueves 8:00 PM: Salsa Avanzado -->
+                <td class="p-3 align-middle schedule-cell" data-class="salsa-principiante" data-title="Salsa en Línea" data-level="Nivel Principiante" data-badge="Principiante">
+                  <div onclick="openClassDetailModal('salsa-avanzado', 'Jueves', '8:00 PM a 9:00 PM')" class="class-card p-3.5 rounded-xl border border-rose-500/40 bg-gradient-to-br from-rose-950/60 to-slate-900/80 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">Nivel Avanzado</span>
+                      <span class="text-sm">🔥</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Salsa</h3>
+                    <p class="text-xs text-rose-200 font-medium">Velocidad y técnica máster</p>
+                    <div class="mt-2.5 pt-2 border-t border-rose-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Jueves</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+
+                <!-- Viernes 8:00 PM: Cumbia Intermedio -->
+                <td class="p-3 align-middle schedule-cell" data-class="cumbia" data-title="Cumbia" data-level="Todos los Niveles" data-badge="Todos los Niveles">
+                  <div onclick="openClassDetailModal('cumbia', 'Viernes', '8:00 PM a 9:00 PM')" class="class-card p-3.5 rounded-xl border border-amber-500/40 bg-gradient-to-br from-amber-950/50 via-slate-900/80 to-slate-950 text-left">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Cumbia Sabrosa</span>
+                      <span class="text-sm">🥁</span>
+                    </div>
+                    <h3 class="font-serif-title font-bold text-white text-sm sm:text-base leading-tight">Cumbia</h3>
+                    <p class="text-xs text-amber-200 font-medium">Nivel Intermedio</p>
+                    <div class="mt-2.5 pt-2 border-t border-amber-500/20 flex items-center justify-between text-[11px] text-slate-300">
+                      <span>Viernes</span>
+                      <span class="text-amber-400 font-semibold">Más detalles →</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 2. VISTA POR DÍAS (OPTIMIZADA PARA MÓVILES) -->
+        <div id="schedule-cards-view" class="hidden space-y-6">
+          <!-- Day selector buttons -->
+          <div class="flex items-center gap-2 overflow-x-auto pb-2 justify-start sm:justify-center no-scrollbar">
+            <button onclick="selectDayCard('lunes')" class="day-tab-btn active px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-amber-400 text-slate-950 border border-amber-300 shadow-md whitespace-nowrap transition-all" data-day="lunes">
+              Lunes
+            </button>
+            <button onclick="selectDayCard('martes')" class="day-tab-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-amber-400/50 whitespace-nowrap transition-all" data-day="martes">
+              Martes
+            </button>
+            <button onclick="selectDayCard('miercoles')" class="day-tab-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-amber-400/50 whitespace-nowrap transition-all" data-day="miercoles">
+              Miércoles
+            </button>
+            <button onclick="selectDayCard('jueves')" class="day-tab-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-amber-400/50 whitespace-nowrap transition-all" data-day="jueves">
+              Jueves
+            </button>
+            <button onclick="selectDayCard('viernes')" class="day-tab-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-amber-400/50 whitespace-nowrap transition-all" data-day="viernes">
+              Viernes
+            </button>
+          </div>
+
+          <!-- Dynamic Day Content Container -->
+          <div id="day-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <!-- Injected by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Schedule Footer Notes & Quick Action -->
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-[#0B132B]/80 border border-amber-500/20">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🏛️</span>
+            <div>
+              <p class="text-sm font-semibold text-white">Sede de Impartición: Casa de Cultura Neteotiloyan</p>
+              <p class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México • Salón con duela y espejos profesionales</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button onclick="openBookingModal('General')" class="btn-gold text-xs uppercase py-2.5 px-6 w-full sm:w-auto justify-center">
+              Apartar mi lugar
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    
+    <!-- SECTION: RITMOS Y NIVELES DETALLADOS -->
+    <section id="ritmos" class="py-16 bg-[#060A17] relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-bold uppercase tracking-widest">
+            <span>💃</span> Metodología y Pasión
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif-title font-extrabold text-white">
+            Nuestros Ritmos y <span class="gold-gradient-text">Niveles de Baile</span>
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base">
+            Cada clase está planeada pedagógicamente para que sientas progreso tangible desde tu primera semana.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Card 1: Salsa Principiante -->
+          <div class="glass-panel p-6 rounded-2xl border border-emerald-500/30 flex flex-col justify-between hover:border-emerald-400 transition-all group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-xl">🌱</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300">Mar y Vie • 7 PM</span>
+              </div>
+              <h3 class="font-serif-title font-bold text-xl text-white group-hover:text-emerald-300 transition-colors">Salsa Principiantes</h3>
+              <p class="text-xs text-emerald-400 font-semibold mt-1">¡Aprende desde cero!</p>
+              <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                Dominarás el tiempo musical (1-2-3, 5-6-7), postura, giros básicos y soltura corporal. Cero estrés y sin necesidad de llevar pareja.
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Paso básico, lateral y cruzado</li>
+                <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Escucha rítmica y tiempo musical</li>
+                <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Giros sencillos individuales y en pareja</li>
+              </ul>
+            </div>
+            <button onclick="openBookingModal('Salsa Principiante')" class="mt-6 w-full py-2.5 rounded-xl border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
+              Apartar Principiante
+            </button>
+          </div>
+
+          <!-- Card 2: Salsa Intermedio -->
+          <div class="glass-panel p-6 rounded-2xl border border-blue-500/30 flex flex-col justify-between hover:border-blue-400 transition-all group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="w-12 h-12 rounded-xl bg-blue-500/20 border border-blue-500/40 text-blue-400 flex items-center justify-center text-xl">⚡</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300">Lun y Jue • 7 PM</span>
+              </div>
+              <h3 class="font-serif-title font-bold text-xl text-white group-hover:text-blue-300 transition-colors">Salsa Intermedios</h3>
+              <p class="text-xs text-blue-400 font-semibold mt-1">Figuras y Dinamismo</p>
+              <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                Aumenta tu repertorio de figuras en pista social, giros dobles, cross body lead, cambio de manos y conexión en pareja.
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li class="flex items-center gap-2"><span class="text-blue-400 font-bold">✓</span> Enchufe, vacila y combinaciones fluidas</li>
+                <li class="flex items-center gap-2"><span class="text-blue-400 font-bold">✓</span> Técnica de conducción y seguimiento</li>
+                <li class="flex items-center gap-2"><span class="text-blue-400 font-bold">✓</span> Shines y estilo de brazos</li>
+              </ul>
+            </div>
+            <button onclick="openBookingModal('Salsa Intermedio')" class="mt-6 w-full py-2.5 rounded-xl border border-blue-500/40 text-blue-300 hover:bg-blue-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
+              Apartar Intermedio
+            </button>
+          </div>
+
+          <!-- Card 3: Salsa Avanzado -->
+          <div class="glass-panel p-6 rounded-2xl border border-rose-500/30 flex flex-col justify-between hover:border-rose-400 transition-all group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-400 flex items-center justify-center text-xl">🔥</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300">Mar y Jue • 8 PM</span>
+              </div>
+              <h3 class="font-serif-title font-bold text-xl text-white group-hover:text-rose-300 transition-colors">Salsa Avanzados</h3>
+              <p class="text-xs text-rose-400 font-semibold mt-1">Velocidad, Shines y Estilo</p>
+              <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                Técnica de alto nivel para bailar con precisión a velocidades rápidas, giros múltiples limpios y expresión escénica.
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li class="flex items-center gap-2"><span class="text-rose-400 font-bold">✓</span> Figuras complejas y sincronización fina</li>
+                <li class="flex items-center gap-2"><span class="text-rose-400 font-bold">✓</span> Giros múltiples y equilibrio</li>
+                <li class="flex items-center gap-2"><span class="text-rose-400 font-bold">✓</span> Estilo personal y presencia en pista</li>
+              </ul>
+            </div>
+            <button onclick="openBookingModal('Salsa Avanzado')" class="mt-6 w-full py-2.5 rounded-xl border border-rose-500/40 text-rose-300 hover:bg-rose-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
+              Apartar Avanzado
+            </button>
+          </div>
+
+          <!-- Card 4: Cumbia Intermedio -->
+          <div class="glass-panel p-6 rounded-2xl border border-amber-500/30 flex flex-col justify-between hover:border-amber-400 transition-all group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center text-xl">🥁</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300">Lun y Vie • 8 PM</span>
+              </div>
+              <h3 class="font-serif-title font-bold text-xl text-white group-hover:text-amber-300 transition-colors">Cumbia Intermedio</h3>
+              <p class="text-xs text-amber-400 font-semibold mt-1">Sabor, Cadencia y Vueltas</p>
+              <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                Aprende la cadencia latina, estilo sonidero y figuras tradicionales para disfrutar en cualquier fiesta o evento social.
+              </p>
+              <ul class="mt-4 space-y-1.5 text-xs text-slate-400">
+                <li class="flex items-center gap-2"><span class="text-amber-400 font-bold">✓</span> Vueltas continuas y cambios de frente</li>
+                <li class="flex items-center gap-2"><span class="text-amber-400 font-bold">✓</span> Cadencia y movimiento de cadera</li>
+                <li class="flex items-center gap-2"><span class="text-amber-400 font-bold">✓</span> Figuras de nudo y juego de brazos</li>
+              </ul>
+            </div>
+            <button onclick="openBookingModal('Cumbia Intermedio')" class="mt-6 w-full py-2.5 rounded-xl border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
+              Apartar Cumbia
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PLANES Y MENSUALIDADES -->
+    <section id="promociones" class="py-16 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-widest">
+            <span>💎</span> Paquetes Accesibles
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif-title font-extrabold text-white">
+            Planes y <span class="gold-gradient-text">Mensualidades</span>
+          </h2>
+          <p id="pricing-section-subtitle" class="text-slate-300 text-sm sm:text-base">
+            Elige el plan que mejor se adapte a tu ritmo de vida y metas de baile.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto items-stretch">
+          
+          <!-- Plan 1: Clase Suelta / Muestra -->
+          <div class="glass-panel p-7 rounded-3xl border border-slate-800 flex flex-col justify-between hover:border-slate-600 transition-all">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Flexibilidad Total</span>
+              <h3 id="pricing-p1-name" class="font-serif-title text-2xl font-bold text-white mt-1">Clase Individual</h3>
+              <p id="pricing-p1-desc" class="text-slate-400 text-xs mt-1">Ideal para probar o asistir ocasionalmente</p>
+              
+              <div class="mt-6 mb-6">
+                <span id="pricing-p1-price" class="text-4xl font-extrabold text-white">$80</span>
+                <span id="pricing-p1-period" class="text-slate-400 text-sm"> / clase</span>
+                <p id="pricing-p1-sample-badge" class="text-xs text-emerald-400 font-semibold mt-1">¡Clase muestra sin compromiso!</p>
+              </div>
+
+              <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400">✓</span> Acceso a 1 sesión de 60 min
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400">✓</span> Elige Salsa o Cumbia
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400">✓</span> No requieres inscripción
+                </li>
+              </ul>
+            </div>
+
+            <button id="pricing-p1-btn" onclick="openBookingModal('Clase Individual')" class="mt-8 btn-outline-gold w-full justify-center text-xs uppercase py-3">
+              Tomar Clase
+            </button>
+          </div>
+
+          <!-- Plan 2: Mensualidad 1 Ritmo (RECOMENDADO) -->
+          <div class="glass-panel-gold p-8 rounded-3xl border-2 border-amber-400 flex flex-col justify-between relative transform md:-translate-y-2 shadow-2xl">
+            <div id="pricing-p2-badge" class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 text-[11px] font-black uppercase tracking-wider py-1 px-4 rounded-full shadow-lg">
+              ★ Más Popular
+            </div>
+
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Constancia Semanal</span>
+              <h3 id="pricing-p2-name" class="font-serif-title text-2xl font-bold text-white mt-1">Plan Mensual (1 Ritmo)</h3>
+              <p id="pricing-p2-desc" class="text-slate-300 text-xs mt-1">2 clases por semana (8 clases al mes)</p>
+              
+              <div class="mt-6 mb-6">
+                <span id="pricing-p2-price" class="text-4xl font-extrabold text-amber-300">$450</span>
+                <span id="pricing-p2-period" class="text-slate-400 text-sm"> / mes</span>
+                <p class="text-xs text-amber-200 font-medium mt-1">Salsa (Princ/Inter/Avanz) o Cumbia</p>
+              </div>
+
+              <ul class="space-y-3 text-xs sm:text-sm text-slate-200">
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400 font-bold">✓</span> 8 clases al mes (2 semanales)
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400 font-bold">✓</span> Corrección de postura personalizada
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400 font-bold">✓</span> Descuento especial si vienes en pareja
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400 font-bold">✓</span> Acceso a prácticas sociales
+                </li>
+              </ul>
+            </div>
+
+            <button id="pricing-p2-btn" onclick="openBookingModal('Plan Mensual 1 Ritmo')" class="mt-8 btn-gold w-full justify-center text-xs uppercase py-3.5 shadow-lg">
+              Elegir Plan Mensual
+            </button>
+          </div>
+
+          <!-- Plan 3: Full Pass Ritmo Salsero -->
+          <div class="glass-panel p-7 rounded-3xl border border-slate-800 flex flex-col justify-between hover:border-slate-600 transition-all">
+            <div>
+              <span id="pricing-p3-badge" class="text-xs font-bold uppercase tracking-wider text-purple-400">Experiencia Completa</span>
+              <h3 id="pricing-p3-name" class="font-serif-title text-2xl font-bold text-white mt-1">Full Pass Total</h3>
+              <p id="pricing-p3-desc" class="text-slate-400 text-xs mt-1">Salsa + Cumbia (Hasta 4 clases por semana)</p>
+              
+              <div class="mt-6 mb-6">
+                <span id="pricing-p3-price" class="text-4xl font-extrabold text-white">$750</span>
+                <span id="pricing-p3-period" class="text-slate-400 text-sm"> / mes</span>
+                <p class="text-xs text-purple-300 font-medium mt-1">Aprende ambos ritmos al máximo</p>
+              </div>
+
+              <ul class="space-y-3 text-xs sm:text-sm text-slate-300">
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400">✓</span> Hasta 16 clases al mes
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400">✓</span> Salsa y Cumbia sin límites
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-amber-400">✓</span> Mayor avance y destreza en pista
+                </li>
+              </ul>
+            </div>
+
+            <button id="pricing-p3-btn" onclick="openBookingModal('Full Pass Total')" class="mt-8 btn-outline-gold w-full justify-center text-xs uppercase py-3">
+              Apartar Full Pass
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: UBICACIÓN Y CASA DE CULTURA -->
+    <section id="ubicacion" class="py-16 bg-[#060A17] relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <div class="lg:col-span-6 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-widest">
+              <span>🏛️</span> Instalaciones Oficiales
+            </div>
+            
+            <h2 class="text-3xl sm:text-4xl font-serif-title font-extrabold text-white">
+              Casa de Cultura <span class="gold-gradient-text">Neteotiloyan</span>
+            </h2>
+            
+            <p class="text-slate-300 text-base leading-relaxed">
+              Nuestras clases se imparten en la prestigiada <strong class="text-white">Casa de Cultura de San Martín de las Pirámides</strong>. Un espacio seguro, céntrico, con duela de madera adecuada para giros y un ambiente 100% familiar.
+            </p>
+
+            <div class="space-y-3.5">
+              <div class="flex items-start gap-3.5 text-slate-200">
+                <span class="text-amber-400 text-lg">📍</span>
+                <div>
+                  <strong class="block text-white text-sm">Dirección</strong>
+                  <span class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México (a unos minutos de la Zona Arqueológica).</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3.5 text-slate-200">
+                <span class="text-amber-400 text-lg">⏰</span>
+                <div>
+                  <strong class="block text-white text-sm">Días y Horarios de Clase</strong>
+                  <span class="text-xs text-slate-400">Lunes, Martes, Jueves y Viernes de 7:00 PM a 9:00 PM.</span>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3.5 text-slate-200">
+                <span class="text-amber-400 text-lg">🚗</span>
+                <div>
+                  <strong class="block text-white text-sm">Acceso y Seguridad</strong>
+                  <span class="text-xs text-slate-400">Zona tranquila, fácil estacionamiento en los alrededores y transporte local.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2 flex flex-wrap gap-4">
+              <a href="https://maps.google.com/?q=Casa+de+Cultura+San+Martin+de+las+Piramides" target="_blank" class="btn-gold text-xs uppercase py-3 px-6">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Abrir en Google Maps
+              </a>
+              <a id="venue-call-btn" href="tel:+525512345678" class="btn-outline-gold text-xs uppercase py-3 px-6">
+                <span id="venue-call-btn-text">📞 Llamar a la Escuela</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Stylized Map & Cultural Emblem Card -->
+          <div class="lg:col-span-6">
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/30 relative overflow-hidden space-y-6">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xl">
+                    🏛️
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-white text-sm">Casa de Cultura Neteotiloyan</h4>
+                    <p class="text-xs text-amber-400/90 font-medium">"Son los mejores"</p>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider">
+                  Sede Activa
+                </span>
+              </div>
+
+              <!-- Visual Map Mockup / Decorative Box -->
+              <div class="relative h-56 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0A122A] to-slate-950 border border-slate-700/60 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+                <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#E5B84B_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                
+                <div class="relative z-10 space-y-2">
+                  <div class="w-12 h-12 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-xl font-bold shadow-lg mx-auto animate-bounce">
+                    📍
+                  </div>
+                  <h5 class="font-serif-title font-bold text-white text-base">San Martín de las Pirámides</h5>
+                  <p class="text-xs text-slate-400 max-w-sm">
+                    A pasos del centro y con la magia milenaria de las Pirámides de Teotihuacán.
+                  </p>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 flex items-center justify-between">
+                <span>¿Primera vez que asistes?</span>
+                <button onclick="openBookingModal('General')" class="text-amber-400 hover:text-white font-bold underline">
+                  Te apartamos lugar en recepción →
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: PREGUNTAS FRECUENTES (FAQ) -->
+    <section class="py-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center space-y-3 mb-10">
+          <h2 class="text-2xl sm:text-3xl font-serif-title font-extrabold text-white">
+            Preguntas <span class="gold-gradient-text">Frecuentes</span>
+          </h2>
+          <p class="text-slate-400 text-sm">
+            Todo lo que necesitas saber antes de tu primera clase en Ritmo Salsero.
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          
+          <details class="glass-panel rounded-xl p-4 sm:p-5 border border-slate-800 group" open>
+            <summary class="font-semibold text-white cursor-pointer list-none flex items-center justify-between">
+              <span>¿Necesito llevar pareja para poder tomar la clase?</span>
+              <span class="text-amber-400 font-bold group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-slate-300 text-sm mt-3 pt-3 border-t border-slate-800 leading-relaxed">
+              <strong>¡No es necesario!</strong> Gran parte de nuestros alumnos llegan solos. Durante la clase realizamos rotación constante de parejas, lo que te permite aprender a guiar o seguir a diferentes personas, acelerando tu aprendizaje social.
+            </p>
+          </details>
+
+          <details class="glass-panel rounded-xl p-4 sm:p-5 border border-slate-800 group">
+            <summary class="font-semibold text-white cursor-pointer list-none flex items-center justify-between">
+              <span>Nunca he bailado en mi vida y no tengo ritmo, ¿puedo entrar?</span>
+              <span class="text-amber-400 font-bold group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-slate-300 text-sm mt-3 pt-3 border-t border-slate-800 leading-relaxed">
+              <strong>¡Totalmente!</strong> Las clases de <em>Salsa Principiantes</em> (Martes y Viernes a las 7:00 PM) están diseñadas específicamente para personas desde cero absoluto. Te enseñamos a contar la música y soltar el cuerpo paso a paso con paciencia.
+            </p>
+          </details>
+
+          <details class="glass-panel rounded-xl p-4 sm:p-5 border border-slate-800 group">
+            <summary class="font-semibold text-white cursor-pointer list-none flex items-center justify-between">
+              <span>¿Qué ropa y calzado debo llevar?</span>
+              <span class="text-amber-400 font-bold group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-slate-300 text-sm mt-3 pt-3 border-t border-slate-800 leading-relaxed">
+              Ropa cómoda y fresca (pants, jeans flexibles o ropa deportiva). En cuanto a calzado, tenis o zapatos con suela lisa que no se trabe en el piso de duela para cuidar tus rodillas al girar.
+            </p>
+          </details>
+
+          <details class="glass-panel rounded-xl p-4 sm:p-5 border border-slate-800 group">
+            <summary class="font-semibold text-white cursor-pointer list-none flex items-center justify-between">
+              <span>¿Qué días hay clase de Cumbia?</span>
+              <span class="text-amber-400 font-bold group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <p class="text-slate-300 text-sm mt-3 pt-3 border-t border-slate-800 leading-relaxed">
+              Nuestras clases de <strong>Cumbia Intermedio</strong> se imparten los <strong>Lunes y Viernes de 8:00 PM a 9:00 PM</strong>.
+            </p>
+          </details>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#050813] border-t border-amber-500/20 py-12 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+
+        <!-- Redes Sociales Oficiales -->
+        <div class="flex items-center gap-3 py-2">
+          <a href="https://facebook.com" target="_blank" class="dynamic-social-facebook w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="Facebook">
+            FB
+          </a>
+          <a href="https://instagram.com" target="_blank" class="dynamic-social-instagram w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="Instagram">
+            IG
+          </a>
+          <a href="https://tiktok.com" target="_blank" class="dynamic-social-tiktok w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="TikTok">
+            TK
+          </a>
+          <a href="https://youtube.com" target="_blank" class="dynamic-social-youtube hidden w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="YouTube">
+            YT
+          </a>
+        </div>
+
+        
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-amber-600">
+            <img id="footer-logo" src="./assets/logo_opcion_4_transparente.png" alt="Logo" class="w-full h-full object-contain rounded-full">
+          </div>
+          <div>
+            <span class="font-serif-title font-bold text-white text-lg tracking-wider">RITMO SALSERO</span>
+            <p class="text-xs text-slate-400">Escuela de Salsa & Cumbia • San Martín de las Pirámides</p>
+          </div>
+        </div>
+
+        <div class="text-center md:text-right text-xs text-slate-400 space-y-1">
+          <p>© <span id="footer-copyright-year">2026</span> Ritmo Salsero. Todos los derechos reservados.</p>
+          <p id="footer-venue-quote" class="text-amber-400/80">Sede: Casa de Cultura Neteotiloyan • "Son los mejores"</p>
+          <p class="pt-1.5"><a href="admin.html" class="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-amber-400 transition-colors"><span>⚙️</span> Acceso a Administración</a></p>
+        </div>
+
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: DETALLES DE CLASE & RESERVA -->
+  <div id="class-modal" style="display: none;" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4" onclick="if (event.target === this) closeClassModal();">
+    <div class="bg-[#0C142B] border border-amber-400/40 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+      
+      <!-- Close Button -->
+      <button onclick="closeClassModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full hover:bg-slate-800 transition-colors" aria-label="Cerrar ventana">
+        ✕
+      </button>
+
+      <!-- Modal Header -->
+      <div class="flex items-center gap-3.5 mb-4">
+        <span id="modal-class-icon" class="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-2xl">💃</span>
+        <div>
+          <span id="modal-class-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/20 text-blue-300">Nivel</span>
+          <h3 id="modal-class-title" class="text-2xl font-serif-title font-bold text-white leading-tight">Nombre de la Clase</h3>
+        </div>
+      </div>
+
+      <!-- Schedule Info Card -->
+      <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 mb-4 flex items-center justify-between text-xs">
+        <div>
+          <span class="text-slate-400 block">Horario Programado</span>
+          <strong id="modal-class-time" class="text-amber-300 text-sm">7:00 PM a 8:00 PM</strong>
+        </div>
+        <div class="text-right">
+          <span class="text-slate-400 block">Sede</span>
+          <strong class="text-white">Casa de Cultura</strong>
+        </div>
+      </div>
+
+      <p id="modal-class-desc" class="text-slate-300 text-sm leading-relaxed mb-4">
+        Descripción detallada de la clase.
+      </p>
+
+      <div class="space-y-2 mb-6">
+        <h4 class="text-xs font-bold uppercase text-amber-300 tracking-wider">Lo que trabajarás en esta clase:</h4>
+        <ul id="modal-class-points" class="space-y-1 text-xs text-slate-300">
+          <!-- Dynamic items -->
+        </ul>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row gap-3">
+        <a id="modal-class-wa-btn" href="https://wa.me/525512345678" target="_blank" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-xs uppercase py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all hover:scale-[1.02] active:scale-95 text-center">
+          <svg class="w-4 h-4 fill-current flex-shrink-0" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          <span>Solicitar Informes por WhatsApp</span>
+        </a>
+        <button onclick="closeClassModal()" class="btn-outline-gold text-xs uppercase py-3.5 px-5">
+          Cerrar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- MODAL: REGISTRO / APARTADO GENERAL -->
+  <div id="booking-modal" style="display: none;" class="fixed inset-0 z-50 modal-backdrop hidden items-center justify-center p-4" onclick="if (event.target === this) closeBookingModal();">
+    <div class="bg-[#0C142B] border border-amber-400/40 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl relative">
+      <button onclick="closeBookingModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2">✕</button>
+
+      <div class="text-center space-y-1 mb-5">
+        <span class="w-10 h-10 rounded-full bg-amber-400/20 text-amber-400 inline-flex items-center justify-center text-xl font-bold mb-1">🎉</span>
+        <h3 id="booking-modal-title" class="text-xl font-serif-title font-bold text-white">¡Aparta tu Clase Muestra!</h3>
+        <p id="booking-modal-subtitle" class="text-xs text-slate-300">Sin costo de inscripción ni compromiso previo.</p>
+      </div>
+
+      <form id="booking-form" onsubmit="handleBookingSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Nombre Completo</label>
+          <input type="text" id="book-name" required placeholder="Ej. Carlos Mendoza" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">Teléfono WhatsApp</label>
+          <input type="tel" id="book-phone" required placeholder="Ej. 55 1234 5678" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">¿Qué clase te interesa?</label>
+          <select id="book-class-select" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+            <option value="Salsa Cubana Intermedio (Lun/Jue 7 PM)">Salsa Cubana Intermedio (Lunes o Jueves 7:00 PM)</option>
+            <option value="Salsa Cubana Básico (Mar/Vie 7 PM)">Salsa Cubana Básico (Martes o Viernes 7:00 PM)</option>
+            <option value="Salsa en Línea Principiante (Mar/Jue 8 PM)">Salsa en Línea Principiante (Martes o Jueves 8:00 PM)</option>
+            <option value="Cumbia Todos los Niveles (Lun/Vie 8 PM)">Cumbia Todos los Niveles (Lunes o Viernes 8:00 PM)</option>
+            <option value="Paquete Mensual Completo">Paquete Mensual Completo</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-slate-300 mb-1">¿Asistes solo o con pareja?</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 p-2 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer text-xs text-slate-200">
+              <input type="radio" name="companion" value="Solo" checked class="text-amber-400">
+              <span>Iré solo/a</span>
+            </label>
+            <label class="flex items-center gap-2 p-2 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer text-xs text-slate-200">
+              <input type="radio" name="companion" value="En Pareja" class="text-amber-400">
+              <span>En Pareja</span>
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-gold w-full justify-center text-xs uppercase py-3.5 mt-2">
+          Confirmar y Enviar por WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE INTERACTIVIDAD -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      initTwinkleStars();
+      initLiveTodaySchedule();
+      // renderAllScheduleComponents() en schedule_manager.js gestiona la vista y el día activo
+    });
+
+    // 1. Efecto de Estrellas en el cielo nocturno
+    function initTwinkleStars() {
+      const container = document.getElementById("stars-container");
+      if (!container) return;
+      const count = window.innerWidth < 768 ? 35 : 75;
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement("div");
+        star.className = "star-twinkle";
+        const size = Math.random() * 3 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        container.appendChild(star);
+      }
+    }
+
+    // 2. Dynamic Live Schedule ("Hoy en Ritmo Salsero")
+    function initLiveTodaySchedule() {
+      if (typeof updateLiveTodayScheduleBanner === "function") {
+        updateLiveTodayScheduleBanner();
+        return;
+      }
+
+      const today = new Date().getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+      const dayNameEl = document.getElementById("live-day-name");
+      const classesTextEl = document.getElementById("live-day-classes");
+      const tagEl = document.getElementById("live-day-tag");
+
+      const dayNames = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+      const currentDayName = dayNames[today];
+
+      if (tagEl) tagEl.innerText = `HOY ${currentDayName.toUpperCase()}`;
+
+      if (dayNameEl) {
+        if (today === 0) {
+          dayNameEl.innerText = "Hoy Domingo: Descanso Semanal";
+        } else if (today === 6) {
+          dayNameEl.innerText = "Hoy Sábado: Fin de Semana de Baile Social";
+        } else if (today === 3) {
+          dayNameEl.innerText = "Hoy Miércoles: Día de Descanso y Ensayo";
+        } else {
+          dayNameEl.innerText = `${currentDayName} en Casa de Cultura`;
+        }
+      }
+
+      if (classesTextEl) {
+        if (today === 0) {
+          classesTextEl.innerText = "Hoy domingo no hay clases presenciales en Casa de Cultura. ¡Te esperamos mañana Lunes a las 7:00 PM con Salsa Cubana Intermedio y a las 8:00 PM con Cumbia Sabrosa!";
+        } else if (today === 6) {
+          classesTextEl.innerText = "Sábado de práctica y convivencia social. Las clases presenciales se reanudan este Lunes a las 7:00 PM en Casa de Cultura.";
+        } else if (today === 3) {
+          classesTextEl.innerText = "Hoy es día de descanso semanal. ¡Te esperamos mañana Jueves con Salsa Cubana (7 PM) y Salsa en Línea (8 PM)!";
+        } else if (today === 1) {
+          classesTextEl.innerText = "Hoy: 7:00 PM Salsa Cubana Intermedio • 8:00 PM Cumbia Todos los Niveles";
+        } else if (today === 2) {
+          classesTextEl.innerText = "Hoy: 7:00 PM Salsa Cubana Básico • 8:00 PM Salsa en Línea Principiante";
+        } else if (today === 4) {
+          classesTextEl.innerText = "Hoy: 7:00 PM Salsa Cubana Intermedio • 8:00 PM Salsa en Línea Principiante";
+        } else if (today === 5) {
+          classesTextEl.innerText = "Hoy: 7:00 PM Salsa Cubana Básico • 8:00 PM Cumbia Todos los Niveles";
+        }
+      }
+
+      // Actualizar botón de asistencia dinámico en fallback
+      const actionBtnEl = document.getElementById("live-today-action-btn");
+      if (actionBtnEl) {
+        if (today === 1 || today === 2 || today === 4 || today === 5) {
+          actionBtnEl.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span>Asistir Hoy</span>`;
+          actionBtnEl.setAttribute("onclick", `openBookingModal('Hoy (${currentDayName})')`);
+        } else {
+          const nextDay = (today === 3) ? "Jueves" : "Lunes";
+          actionBtnEl.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span>Asistir el ${nextDay}</span>`;
+          actionBtnEl.setAttribute("onclick", `openBookingModal('${nextDay}')`);
+        }
+      }
+
+      // Resaltar columna del día en la tabla
+      document.querySelectorAll(".day-col-header").forEach(header => {
+        if (parseInt(header.getAttribute("data-day")) === today) {
+          header.classList.add("text-amber-400", "font-black");
+          header.innerHTML = `★ ${header.innerHTML} (HOY)`;
+        }
+      });
+    }
+
+    // 3. Switch entre Vista Parrilla y Vista por Día
+    function switchScheduleView(view) {
+      const gridView = document.getElementById("schedule-grid-view");
+      const cardsView = document.getElementById("schedule-cards-view");
+      const tabGrid = document.getElementById("view-tab-grid");
+      const tabCards = document.getElementById("view-tab-cards");
+
+      if (view === 'grid') {
+        if (gridView) gridView.classList.remove("hidden");
+        if (cardsView) cardsView.classList.add("hidden");
+        if (tabGrid) tabGrid.className = "flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 bg-amber-400 text-slate-950 shadow-md flex items-center justify-center gap-1.5 sm:gap-2";
+        if (tabCards) tabCards.className = "flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 sm:gap-2";
+      } else {
+        if (gridView) gridView.classList.add("hidden");
+        if (cardsView) cardsView.classList.remove("hidden");
+        if (tabCards) tabCards.className = "flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 bg-amber-400 text-slate-950 shadow-md flex items-center justify-center gap-1.5 sm:gap-2";
+        if (tabGrid) tabGrid.className = "flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-200 text-slate-300 hover:text-white flex items-center justify-center gap-1.5 sm:gap-2";
+      }
+
+      if (typeof applyScheduleLevelFilter === 'function') {
+        applyScheduleLevelFilter();
+      }
+    }
+    window.switchScheduleView = switchScheduleView;
+
+    // 4. Render Day Cards (Mobile View)
+    function selectDayCard(dayKey) {
+      document.querySelectorAll(".day-tab-btn").forEach(btn => {
+        if (btn.getAttribute("data-day") === dayKey) {
+          btn.className = "day-tab-btn active px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-amber-400 text-slate-950 border border-amber-300 shadow-md whitespace-nowrap transition-all";
+        } else {
+          btn.className = "day-tab-btn px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-slate-900/90 text-slate-300 border border-slate-700/80 hover:border-amber-400/50 whitespace-nowrap transition-all";
+        }
+      });
+      if (typeof renderMobileDayCards === 'function') {
+        renderMobileDayCards(dayKey);
+      }
+    }
+    window.selectDayCard = selectDayCard;
+
+    function renderDayCards(dayKey) {
+      if (typeof renderMobileDayCards === 'function') {
+        renderMobileDayCards(dayKey);
+      }
+    }
+
+    // 6. Modal de Detalles de Clase
+    const classDetails = {
+      'salsa-principiante': {
+        title: "Salsa - Nivel Principiante",
+        badge: "Nivel Inicial • Cero Experiencia",
+        icon: "🌱",
+        desc: "El punto de partida perfecto para enamorarte de la salsa. No importa si crees que tienes dos pies izquierdos; nuestro método por descomposición de tiempos te dará seguridad desde la primera hora.",
+        points: [
+          "✓ Conteo musical rítmico (1, 2, 3... 5, 6, 7).",
+          "✓ Pasos básicos: neutro, lateral, atrás y cruzado.",
+          "✓ Primeros giros individuales con control y equilibrio.",
+          "✓ No necesitas llevar pareja, aquí practicamos en grupo."
+        ]
+      },
+      'salsa-intermedio': {
+        title: "Salsa - Nivel Intermedio",
+        badge: "Nivel Intermedio • Dinamismo",
+        icon: "⚡",
+        desc: "Diseñada para alumnos que ya dominan el paso básico y desean enriquecer su repertorio con combinaciones fluidas, vueltas dobles y conexión clara en pareja.",
+        points: [
+          "✓ Cross Body Lead con variantes y cambios de frente.",
+          "✓ Enchufe, vacilala y figuras clásicas de pista social.",
+          "✓ Técnica de brazos y postura para evitar tensiones.",
+          "✓ Shines rítmicos para lucirte cuando bailas suelto."
+        ]
+      },
+      'salsa-avanzado': {
+        title: "Salsa - Nivel Avanzado",
+        badge: "Nivel Máster • Shines & Giros",
+        icon: "🔥",
+        desc: "Para bailarines que buscan pulir la precisión de sus giros, aumentar su velocidad y desarrollar una expresión musical auténtica e imponente.",
+        points: [
+          "✓ Giros dobles y triples con spot de cabeza.",
+          "✓ Combinaciones complejas de brazos sin perder el tiempo.",
+          "✓ Musicalidad avanzada: acentos, mambo break y descansos.",
+          "✓ Presencia escénica y desenvolvimiento en pista."
+        ]
+      },
+      'cumbia': {
+        title: "Cumbia - Nivel Intermedio",
+        badge: "Cumbia Sabrosa • Cadencia",
+        icon: "🥁",
+        desc: "¡El ritmo más bailado en las fiestas y pistas populares de México! Desarrolla la cadencia natural de la cumbia, vueltas sincronizadas y figuras tradicionales.",
+        points: [
+          "✓ Cadencia continua y rebote de cumbia.",
+          "✓ Figuras de nudo, cambios de mano y vueltas de pareja.",
+          "✓ Estilo sonidero y figuras tradicionales elegantes.",
+          "✓ Coordinación rítmica y diversión garantizada."
+        ]
+      }
+    };
+
+    let selectedBookingContext = "";
+
+    function openClassDetailModal(type, day, time) {
+      const detail = classDetails[type] || classDetails['salsa-principiante'];
+      selectedBookingContext = `${detail.title} (${day} ${time})`;
+
+      document.getElementById("modal-class-title").innerText = detail.title;
+      document.getElementById("modal-class-badge").innerText = detail.badge;
+      document.getElementById("modal-class-icon").innerText = detail.icon;
+      document.getElementById("modal-class-desc").innerText = detail.desc;
+      document.getElementById("modal-class-time").innerText = `${day} • ${time}`;
+
+      const pointsEl = document.getElementById("modal-class-points");
+      pointsEl.innerHTML = detail.points.map(p => `<li>${p}</li>`).join('');
+
+      const waBtn = document.getElementById("modal-class-wa-btn");
+      if (waBtn) {
+        const phone = (window.SITE_CONFIG?.contact?.whatsapp || "525512345678").replace(/\D/g, "");
+        const msg = `Hola Ritmo Salsero! 👋 Deseo solicitar informes sobre la clase de ${detail.title} (${day} ${time}) en Casa de Cultura. ¿Me podrían compartir costos y requisitos de inscripción?`;
+        waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      }
+
+      const modal = document.getElementById("class-modal");
+      if (modal) {
+        modal.style.display = "flex";
+        modal.classList.remove("hidden");
+      }
+    }
+
+    function closeClassModal() {
+      const modal = document.getElementById("class-modal");
+      if (modal) {
+        modal.style.display = "none";
+        modal.classList.add("hidden");
+      }
+    }
+
+    function confirmClassBooking() {
+      closeClassModal();
+      openBookingModal(selectedBookingContext);
+    }
+
+    // 7. Booking & WhatsApp Modal
+    function openBookingModal(context = "") {
+      const modal = document.getElementById("booking-modal");
+      if (modal) {
+        modal.style.display = "flex";
+        modal.classList.remove("hidden");
+      }
+      if (context) {
+        const select = document.getElementById("book-class-select");
+        if (select) {
+          for (let i = 0; i < select.options.length; i++) {
+            if (context.toLowerCase().includes(select.options[i].text.toLowerCase().substring(0, 10))) {
+              select.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    function closeBookingModal() {
+      const modal = document.getElementById("booking-modal");
+      if (modal) {
+        modal.style.display = "none";
+        modal.classList.add("hidden");
+      }
+    }
+
+    function handleBookingSubmit(event) {
+      event.preventDefault();
+      const name = document.getElementById("book-name").value.trim();
+      const phone = document.getElementById("book-phone").value.trim();
+      const chosenClass = document.getElementById("book-class-select").value;
+      const companion = document.querySelector('input[name="companion"]:checked')?.value || "Solo";
+
+      const message = `¡Hola Ritmo Salsero! 💃🕺\nMi nombre es *${name}*.\nQuiero apartar mi lugar para la clase: *${chosenClass}*.\nAsistencia: *${companion}*.\nMi teléfono: ${phone}.\n¿Podrían confirmarme la disponibilidad en Casa de Cultura Neteotiloyan? ¡Muchas gracias!`;
+      
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      
+      alert(`¡Muchas gracias, ${name}! Tu solicitud se ha generado con éxito. Te redirigiremos a WhatsApp para enviar el mensaje de confirmación al instructor.`);
+      closeBookingModal();
+    }
+
+    // 8. Mobile Menu
+    function toggleMobileMenu() {
+      const menu = document.getElementById("mobile-menu");
+      if (menu) menu.classList.toggle("hidden");
+    }
+  </script>
+
+  <!-- REDES SOCIALES FLOTANTES / BOTÓN DE WHATSAPP -->
+  <a href="https://wa.me/525512345678" target="_blank" id="floating-wa-btn" class="dynamic-wa-link fixed bottom-6 right-6 z-50 p-3.5 sm:p-4 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white shadow-2xl transition-all hover:scale-110 active:scale-95 flex items-center justify-center group" aria-label="Contactar por WhatsApp">
+    <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+    <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-bold text-xs ml-0 group-hover:ml-2">
+      ¡Escríbenos por WhatsApp!
+    </span>
+  </a>
+
+</body>
+</html>
