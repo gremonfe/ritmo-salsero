@@ -347,10 +347,31 @@
     <!-- HERO SECTION -->
     <section id="inicio" class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          <!-- Text Content -->
-          <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+          <!-- Hero Graphic: Emblem Integrated with Solar Animation (Primero en Móvil, Segundo en Desktop) -->
+          <div class="order-1 lg:order-2 lg:col-span-5 flex flex-col items-center justify-center mb-2 lg:mb-0">
+            <div class="relative w-56 sm:w-72 md:w-84 lg:w-96 aspect-square flex items-center justify-center group">
+              <!-- Animated Solar Conic Halo (Spins directly behind the sun rays) -->
+              <div id="hero-logo-halo" class="conic-halo absolute -inset-2 sm:-inset-4 rounded-full blur-xl opacity-90 transition-opacity duration-700 pointer-events-none"></div>
+              
+              <!-- Ambient Core Glow -->
+              <div id="hero-logo-glow" class="absolute inset-2 sm:inset-4 rounded-full bg-gradient-to-tr from-amber-500/40 via-amber-300/30 to-amber-600/40 blur-2xl transition-all duration-700 animate-pulse-subtle pointer-events-none"></div>
+              
+              <!-- Main Sun Logo Image (Scaled to blend seamlessly into the sun animation) -->
+              <div class="relative w-full h-full flex items-center justify-center p-2 z-10">
+                <img id="hero-logo" src="./assets/logo_opcion_4_transparente.png" alt="Logo Oficial Ritmo Salsero" class="w-full h-full object-contain scale-110 sm:scale-120 group-hover:scale-125 transition-transform duration-700 filter drop-shadow-[0_10px_35px_rgba(245,158,11,0.6)]">
+              </div>
+
+              <!-- Decorative Badge Orbit (Salsa & Cumbia) -->
+              <div class="absolute -top-1 sm:-top-2 -right-1 z-20 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-slate-950 text-[10px] sm:text-xs font-black uppercase tracking-wider px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full shadow-xl border border-amber-300 transform rotate-6 hover:rotate-0 transition-transform">
+                Salsa & Cumbia
+              </div>
+            </div>
+          </div>
+
+          <!-- Text Content (Segundo en Móvil, Primero en Desktop) -->
+          <div class="order-2 lg:order-1 lg:col-span-7 text-center lg:text-left space-y-6">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-wider">
               <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
               <span id="hero-badge-text">Sede Oficial: Casa de Cultura Neteotiloyan</span>
@@ -365,23 +386,23 @@
             </p>
 
             <!-- Highlights Pill List -->
-            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
-              <div class="flex items-center gap-2 bg-slate-800/50 border border-slate-700/60 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200">
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1">
+              <div class="flex items-center gap-2 bg-slate-800/60 border border-slate-700/70 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200 shadow-sm">
                 <span class="text-amber-400">✨</span>
                 <span>Principiantes, Intermedios y Avanzados</span>
               </div>
-              <div class="flex items-center gap-2 bg-slate-800/50 border border-slate-700/60 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200">
+              <div class="flex items-center gap-2 bg-slate-800/60 border border-slate-700/70 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200 shadow-sm">
                 <span class="text-amber-400">🕺</span>
                 <span>Lunes, Martes, Jueves y Viernes</span>
               </div>
-              <div class="flex items-center gap-2 bg-slate-800/50 border border-slate-700/60 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200">
+              <div class="flex items-center gap-2 bg-slate-800/60 border border-slate-700/70 rounded-xl px-3.5 py-2 text-xs sm:text-sm text-slate-200 shadow-sm">
                 <span class="text-amber-400">📍</span>
                 <span>San Martín de las Pirámides, Edomex</span>
               </div>
             </div>
 
             <!-- CTA Action Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               <a id="hero-secondary-cta-btn" href="#horarios" class="btn-gold w-full sm:w-auto justify-center text-sm py-3.5 px-8">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -397,70 +418,61 @@
             </div>
 
             <!-- Social Proof -->
-            <div class="pt-4 flex items-center justify-center lg:justify-start gap-4 text-xs text-slate-400">
+            <div class="pt-3 flex items-center justify-center lg:justify-start gap-4 text-xs text-slate-400">
               <div class="flex -space-x-2 overflow-hidden">
                 <span class="inline-block h-8 w-8 rounded-full ring-2 ring-slate-900 bg-amber-500/80 text-black font-bold flex items-center justify-center text-xs">💃</span>
                 <span class="inline-block h-8 w-8 rounded-full ring-2 ring-slate-900 bg-blue-500/80 text-white font-bold flex items-center justify-center text-xs">🕺</span>
                 <span class="inline-block h-8 w-8 rounded-full ring-2 ring-slate-900 bg-rose-500/80 text-white font-bold flex items-center justify-center text-xs">⭐</span>
               </div>
-              <div>
+              <div class="text-left">
                 <p class="font-medium text-slate-200">¡Comunidad salsera activa en Teotihuacán!</p>
-                <p class="text-amber-400/90 font-semibold">"Son los mejores" — Casa de Cultura</p>
+                <p class="text-amber-400 font-semibold">"Son los mejores" — Casa de Cultura</p>
               </div>
             </div>
 
-            <!-- Redes Sociales Oficiales del Hero (Dinámicas desde Admin) -->
-            <div id="hero-social-bar" class="pt-4 flex items-center gap-3 flex-wrap">
-              <span class="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                <span>🌐</span>
-                <span>Síguenos en redes:</span>
+            <!-- Redes Sociales Oficiales del Hero (Diseño de Alta Visibilidad e Interactivo) -->
+            <div id="hero-social-bar" class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 flex-wrap">
+              <span class="text-xs font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/30 shadow-sm">
+                <span class="text-sm">🌐</span>
+                <span>Síguenos en Redes:</span>
               </span>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center justify-center flex-wrap gap-2.5">
                 <!-- Facebook -->
-                <a id="hero-social-facebook" href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-facebook w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-blue-500 hover:bg-blue-600/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group" title="Facebook Oficial" aria-label="Facebook">
-                  <svg class="w-4 h-4 fill-current text-[#1877F2] group-hover:text-white transition-colors" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
+                <a id="hero-social-facebook" href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-facebook inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-[#1877F2]/50 text-slate-200 hover:text-white hover:border-[#1877F2] hover:bg-[#1877F2]/20 hover:shadow-[0_0_18px_rgba(24,119,242,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 shadow-md group" title="Facebook Oficial" aria-label="Facebook">
+                  <div class="w-6 h-6 rounded-lg bg-[#1877F2] flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-bold tracking-wide">Facebook</span>
                 </a>
                 <!-- Instagram -->
-                <a id="hero-social-instagram" href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-instagram w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-pink-500 hover:bg-pink-600/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group" title="Instagram Oficial" aria-label="Instagram">
-                  <svg class="w-4 h-4 fill-current text-[#E4405F] group-hover:text-white transition-colors" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                  </svg>
+                <a id="hero-social-instagram" href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-instagram inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-[#E4405F]/50 text-slate-200 hover:text-white hover:border-[#E4405F] hover:bg-[#E4405F]/20 hover:shadow-[0_0_18px_rgba(228,64,95,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 shadow-md group" title="Instagram Oficial" aria-label="Instagram">
+                  <div class="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-bold tracking-wide">Instagram</span>
                 </a>
                 <!-- TikTok -->
-                <a id="hero-social-tiktok" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-tiktok w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-cyan-400 hover:bg-cyan-500/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group" title="TikTok Oficial" aria-label="TikTok">
-                  <svg class="w-4 h-4 fill-current text-white group-hover:text-cyan-400 transition-colors" viewBox="0 0 24 24">
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.81 4.47 6.27 6.27 0 0 0 1.88-4.47V8.62a8.28 8.28 0 0 0 4.8 1.54V6.71a4.77 4.77 0 0 1-.9-.02z"/>
-                  </svg>
+                <a id="hero-social-tiktok" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-tiktok inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-200 hover:text-white hover:border-[#25F4EE] hover:bg-slate-800 hover:shadow-[0_0_18px_rgba(37,244,238,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 shadow-md group" title="TikTok Oficial" aria-label="TikTok">
+                  <div class="w-6 h-6 rounded-lg bg-black border border-slate-700 flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
+                    <svg class="w-3.5 h-3.5 fill-current text-[#25F4EE]" viewBox="0 0 24 24">
+                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.81 4.47 6.27 6.27 0 0 0 1.88-4.47V8.62a8.28 8.28 0 0 0 4.8 1.54V6.71a4.77 4.77 0 0 1-.9-.02z"/>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-bold tracking-wide">TikTok</span>
                 </a>
                 <!-- YouTube -->
-                <a id="hero-social-youtube" href="" target="_blank" rel="noopener noreferrer" class="dynamic-social-youtube w-9 h-9 rounded-xl bg-slate-900/80 border border-slate-700/80 hover:border-red-500 hover:bg-red-600/20 text-slate-300 hover:text-white flex items-center justify-center transition-all hover:scale-110 shadow-md group hidden" title="Canal de YouTube" aria-label="YouTube">
-                  <svg class="w-4 h-4 fill-current text-[#FF0000] group-hover:text-white transition-colors" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
+                <a id="hero-social-youtube" href="" target="_blank" rel="noopener noreferrer" class="dynamic-social-youtube inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-[#FF0000]/50 text-slate-200 hover:text-white hover:border-[#FF0000] hover:bg-[#FF0000]/20 hover:shadow-[0_0_18px_rgba(255,0,0,0.4)] transition-all duration-300 hover:scale-105 active:scale-95 shadow-md group hidden" title="Canal de YouTube" aria-label="YouTube">
+                  <div class="w-6 h-6 rounded-lg bg-[#FF0000] flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                  </div>
+                  <span class="text-xs font-bold tracking-wide">YouTube</span>
                 </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Hero Graphic: Emblem Integrated with Solar Animation -->
-          <div class="lg:col-span-5 flex flex-col items-center justify-center mt-6 lg:mt-0">
-            <div class="relative w-72 sm:w-84 md:w-96 aspect-square flex items-center justify-center group">
-              <!-- Animated Solar Conic Halo (Spins directly behind the sun rays) -->
-              <div id="hero-logo-halo" class="conic-halo absolute -inset-2 sm:-inset-4 rounded-full blur-xl opacity-90 transition-opacity duration-700 pointer-events-none"></div>
-              
-              <!-- Ambient Core Glow -->
-              <div id="hero-logo-glow" class="absolute inset-2 sm:inset-4 rounded-full bg-gradient-to-tr from-amber-500/40 via-amber-300/30 to-amber-600/40 blur-2xl transition-all duration-700 animate-pulse-subtle pointer-events-none"></div>
-              
-              <!-- Main Sun Logo Image (Scaled to blend seamlessly into the sun animation) -->
-              <div class="relative w-full h-full flex items-center justify-center p-2 z-10">
-                <img id="hero-logo" src="./assets/logo_opcion_4_transparente.png" alt="Logo Oficial Ritmo Salsero" class="w-full h-full object-contain scale-110 sm:scale-120 group-hover:scale-125 transition-transform duration-700 filter drop-shadow-[0_10px_35px_rgba(245,158,11,0.6)]">
-              </div>
-
-              <!-- Decorative Badge Orbit (Salsa & Cumbia) -->
-              <div class="absolute -top-2 -right-1 z-20 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-slate-950 text-xs font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow-xl border border-amber-300 transform rotate-6 hover:rotate-0 transition-transform">
-                Salsa & Cumbia
               </div>
             </div>
           </div>
@@ -1246,19 +1258,31 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row items-center justify-between gap-6">
 
-        <!-- Redes Sociales Oficiales -->
-        <div class="flex items-center gap-3 py-2">
-          <a href="https://facebook.com" target="_blank" class="dynamic-social-facebook w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="Facebook">
-            FB
+        <!-- Redes Sociales Oficiales en Pie de Página -->
+        <div class="flex items-center gap-3 py-2 flex-wrap justify-center">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-facebook inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-[#1877F2] hover:bg-[#1877F2]/20 text-slate-300 hover:text-white transition-all text-xs font-semibold shadow group" title="Facebook">
+            <svg class="w-4 h-4 fill-current text-[#1877F2] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            <span>Facebook</span>
           </a>
-          <a href="https://instagram.com" target="_blank" class="dynamic-social-instagram w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="Instagram">
-            IG
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-instagram inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-[#E4405F] hover:bg-[#E4405F]/20 text-slate-300 hover:text-white transition-all text-xs font-semibold shadow group" title="Instagram">
+            <svg class="w-4 h-4 fill-current text-[#E4405F] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            <span>Instagram</span>
           </a>
-          <a href="https://tiktok.com" target="_blank" class="dynamic-social-tiktok w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="TikTok">
-            TK
+          <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-tiktok inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-cyan-400 hover:bg-cyan-500/20 text-slate-300 hover:text-white transition-all text-xs font-semibold shadow group" title="TikTok">
+            <svg class="w-4 h-4 fill-current text-[#25F4EE] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.298-.002.595.042.88.13V9.4a6.33 6.33 0 0 0-1-.08A6.34 6.34 0 0 0 3 15.66a6.34 6.34 0 0 0 10.81 4.47 6.27 6.27 0 0 0 1.88-4.47V8.62a8.28 8.28 0 0 0 4.8 1.54V6.71a4.77 4.77 0 0 1-.9-.02z"/>
+            </svg>
+            <span>TikTok</span>
           </a>
-          <a href="https://youtube.com" target="_blank" class="dynamic-social-youtube hidden w-9 h-9 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-400 text-slate-300 hover:text-amber-400 flex items-center justify-center transition-all text-xs font-bold shadow" title="YouTube">
-            YT
+          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-youtube hidden inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-red-500 hover:bg-red-600/20 text-slate-300 hover:text-white transition-all text-xs font-semibold shadow group" title="YouTube">
+            <svg class="w-4 h-4 fill-current text-[#FF0000] group-hover:text-white transition-colors" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            <span>YouTube</span>
           </a>
         </div>
 
