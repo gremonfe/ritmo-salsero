@@ -789,21 +789,28 @@
 
               <!-- Botón Llamar a la Escuela (Instalaciones Oficiales) -->
               <div class="p-5 bg-slate-900/60 rounded-2xl border border-amber-500/30 space-y-4 mt-2">
-                <div class="flex items-center gap-2.5">
-                  <span class="text-xl">📞</span>
-                  <div>
-                    <h3 class="text-sm font-bold text-white">Botón "Llamar a la Escuela" (Sección Instalaciones)</h3>
-                    <p class="text-xs text-slate-400">Personaliza el texto visible del botón y el número telefónico directo para que los visitantes llamen desde su móvil.</p>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-xl">📞</span>
+                    <div>
+                      <h3 class="text-sm font-bold text-white">Botón y Teléfono de la Sede (Instalaciones Oficiales)</h3>
+                      <p class="text-xs text-slate-400">Si no se define el número o se desactiva, el botón y el contacto telefónico estarán ocultos / inactivos.</p>
+                    </div>
                   </div>
+                  <label class="flex items-center gap-2 cursor-pointer bg-slate-950 px-3.5 py-1.5 rounded-xl border border-slate-700 hover:border-amber-400/50 self-start sm:self-auto">
+                    <input type="checkbox" id="cfg-callBtnEnabled" onchange="toggleCallBtnActiveUI(this.checked)" class="w-4 h-4 rounded text-amber-500 focus:ring-amber-400">
+                    <span id="cfg-callBtnEnabled-badge" class="text-xs font-bold text-emerald-400">Activo</span>
+                  </label>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div id="cfg-call-fields-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                   <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Texto del Botón</label>
                     <input type="text" id="cfg-callBtnText" placeholder="Ej. 📞 Llamar a la Escuela" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
                   </div>
                   <div>
                     <label class="block text-xs font-semibold text-slate-300 mb-1">Número Telefónico para Llamadas</label>
-                    <input type="text" id="cfg-callBtnPhone" placeholder="Ej. 55 1234 5678 ó +52 55 1234 5678" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                    <input type="text" id="cfg-callBtnPhone" placeholder="Ej. 55 1234 5678 (deja vacío para desactivar)" class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                    <span class="text-[11px] text-slate-400 mt-1 block">Si borras este número o apagas el switch, el botón no aparecerá en la web ni en móviles.</span>
                   </div>
                 </div>
               </div>
@@ -846,11 +853,16 @@
               </form>
             </div>
 
-            <!-- Respaldos JSON -->
+            <!-- Respaldos JSON & Publicación para Celulares (Netlify) -->
             <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 space-y-4">
-              <h3 class="text-sm font-bold text-white">Copias de Seguridad (JSON)</h3>
-              <p class="text-xs text-slate-400">Exporta todos los textos, números, enlaces y horarios para guardarlos en tu computadora o transferirlos a otro dispositivo.</p>
+              <div>
+                <h3 class="text-sm font-bold text-white">Sincronización con Celulares y Publicación Web (Netlify)</h3>
+                <p class="text-xs text-slate-400 mt-1">Al descargar este archivo <code>site_config.json</code> y colocarlo en la carpeta <code>assets/</code> de tu proyecto, todos los teléfonos celulares y visitantes en internet verán inmediatamente tus cambios al actualizar tu sitio en Netlify.</p>
+              </div>
               <div class="flex flex-wrap gap-3">
+                <button onclick="downloadPublishedSiteConfigJSON()" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg shadow-amber-500/20 transition-all flex items-center gap-2">
+                  <span>🚀</span> Descargar site_config.json para Netlify
+                </button>
                 <button onclick="exportSiteConfigJSON()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition-all flex items-center gap-2">
                   <span>📥</span> Descargar Archivo JSON de Respaldo
                 </button>
@@ -1198,15 +1210,21 @@
       // Identidad
       setVal("cfg-brandName", cfg.brandName);
       setVal("cfg-brandTagline", cfg.brandTagline);
-      setVal("cfg-addressFull", cfg.addressFull);
-      setVal("cfg-mapsUrl", cfg.mapsUrl);
-      setVal("cfg-venueName", cfg.venueName);
-      setVal("cfg-venueQuote", cfg.venueQuote);
-      setVal("cfg-copyrightYear", cfg.copyrightYear);
+      setVal("cfg-addressFull", cfg.addressFull !== undefined ? cfg.addressFull : "");
+      setVal("cfg-mapsUrl", cfg.mapsUrl !== undefined ? cfg.mapsUrl : "");
+      setVal("cfg-venueName", cfg.venueName || "Casa de Cultura Neteotiloyan");
+      setVal("cfg-venueQuote", cfg.venueQuote || "Son los mejores");
+      setVal("cfg-copyrightYear", cfg.copyrightYear || "2026");
 
-      // Botón Llamar a la Escuela
+      // Botón Llamar a la Escuela y Teléfono de Sede
       setVal("cfg-callBtnText", cfg.callBtnText || "📞 Llamar a la Escuela");
-      setVal("cfg-callBtnPhone", cfg.callBtnPhone || cfg.phoneDisplay || "55 1234 5678");
+      setVal("cfg-callBtnPhone", cfg.callBtnPhone !== undefined ? cfg.callBtnPhone : "");
+      const callEnabledEl = document.getElementById("cfg-callBtnEnabled");
+      const hasPhone = Boolean(cfg.callBtnPhone && cfg.callBtnPhone.trim());
+      if (callEnabledEl) {
+        callEnabledEl.checked = (cfg.callBtnEnabled !== false && hasPhone);
+        updateCallBtnActiveBadge(callEnabledEl.checked);
+      }
     }
 
     function setVal(id, val) {
@@ -1219,12 +1237,34 @@
       return el ? el.value.trim() : fallback;
     }
 
+    // Alternar estado visual del botón de llamadas
+    function toggleCallBtnActiveUI(isChecked) {
+      updateCallBtnActiveBadge(isChecked);
+    }
+
+    function updateCallBtnActiveBadge(isActive) {
+      const badge = document.getElementById("cfg-callBtnEnabled-badge");
+      if (!badge) return;
+      if (isActive) {
+        badge.textContent = "Activo";
+        badge.className = "text-xs font-bold text-emerald-400";
+      } else {
+        badge.textContent = "Inactivo / Oculto";
+        badge.className = "text-xs font-bold text-slate-400";
+      }
+    }
+
     // Guardar todos los cambios
     function saveAllConfigAndPublish() {
       const current = getSiteConfig();
 
+      const phoneVal = getVal("cfg-callBtnPhone", "");
+      const isCallSwitchChecked = document.getElementById("cfg-callBtnEnabled") ? document.getElementById("cfg-callBtnEnabled").checked : false;
+      const callBtnEnabled = isCallSwitchChecked && Boolean(phoneVal.length > 0);
+
       const updated = {
         ...current,
+        _updatedAt: Date.now(),
         // Hero
         heroBadge: getVal("cfg-heroBadge", current.heroBadge),
         heroTitleLine1: getVal("cfg-heroTitleLine1", current.heroTitleLine1),
@@ -1295,17 +1335,18 @@
         youtubeUrl: getVal("cfg-youtubeUrl", current.youtubeUrl || ""),
 
         // Identidad & Ubicación
-        brandName: getVal("cfg-brandName", current.brandName),
-        brandTagline: getVal("cfg-brandTagline", current.brandTagline),
-        addressFull: getVal("cfg-addressFull", current.addressFull),
-        mapsUrl: getVal("cfg-mapsUrl", current.mapsUrl),
-        venueName: getVal("cfg-venueName", current.venueName),
-        venueQuote: getVal("cfg-venueQuote", current.venueQuote),
-        copyrightYear: getVal("cfg-copyrightYear", current.copyrightYear),
+        brandName: getVal("cfg-brandName", current.brandName || "RITMO SALSERO"),
+        brandTagline: getVal("cfg-brandTagline", current.brandTagline || "Escuela de Salsa & Cumbia • San Martín de las Pirámides"),
+        addressFull: getVal("cfg-addressFull", ""),
+        mapsUrl: getVal("cfg-mapsUrl", ""),
+        venueName: getVal("cfg-venueName", "Casa de Cultura Neteotiloyan"),
+        venueQuote: getVal("cfg-venueQuote", "Son los mejores"),
+        copyrightYear: getVal("cfg-copyrightYear", "2026"),
 
-        // Botón Llamar a la Escuela
+        // Botón Llamar a la Escuela y Teléfono de Sede
+        callBtnEnabled: callBtnEnabled,
         callBtnText: getVal("cfg-callBtnText", "📞 Llamar a la Escuela"),
-        callBtnPhone: getVal("cfg-callBtnPhone", current.callBtnPhone || "55 1234 5678")
+        callBtnPhone: phoneVal
       };
 
       saveSiteConfig(updated);
@@ -1313,7 +1354,25 @@
         localStorage.setItem("ritmo_selected_logo", selectedLogoKey);
       } catch (e) {}
 
+      updateCallBtnActiveBadge(callBtnEnabled);
       showAdminToast("¡Cambios guardados y publicados en la web! ✨", "🚀");
+    }
+
+    // Descargar site_config.json directamente para sincronización con Netlify y celulares
+    function downloadPublishedSiteConfigJSON() {
+      saveAllConfigAndPublish();
+      const cfg = getSiteConfig();
+      const jsonStr = JSON.stringify(cfg, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "site_config.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showAdminToast("¡site_config.json descargado! Cópialo a /assets/ y publica en Netlify.", "🚀");
     }
 
     // Cambiar contraseña de administrador

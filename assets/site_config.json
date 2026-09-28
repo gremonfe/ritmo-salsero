@@ -1,0 +1,80 @@
+{
+  "_updatedAt": 1759080000000,
+  "brandName": "RITMO SALSERO",
+  "brandTagline": "Escuela de Salsa & Cumbia • San Martín de las Pirámides",
+  "venueName": "Casa de Cultura Neteotiloyan",
+  "venueQuote": "Son los mejores",
+  "copyrightYear": "2026",
+  "activeLogoKey": "opcion4",
+  "bannerEnabled": true,
+  "freeSampleClassEnabled": true,
+  "bannerTextWithSample": "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.",
+  "bannerTextWithoutSample": "🎉 ¡Inscripciones abiertas este mes! Consulta horarios e inscríbete por WhatsApp.",
+  "bannerText": "🎉 ¡Inscripciones abiertas este mes! Primera clase muestra GRATIS al registrarte por WhatsApp.",
+  "bannerBtnText": "¡Apartar Lugar!",
+  "bannerBtnUrl": "#horarios",
+  "heroBadge": "🔥 Clases Abiertas para Principiantes y Todos los Niveles",
+  "heroTitleLine1": "Aprende a Bailar",
+  "heroTitleLine2": "Salsa & Cumbia",
+  "heroSubtitle": "En Ritmo Salsero te enseñamos a bailar con técnica real, soltura y pasión bajo el cielo de las Pirámides. ¡No necesitas pareja ni experiencia previa!",
+  "heroCtaText": "WhatsApp Oficial",
+  "heroSecondaryCtaText": "Ver Horarios Semanales",
+  "heroStatStudents": "350+",
+  "heroStatStudentsLabel": "Alumnos formados",
+  "heroStatYears": "8+",
+  "heroStatYearsLabel": "Años de experiencia",
+  "heroStatStyles": "3",
+  "heroStatStylesLabel": "Ritmos principales",
+  "scheduleBadge": "",
+  "pricingSectionEnabled": true,
+  "pricingSubtitle": "Elige el plan que mejor se adapte a tu ritmo de vida y metas de baile.",
+  "plan1": {
+    "name": "Clase Individual",
+    "price": "$80",
+    "period": "/ clase",
+    "desc": "Ideal para probar o asistir ocasionalmente",
+    "features": [
+      "Acceso a 1 sesión de 60 min",
+      "Elige Salsa o Cumbia",
+      "No requieres inscripción"
+    ]
+  },
+  "plan2": {
+    "name": "Plan Mensual (1 Ritmo)",
+    "price": "$450",
+    "period": "/ mes",
+    "badge": "★ Más Popular",
+    "desc": "2 clases por semana (8 clases al mes)",
+    "features": [
+      "8 clases al mes (2 semanales)",
+      "Corrección de postura personalizada",
+      "Descuento especial si vienes en pareja",
+      "Acceso a prácticas sociales"
+    ]
+  },
+  "plan3": {
+    "name": "Full Pass Total",
+    "price": "$750",
+    "period": "/ mes",
+    "badge": "Experiencia Completa",
+    "desc": "Salsa + Cumbia (Hasta 4 clases por semana)",
+    "features": [
+      "Hasta 16 clases al mes",
+      "Salsa y Cumbia sin límites",
+      "Mayor avance y destreza en pista"
+    ]
+  },
+  "whatsappNumber": "525512345678",
+  "whatsappDisplay": "55 1234 5678",
+  "whatsappMessage": "¡Hola! Me gustaría pedir informes sobre las clases de baile en Ritmo Salsero (horarios y clase muestra).",
+  "phoneDisplay": "55 1234 5678",
+  "addressFull": "Casa de Cultura Neteotiloyan, Av. 16 de Septiembre s/n, Centro, San Martín de las Pirámides, Edo. Méx.",
+  "mapsUrl": "https://maps.google.com/?q=Casa+de+Cultura+Neteotiloyan+San+Martin+de+las+Piramides",
+  "instagramUrl": "https://instagram.com",
+  "facebookUrl": "https://facebook.com",
+  "tiktokUrl": "https://tiktok.com",
+  "youtubeUrl": "",
+  "callBtnText": "📞 Llamar a la Escuela",
+  "callBtnPhone": "",
+  "callBtnEnabled": false
+}

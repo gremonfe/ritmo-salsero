@@ -792,13 +792,13 @@
           <div class="flex items-center gap-3">
             <span class="text-2xl">🏛️</span>
             <div>
-              <p class="text-sm font-semibold text-white">Sede de Impartición: Casa de Cultura Neteotiloyan</p>
-              <p class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México • Salón con duela y espejos profesionales</p>
+              <p id="schedule-venue-name" class="text-sm font-semibold text-white">Sede de Impartición: Casa de Cultura Neteotiloyan</p>
+              <p id="schedule-venue-desc" class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México • Salón con duela y espejos profesionales</p>
             </div>
           </div>
           <div class="flex items-center gap-3 w-full sm:w-auto">
             <button onclick="openBookingModal('General')" class="btn-gold text-xs uppercase py-2.5 px-6 w-full sm:w-auto justify-center">
-              Apartar mi lugar
+              Más Detalles
             </button>
           </div>
         </div>
@@ -1055,19 +1055,27 @@
             </div>
             
             <h2 class="text-3xl sm:text-4xl font-serif-title font-extrabold text-white">
-              Casa de Cultura <span class="gold-gradient-text">Neteotiloyan</span>
+              <span id="venue-header-title">Casa de Cultura Neteotiloyan</span>
             </h2>
             
-            <p class="text-slate-300 text-base leading-relaxed">
+            <p id="venue-description" class="text-slate-300 text-base leading-relaxed">
               Nuestras clases se imparten en la prestigiada <strong class="text-white">Casa de Cultura de San Martín de las Pirámides</strong>. Un espacio seguro, céntrico, con duela de madera adecuada para giros y un ambiente 100% familiar.
             </p>
 
             <div class="space-y-3.5">
-              <div class="flex items-start gap-3.5 text-slate-200">
+              <div id="venue-address-row" class="flex items-start gap-3.5 text-slate-200">
                 <span class="text-amber-400 text-lg">📍</span>
                 <div>
                   <strong class="block text-white text-sm">Dirección</strong>
-                  <span class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México (a unos minutos de la Zona Arqueológica).</span>
+                  <span id="contact-address-full" class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México (a unos minutos de la Zona Arqueológica).</span>
+                </div>
+              </div>
+
+              <div id="venue-phone-row" class="flex items-start gap-3.5 text-slate-200">
+                <span class="text-amber-400 text-lg">📞</span>
+                <div>
+                  <strong class="block text-white text-sm">Teléfono de la Sede</strong>
+                  <a id="venue-phone-display" href="tel:+525512345678" class="text-xs text-amber-300 hover:text-white font-medium">55 1234 5678</a>
                 </div>
               </div>
 
@@ -1089,12 +1097,12 @@
             </div>
 
             <div class="pt-2 flex flex-wrap gap-4">
-              <a href="https://maps.google.com/?q=Casa+de+Cultura+San+Martin+de+las+Piramides" target="_blank" class="btn-gold text-xs uppercase py-3 px-6">
+              <a id="contact-maps-link" href="https://maps.google.com/?q=Casa+de+Cultura+San+Martin+de+las+Piramides" target="_blank" class="btn-gold text-xs uppercase py-3 px-6">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
-                Abrir en Google Maps
+                <span>Abrir en Google Maps</span>
               </a>
               <a id="venue-call-btn" href="tel:+525512345678" class="btn-outline-gold text-xs uppercase py-3 px-6">
                 <span id="venue-call-btn-text">📞 Llamar a la Escuela</span>
@@ -1111,8 +1119,8 @@
                     🏛️
                   </div>
                   <div>
-                    <h4 class="font-bold text-white text-sm">Casa de Cultura Neteotiloyan</h4>
-                    <p class="text-xs text-amber-400/90 font-medium">"Son los mejores"</p>
+                    <h4 id="venue-name-title" class="font-bold text-white text-sm">Casa de Cultura Neteotiloyan</h4>
+                    <p id="venue-quote-text" class="text-xs text-amber-400/90 font-medium">"Son los mejores"</p>
                   </div>
                 </div>
                 <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-bold uppercase tracking-wider">

@@ -80,7 +80,8 @@ const DEFAULT_SITE_CONFIG = {
 
   // 7. Botón Llamar a la Escuela (Instalaciones Oficiales)
   callBtnText: "📞 Llamar a la Escuela",
-  callBtnPhone: "55 1234 5678"
+  callBtnPhone: "",
+  callBtnEnabled: false
 };
 
 const SITE_CONFIG_STORAGE_KEY = "ritmo_salsero_site_config";
@@ -144,6 +145,9 @@ function getSiteConfig() {
  */
 function saveSiteConfig(newConfig) {
   try {
+    if (!newConfig._updatedAt) {
+      newConfig._updatedAt = Date.now();
+    }
     localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(newConfig));
     window.SITE_CONFIG = newConfig;
     applySiteConfigToDOM(newConfig);
@@ -238,7 +242,11 @@ function applySiteConfigToDOM(config = null) {
   }
 
   const heroSecBtn = document.getElementById("hero-secondary-cta-btn");
-  if (heroSecBtn) heroSecBtn.textContent = cfg.heroSecondaryCtaText;
+  if (heroSecBtn) {
+    const spanText = heroSecBtn.querySelector("span:not(.icon)");
+    if (spanText) spanText.textContent = cfg.heroSecondaryCtaText;
+    else heroSecBtn.textContent = cfg.heroSecondaryCtaText;
+  }
 
   // Estadísticas Hero
   const statStudents = document.getElementById("hero-stat-students");
@@ -307,12 +315,62 @@ function applySiteConfigToDOM(config = null) {
     heroSocialBar.style.display = (hasFb || hasIg || hasTt || hasYt) ? "flex" : "none";
   }
 
-  // 6. Contacto y Dirección
+  // 6. Contacto, Sede y Dirección
   const addressEl = document.getElementById("contact-address-full");
-  if (addressEl) addressEl.textContent = cfg.addressFull;
+  const addressRow = document.getElementById("venue-address-row");
+  const addressText = (cfg.addressFull || "").trim();
+  const hasAddress = Boolean(addressText.length > 0);
+  if (addressEl) {
+    addressEl.textContent = addressText;
+  }
+  if (addressRow) {
+    if (hasAddress) {
+      addressRow.classList.remove("hidden");
+      addressRow.style.display = "";
+    } else {
+      addressRow.classList.add("hidden");
+      addressRow.style.display = "none";
+    }
+  }
 
   const mapsBtn = document.getElementById("contact-maps-link");
-  if (mapsBtn && cfg.mapsUrl) mapsBtn.href = cfg.mapsUrl;
+  const mapsUrl = (cfg.mapsUrl || "").trim();
+  const hasMaps = Boolean(mapsUrl.length > 0 && mapsUrl !== "https://" && mapsUrl !== "http://");
+  if (mapsBtn) {
+    if (hasMaps) {
+      mapsBtn.href = mapsUrl;
+      mapsBtn.classList.remove("hidden");
+      mapsBtn.style.display = "";
+    } else {
+      mapsBtn.classList.add("hidden");
+      mapsBtn.style.display = "none";
+    }
+  }
+
+  const venueHeaderTitle = document.getElementById("venue-header-title");
+  if (venueHeaderTitle && cfg.venueName) {
+    venueHeaderTitle.textContent = cfg.venueName;
+  }
+
+  const venueNameTitle = document.getElementById("venue-name-title");
+  if (venueNameTitle && cfg.venueName) {
+    venueNameTitle.textContent = cfg.venueName;
+  }
+
+  const venueQuoteText = document.getElementById("venue-quote-text");
+  if (venueQuoteText && cfg.venueQuote) {
+    venueQuoteText.textContent = `"${cfg.venueQuote}"`;
+  }
+
+  const schedVenueName = document.getElementById("schedule-venue-name");
+  if (schedVenueName && cfg.venueName) {
+    schedVenueName.textContent = `Sede de Impartición: ${cfg.venueName}`;
+  }
+
+  const schedVenueDesc = document.getElementById("schedule-venue-desc");
+  if (schedVenueDesc && cfg.addressFull) {
+    schedVenueDesc.textContent = `${cfg.addressFull} • Salón con duela y espejos profesionales`;
+  }
 
   // 7. Logotipo Activo (Por defecto: Opción 4: Sol Oro)
   const activeLogo = LOGO_VARIANTS_MAP[cfg.activeLogoKey || "opcion4"] || LOGO_VARIANTS_MAP["opcion4"];
@@ -408,16 +466,43 @@ function applySiteConfigToDOM(config = null) {
     }
   }
 
-  // 9. Botón Llamar a la Escuela (Instalaciones Oficiales)
+  // 9. Teléfono de la Sede y Botón Llamar a la Escuela (Instalaciones Oficiales)
   const venueCallBtn = document.getElementById("venue-call-btn");
   const venueCallBtnText = document.getElementById("venue-call-btn-text");
-  if (venueCallBtn) {
-    const rawCallPhone = cfg.callBtnPhone || cfg.phoneDisplay || cfg.whatsappDisplay || "55 1234 5678";
-    const cleanCallPhone = rawCallPhone.replace(/[^0-9+]/g, "");
-    venueCallBtn.href = `tel:${cleanCallPhone}`;
-  }
-  if (venueCallBtnText) {
-    venueCallBtnText.textContent = cfg.callBtnText || "📞 Llamar a la Escuela";
+  const venuePhoneRow = document.getElementById("venue-phone-row");
+  const venuePhoneDisplay = document.getElementById("venue-phone-display");
+
+  const rawPhone = (typeof cfg.callBtnPhone === "string" ? cfg.callBtnPhone : "").trim();
+  const isPhoneConfigured = Boolean(rawPhone.length > 0 && cfg.callBtnEnabled !== false);
+
+  if (isPhoneConfigured) {
+    const cleanPhone = rawPhone.replace(/[^0-9+]/g, "");
+    if (venueCallBtn) {
+      venueCallBtn.href = `tel:${cleanPhone}`;
+      venueCallBtn.classList.remove("hidden");
+      venueCallBtn.style.display = "";
+      if (venueCallBtnText) {
+        venueCallBtnText.textContent = cfg.callBtnText || "📞 Llamar a la Escuela";
+      }
+    }
+    if (venuePhoneRow) {
+      venuePhoneRow.classList.remove("hidden");
+      venuePhoneRow.style.display = "";
+    }
+    if (venuePhoneDisplay) {
+      venuePhoneDisplay.href = `tel:${cleanPhone}`;
+      venuePhoneDisplay.textContent = rawPhone;
+    }
+  } else {
+    // Si no está definido el campo o está desactivado: NO ESTÁ ACTIVO (oculto en web y móvil)
+    if (venueCallBtn) {
+      venueCallBtn.classList.add("hidden");
+      venueCallBtn.style.display = "none";
+    }
+    if (venuePhoneRow) {
+      venuePhoneRow.classList.add("hidden");
+      venuePhoneRow.style.display = "none";
+    }
   }
 
   // 10. Pie de página
@@ -430,9 +515,45 @@ function applySiteConfigToDOM(config = null) {
   }
 }
 
+// Sincronización remota para celulares y visitantes en internet (Netlify)
+async function syncRemoteSiteConfig() {
+  try {
+    if (typeof fetch === "function") {
+      const resp = await fetch("./assets/site_config.json?v=" + Date.now());
+      if (resp.ok) {
+        const remote = await resp.json();
+        const localRaw = localStorage.getItem(SITE_CONFIG_STORAGE_KEY);
+        let shouldApply = false;
+        if (!localRaw) {
+          shouldApply = true;
+        } else {
+          try {
+            const local = JSON.parse(localRaw);
+            const isLocalAdminSession = (typeof sessionStorage !== "undefined") && sessionStorage.getItem("ritmo_admin_authenticated") === "true";
+            // Si el visitante no está en sesión de administración activa o el archivo del servidor es más reciente
+            if (!isLocalAdminSession || (remote._updatedAt && local._updatedAt && remote._updatedAt >= local._updatedAt)) {
+              shouldApply = true;
+            }
+          } catch(e) {
+            shouldApply = true;
+          }
+        }
+        if (shouldApply) {
+          const merged = Object.assign({}, DEFAULT_SITE_CONFIG, remote);
+          window.SITE_CONFIG = merged;
+          applySiteConfigToDOM(merged);
+        }
+      }
+    }
+  } catch (e) {
+    // En file:// o sin red, opera con la configuración local
+  }
+}
+
 // Inicializar en DOMContentLoaded
 if (typeof document !== "undefined") {
   document.addEventListener("DOMContentLoaded", () => {
     applySiteConfigToDOM();
+    syncRemoteSiteConfig();
   });
 }
