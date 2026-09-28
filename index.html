@@ -254,6 +254,23 @@
       </a>
     </div>
   </div>
+  <script>
+    (function() {
+      try {
+        var raw = localStorage.getItem("ritmo_salsero_site_config");
+        if (raw) {
+          var c = JSON.parse(raw);
+          if (c.bannerEnabled === false || c.bannerEnabled === "false" || c.bannerEnabled === 0) {
+            var el = document.getElementById("promo-banner");
+            if (el) {
+              el.classList.add("hidden");
+              el.style.setProperty("display", "none", "important");
+            }
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- HEADER / NAVBAR -->
   <header class="sticky top-0 z-40 bg-[#070B19]/85 backdrop-blur-md border-b border-amber-500/20 transition-all duration-300">

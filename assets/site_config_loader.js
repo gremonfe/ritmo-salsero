@@ -114,10 +114,17 @@ function getSiteConfig() {
     const raw = localStorage.getItem(SITE_CONFIG_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
+      if (!parsed._updatedAt) {
+        parsed._updatedAt = Date.now();
+        try { localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(parsed)); } catch(e) {}
+      }
       // Auto-migración si contenía el texto antiguo o títulos no deseados
       if (!parsed.heroTitleLine1 || parsed.heroTitleLine1.includes("Siente el fuego")) {
         parsed.heroTitleLine1 = "Aprende a Bailar";
         parsed.heroTitleLine2 = "Salsa & Cumbia";
+      }
+      if (typeof parsed.bannerEnabled !== "undefined") {
+        parsed.bannerEnabled = (parsed.bannerEnabled === true || parsed.bannerEnabled === "true" || (parsed.bannerEnabled !== false && parsed.bannerEnabled !== "false" && parsed.bannerEnabled !== 0));
       }
       if (typeof parsed.freeSampleClassEnabled !== "boolean") {
         parsed.freeSampleClassEnabled = parsed.bannerText ? (parsed.bannerText.includes("GRATIS") || parsed.bannerText.includes("muestra")) : true;
@@ -145,9 +152,7 @@ function getSiteConfig() {
  */
 function saveSiteConfig(newConfig) {
   try {
-    if (!newConfig._updatedAt) {
-      newConfig._updatedAt = Date.now();
-    }
+    newConfig._updatedAt = Date.now();
     localStorage.setItem(SITE_CONFIG_STORAGE_KEY, JSON.stringify(newConfig));
     window.SITE_CONFIG = newConfig;
     applySiteConfigToDOM(newConfig);
@@ -170,11 +175,13 @@ function applySiteConfigToDOM(config = null) {
   const bannerText = document.getElementById("promo-banner-text");
   const bannerBtn = document.getElementById("promo-banner-btn");
 
-  const hasFreeSample = (cfg.freeSampleClassEnabled !== false);
+  const isBannerEnabled = (cfg.bannerEnabled === true || cfg.bannerEnabled === "true" || (cfg.bannerEnabled !== false && cfg.bannerEnabled !== "false" && cfg.bannerEnabled !== 0));
+  const hasFreeSample = (cfg.freeSampleClassEnabled === true || cfg.freeSampleClassEnabled === "true" || (cfg.freeSampleClassEnabled !== false && cfg.freeSampleClassEnabled !== "false" && cfg.freeSampleClassEnabled !== 0));
 
   if (banner) {
-    if (cfg.bannerEnabled !== false) {
+    if (isBannerEnabled) {
       banner.classList.remove("hidden");
+      banner.style.removeProperty("display");
       banner.style.display = "";
 
       let activeBannerText = "";
@@ -191,7 +198,7 @@ function applySiteConfigToDOM(config = null) {
       }
     } else {
       banner.classList.add("hidden");
-      banner.style.display = "none";
+      banner.style.setProperty("display", "none", "important");
     }
   }
 
@@ -517,6 +524,9 @@ function applySiteConfigToDOM(config = null) {
 
 // Sincronización remota para celulares y visitantes en internet (Netlify)
 async function syncRemoteSiteConfig() {
+  if (typeof window !== "undefined" && window.location.pathname.endsWith("admin.html")) {
+    return;
+  }
   try {
     if (typeof fetch === "function") {
       const resp = await fetch("./assets/site_config.json?v=" + Date.now());
@@ -525,13 +535,13 @@ async function syncRemoteSiteConfig() {
         const localRaw = localStorage.getItem(SITE_CONFIG_STORAGE_KEY);
         let shouldApply = false;
         if (!localRaw) {
+          // Si no hay configuración previa en este dispositivo (móviles o visitantes remotos)
           shouldApply = true;
         } else {
           try {
             const local = JSON.parse(localRaw);
-            const isLocalAdminSession = (typeof sessionStorage !== "undefined") && sessionStorage.getItem("ritmo_admin_authenticated") === "true";
-            // Si el visitante no está en sesión de administración activa o el archivo del servidor es más reciente
-            if (!isLocalAdminSession || (remote._updatedAt && local._updatedAt && remote._updatedAt >= local._updatedAt)) {
+            // Solo sobreescribir la configuración local si el archivo remoto en el servidor tiene una fecha estrictamente posterior a la edición local
+            if (remote && remote._updatedAt && local && local._updatedAt && Number(remote._updatedAt) > Number(local._updatedAt)) {
               shouldApply = true;
             }
           } catch(e) {
@@ -548,6 +558,19 @@ async function syncRemoteSiteConfig() {
   } catch (e) {
     // En file:// o sin red, opera con la configuración local
   }
+}
+
+// Sincronización en tiempo real entre pestañas (admin.html e index.html)
+if (typeof window !== "undefined") {
+  window.addEventListener("storage", (e) => {
+    if (e.key === SITE_CONFIG_STORAGE_KEY && e.newValue) {
+      try {
+        const updated = JSON.parse(e.newValue);
+        window.SITE_CONFIG = updated;
+        applySiteConfigToDOM(updated);
+      } catch (err) {}
+    }
+  });
 }
 
 // Inicializar en DOMContentLoaded
