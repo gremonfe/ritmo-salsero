@@ -2085,6 +2085,14 @@
             loadFormFieldsFromConfig();
             highlightActiveLogoButton();
           }
+        } else if (!cloudCfg) {
+          // Primera vez que se conecta a Firestore: Subir automáticamente la configuración local actual
+          console.log("[Admin] Primera conexión con Firestore: sembrando datos en la nube...");
+          const currentLocal = getSiteConfig();
+          window.RitmoFirebase.saveSiteConfigToCloud(currentLocal);
+          if (typeof currentSchedule !== "undefined") {
+            window.RitmoFirebase.saveScheduleToCloud(currentSchedule);
+          }
         }
         const cloudSched = await window.RitmoFirebase.fetchScheduleOnce();
         if (cloudSched && cloudSched._updatedAt) {

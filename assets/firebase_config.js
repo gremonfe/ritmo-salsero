@@ -13,12 +13,12 @@
   // Configuración predeterminada de Firebase (obtenida de la consola de Firebase)
   // Puedes pegar tus credenciales aquí o directamente desde la pestaña "Nube (Firebase)" en admin.html
   var DEFAULT_FIREBASE_CONFIG = {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyCAyyX1mQuKdi4OCKvrKNdZkOQ7g-yIy34",
+    authDomain: "ritmo-salsero.firebaseapp.com",
+    projectId: "ritmo-salsero",
+    storageBucket: "ritmo-salsero.firebasestorage.app",
+    messagingSenderId: "433096711429",
+    appId: "1:433096711429:web:5fad1a0fd7ee54fc286b6c"
   };
 
   var STORAGE_KEY_FIREBASE = "ritmo_firebase_config";
@@ -26,6 +26,9 @@
   var _initAttempted = false;
 
   function getStoredFirebaseConfig() {
+    if (isConfigValid(DEFAULT_FIREBASE_CONFIG)) {
+      return DEFAULT_FIREBASE_CONFIG;
+    }
     try {
       var raw = localStorage.getItem(STORAGE_KEY_FIREBASE);
       if (raw) {
