@@ -567,15 +567,26 @@ function openClassDetailModalDynamic(dayIndex, slotIndex) {
     ]).map(p => `<li>✓ ${p}</li>`).join('');
   }
 
-  // Enlace directo de consulta y solicitud de informes por WhatsApp
+  // Enlace directo de consulta y solicitud de informes por WhatsApp (o Grupo)
   const waBtn = document.getElementById("modal-class-wa-btn");
   if (waBtn) {
-    const rawPhone = (window.SITE_CONFIG && (window.SITE_CONFIG.whatsappNumber || (window.SITE_CONFIG.contact && window.SITE_CONFIG.contact.whatsapp)))
-      ? (window.SITE_CONFIG.whatsappNumber || window.SITE_CONFIG.contact.whatsapp)
-      : "525512345678";
-    const cleanPhone = rawPhone.replace(/\D/g, "");
-    const msg = `Hola Ritmo Salsero! 👋 Deseo solicitar más informes sobre la clase de ${classItem.title} (${classItem.level || 'Todos los niveles'}) para el día ${dayData.name} en el horario de ${slot.time} en Casa de Cultura. ¿Me podrían dar requisitos y costos?`;
-    waBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+    const isGroup = Boolean(window.SITE_CONFIG && window.SITE_CONFIG.whatsappType === "group" && window.SITE_CONFIG.whatsappGroupUrl && window.SITE_CONFIG.whatsappGroupUrl.trim());
+    if (isGroup) {
+      let gUrl = window.SITE_CONFIG.whatsappGroupUrl.trim();
+      if (!/^https?:\/\//i.test(gUrl)) gUrl = "https://" + gUrl;
+      waBtn.href = gUrl;
+      const span = waBtn.querySelector("span");
+      if (span) span.textContent = "Unirme al Grupo de Informes en WhatsApp";
+    } else {
+      const rawPhone = (window.SITE_CONFIG && (window.SITE_CONFIG.whatsappNumber || (window.SITE_CONFIG.contact && window.SITE_CONFIG.contact.whatsapp)))
+        ? (window.SITE_CONFIG.whatsappNumber || window.SITE_CONFIG.contact.whatsapp)
+        : "525512345678";
+      const cleanPhone = rawPhone.replace(/\D/g, "");
+      const msg = `Hola Ritmo Salsero! 👋 Deseo solicitar más informes sobre la clase de ${classItem.title} (${classItem.level || 'Todos los niveles'}) para el día ${dayData.name} en el horario de ${slot.time} en Casa de Cultura. ¿Me podrían dar requisitos y costos?`;
+      waBtn.href = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(msg)}`;
+      const span = waBtn.querySelector("span");
+      if (span) span.textContent = "Solicitar Informes por WhatsApp";
+    }
   }
 
   // Prepara el contexto para apartado o consultas

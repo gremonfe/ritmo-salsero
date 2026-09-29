@@ -67,6 +67,8 @@ const DEFAULT_SITE_CONFIG = {
   },
 
   // 6. Contacto, WhatsApp & Redes Sociales
+  whatsappType: "direct", // "direct" | "group"
+  whatsappGroupUrl: "",
   whatsappNumber: "525512345678",
   whatsappDisplay: "55 1234 5678",
   whatsappMessage: "¡Hola! Me gustaría pedir informes sobre las clases de baile en Ritmo Salsero (horarios y clase muestra).",
@@ -289,15 +291,47 @@ function applySiteConfigToDOM(config = null) {
     }
   }
 
-  // 4. WhatsApp Links dinámicos
-  const cleanPhone = (cfg.whatsappNumber || "525512345678").replace(/[^0-9]/g, "");
-  const encodedMsg = encodeURIComponent(cfg.whatsappMessage || "¡Hola! Me gustaría pedir informes de clases.");
-  const waUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
+  // 4. WhatsApp Links dinámicos (Chat Directo o Grupo de Informes)
+  const isGroup = (cfg.whatsappType === "group" && cfg.whatsappGroupUrl && cfg.whatsappGroupUrl.trim().length > 0);
+  let waUrl;
+  if (isGroup) {
+    let groupUrl = cfg.whatsappGroupUrl.trim();
+    if (!/^https?:\/\//i.test(groupUrl)) {
+      groupUrl = "https://" + groupUrl;
+    }
+    waUrl = groupUrl;
+  } else {
+    const cleanPhone = (cfg.whatsappNumber || "525512345678").replace(/[^0-9]/g, "");
+    const encodedMsg = encodeURIComponent(cfg.whatsappMessage || "¡Hola! Me gustaría pedir informes de clases.");
+    waUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
+  }
 
-  // Actualizar todos los enlaces con clase wa-link
+  // Actualizar todos los enlaces con clase dynamic-wa-link
   document.querySelectorAll(".dynamic-wa-link").forEach(link => {
     link.href = waUrl;
+    if (isGroup) {
+      link.setAttribute("title", "Unirme al Grupo de Informes de WhatsApp");
+    }
   });
+
+  const floatingWaBtn = document.getElementById("floating-wa-btn");
+  if (floatingWaBtn) {
+    floatingWaBtn.href = waUrl;
+    if (isGroup) {
+      floatingWaBtn.setAttribute("aria-label", "Unirme al Grupo de WhatsApp");
+      floatingWaBtn.setAttribute("title", "Unirme al Grupo de Informes en WhatsApp");
+    }
+  }
+
+  const floatingWaTooltip = document.getElementById("floating-wa-tooltip");
+  if (floatingWaTooltip) {
+    floatingWaTooltip.textContent = isGroup ? "¡Únete al Grupo de WhatsApp!" : "¡Escríbenos por WhatsApp!";
+  }
+
+  const heroCtaText = document.getElementById("hero-cta-text");
+  if (heroCtaText) {
+    heroCtaText.textContent = isGroup ? "Grupo de Informes WhatsApp" : "WhatsApp Oficial";
+  }
 
   const waDisplayEl = document.getElementById("contact-whatsapp-display");
   if (waDisplayEl) waDisplayEl.textContent = cfg.whatsappDisplay;

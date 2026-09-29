@@ -684,24 +684,58 @@
         </section>
 
         <!-- ========================================== -->
-        <!-- TAB 6: WHATSAPP OFICIAL -->
+        <!-- TAB 6: WHATSAPP OFICIAL & GRUPO DE INFORMES -->
         <!-- ========================================== -->
         <section id="tab-whatsapp" class="tab-content hidden space-y-6">
           <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
             <div class="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
                 <h2 class="text-xl font-serif-title font-bold text-white">Configuración de WhatsApp</h2>
-                <p class="text-xs text-slate-400">Modifica el número oficial y mensaje inicial que recibirán los prospectos al hacer clic en WhatsApp.</p>
+                <p class="text-xs text-slate-400">Elige si los botones de WhatsApp dirigirán a un chat directo personalizado o a un enlace de Grupo de Informes.</p>
               </div>
               <span class="text-2xl text-emerald-400">💬</span>
             </div>
 
+            <!-- Selector de Modo de Destino -->
+            <div class="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/80 space-y-3">
+              <label class="block text-xs font-bold uppercase tracking-wider text-amber-300">
+                Destino de los Botones de WhatsApp
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-800/60 hover:border-emerald-500/50 cursor-pointer transition-all">
+                  <input type="radio" name="cfg-whatsappType" value="direct" id="cfg-waType-direct" class="mt-1 text-emerald-500 focus:ring-emerald-400" onchange="toggleWaTypeFields()">
+                  <div>
+                    <span class="block text-sm font-bold text-white">💬 Chat Directo</span>
+                    <span class="block text-xs text-slate-400 mt-0.5">Abre un chat privado con el número oficial y un mensaje predeterminado.</span>
+                  </div>
+                </label>
+                <label class="flex items-start gap-3 p-3.5 rounded-xl border border-slate-700 bg-slate-800/60 hover:border-emerald-500/50 cursor-pointer transition-all">
+                  <input type="radio" name="cfg-whatsappType" value="group" id="cfg-waType-group" class="mt-1 text-emerald-500 focus:ring-emerald-400" onchange="toggleWaTypeFields()">
+                  <div>
+                    <span class="block text-sm font-bold text-white">👥 Grupo de Informes</span>
+                    <span class="block text-xs text-slate-400 mt-0.5">Redirige a los alumnos directamente al enlace de invitación de tu grupo de WhatsApp.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Campo Grupo de Informes -->
+            <div id="wa-group-field-box" class="space-y-2 p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 transition-all">
+              <div class="flex items-center gap-2">
+                <span class="text-emerald-400 font-bold text-sm">🔗</span>
+                <label class="block text-xs font-semibold text-emerald-200">Enlace de Invitación al Grupo de WhatsApp</label>
+              </div>
+              <input type="url" id="cfg-whatsappGroupUrl" placeholder="https://chat.whatsapp.com/TuCodigoDeGrupo" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-emerald-400 focus:outline-none">
+              <p class="text-[11px] text-slate-400">Pega aquí el enlace de invitación de tu grupo (ejemplo: <code>https://chat.whatsapp.com/ABC123xyz</code>). Cuando el modo Grupo esté activo, todos los botones de WhatsApp de la página web dirigirán a este grupo.</p>
+            </div>
+
+            <!-- Campos Chat Directo -->
             <div class="space-y-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-semibold text-slate-300 mb-1">Número de WhatsApp (con lada internacional, sin espacios)</label>
                   <input type="text" id="cfg-whatsappNumber" placeholder="Ej. 525512345678" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
-                  <p class="text-[11px] text-slate-400 mt-1">Este número se conecta a todos los botones de WhatsApp de la página web y al botón flotante.</p>
+                  <p class="text-[11px] text-slate-400 mt-1">Este número se conecta al chat directo y al teléfono oficial de la escuela.</p>
                 </div>
                 <div>
                   <label class="block text-xs font-semibold text-slate-300 mb-1">WhatsApp Visible en Pantalla (Formato Legible)</label>
@@ -711,9 +745,9 @@
               </div>
 
               <div>
-                <label class="block text-xs font-semibold text-slate-300 mb-1">Mensaje Predeterminado de WhatsApp al hacer clic</label>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Mensaje Predeterminado de WhatsApp (para Modo Chat Directo)</label>
                 <textarea id="cfg-whatsappMessage" rows="3" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none"></textarea>
-                <p class="text-[11px] text-slate-400 mt-1">Mensaje que el usuario tendrá listo para enviar en su app de WhatsApp con un solo clic.</p>
+                <p class="text-[11px] text-slate-400 mt-1">Mensaje que el usuario tendrá listo para enviar en su app de WhatsApp con un solo clic al usar Chat Directo.</p>
               </div>
             </div>
           </div>
@@ -1355,9 +1389,19 @@
       }
 
       // WhatsApp
+      const waType = cfg.whatsappType || "direct";
+      const directRadio = document.getElementById("cfg-waType-direct");
+      const groupRadio = document.getElementById("cfg-waType-group");
+      if (waType === "group") {
+        if (groupRadio) groupRadio.checked = true;
+      } else {
+        if (directRadio) directRadio.checked = true;
+      }
+      setVal("cfg-whatsappGroupUrl", cfg.whatsappGroupUrl || "");
       setVal("cfg-whatsappNumber", cfg.whatsappNumber);
       setVal("cfg-whatsappDisplay", cfg.whatsappDisplay);
       setVal("cfg-whatsappMessage", cfg.whatsappMessage);
+      if (typeof toggleWaTypeFields === "function") toggleWaTypeFields();
 
       // Redes
       setVal("cfg-instagramUrl", cfg.instagramUrl);
@@ -1482,6 +1526,8 @@
         },
 
         // WhatsApp
+        whatsappType: document.getElementById("cfg-waType-group")?.checked ? "group" : "direct",
+        whatsappGroupUrl: getVal("cfg-whatsappGroupUrl", ""),
         whatsappNumber: getVal("cfg-whatsappNumber", current.whatsappNumber),
         whatsappDisplay: getVal("cfg-whatsappDisplay", current.whatsappDisplay),
         whatsappMessage: getVal("cfg-whatsappMessage", current.whatsappMessage),
@@ -1624,6 +1670,21 @@
       setTimeout(() => {
         toast.classList.add("translate-y-24", "opacity-0");
       }, 3500);
+    }
+
+    // Alternar campos visuales de WhatsApp según el modo seleccionado (Directo vs Grupo)
+    function toggleWaTypeFields() {
+      const isGroup = document.getElementById("cfg-waType-group")?.checked;
+      const groupFieldBox = document.getElementById("wa-group-field-box");
+      if (groupFieldBox) {
+        if (isGroup) {
+          groupFieldBox.classList.remove("opacity-60");
+          groupFieldBox.classList.add("border-emerald-500", "ring-1", "ring-emerald-500/40");
+        } else {
+          groupFieldBox.classList.remove("border-emerald-500", "ring-1", "ring-emerald-500/40");
+          groupFieldBox.classList.add("opacity-60");
+        }
+      }
     }
 
     // Actualizar insignia visual de estado para Planes y Precios

@@ -413,7 +413,7 @@
                 <svg class="w-5 h-5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                 </svg>
-                <span>WhatsApp Oficial</span>
+                <span id="hero-cta-text">WhatsApp Oficial</span>
               </a>
             </div>
 
@@ -483,23 +483,16 @@
 
     <!-- LIVE "CLASE DE HOY" DYNAMIC NOTIFICATION BAR -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 mb-12">
-      <div id="live-today-banner" class="glass-panel-gold p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl">
-        <div class="flex items-center gap-3.5">
-          <div class="w-10 h-10 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-bold text-lg">
-            📅
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <span id="live-day-tag" class="text-xs font-black uppercase px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">HOY</span>
-              <span id="live-day-name" class="font-serif-title font-bold text-amber-200 text-base">Cargando horario de hoy...</span>
-            </div>
-            <p id="live-day-classes" class="text-xs sm:text-sm text-slate-300 mt-0.5">Identificando clases programadas para esta noche en Casa de Cultura...</p>
-          </div>
+      <div id="live-today-banner" class="glass-panel-gold p-4 sm:p-5 flex items-center gap-4 shadow-xl">
+        <div class="w-10 h-10 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-400 font-bold text-lg flex-shrink-0">
+          📅
         </div>
-        <div class="flex items-center gap-3 w-full md:w-auto">
-          <button id="live-today-action-btn" onclick="openBookingModal('Hoy')" class="btn-gold text-xs uppercase py-2 px-5 w-full md:w-auto justify-center flex items-center gap-2">
-            Asistir Hoy
-          </button>
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="live-day-tag" class="text-xs font-black uppercase px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">HOY</span>
+            <span id="live-day-name" class="font-serif-title font-bold text-amber-200 text-base">Cargando horario de hoy...</span>
+          </div>
+          <p id="live-day-classes" class="text-xs sm:text-sm text-slate-300 mt-0.5">Identificando clases programadas para esta noche en Casa de Cultura...</p>
         </div>
       </div>
     </section>
@@ -821,21 +814,7 @@
           </div>
         </div>
 
-        <!-- Schedule Footer Notes & Quick Action -->
-        <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-[#0B132B]/80 border border-amber-500/20">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">🏛️</span>
-            <div>
-              <p id="schedule-venue-name" class="text-sm font-semibold text-white">Sede de Impartición: Casa de Cultura Neteotiloyan</p>
-              <p id="schedule-venue-desc" class="text-xs text-slate-400">San Martín de las Pirámides, Estado de México • Salón con duela y espejos profesionales</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-3 w-full sm:w-auto">
-            <button onclick="openBookingModal('General')" class="btn-gold text-xs uppercase py-2.5 px-6 w-full sm:w-auto justify-center">
-              Más Detalles
-            </button>
-          </div>
-        </div>
+
 
       </div>
     </section>
@@ -877,9 +856,6 @@
                 <li class="flex items-center gap-2"><span class="text-emerald-400 font-bold">✓</span> Giros sencillos individuales y en pareja</li>
               </ul>
             </div>
-            <button onclick="openBookingModal('Salsa Principiante')" class="mt-6 w-full py-2.5 rounded-xl border border-emerald-500/40 text-emerald-300 hover:bg-emerald-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
-              Apartar Principiante
-            </button>
           </div>
 
           <!-- Card 2: Salsa Intermedio -->
@@ -900,9 +876,6 @@
                 <li class="flex items-center gap-2"><span class="text-blue-400 font-bold">✓</span> Shines y estilo de brazos</li>
               </ul>
             </div>
-            <button onclick="openBookingModal('Salsa Intermedio')" class="mt-6 w-full py-2.5 rounded-xl border border-blue-500/40 text-blue-300 hover:bg-blue-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
-              Apartar Intermedio
-            </button>
           </div>
 
           <!-- Card 3: Salsa Avanzado -->
@@ -923,9 +896,6 @@
                 <li class="flex items-center gap-2"><span class="text-rose-400 font-bold">✓</span> Estilo personal y presencia en pista</li>
               </ul>
             </div>
-            <button onclick="openBookingModal('Salsa Avanzado')" class="mt-6 w-full py-2.5 rounded-xl border border-rose-500/40 text-rose-300 hover:bg-rose-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
-              Apartar Avanzado
-            </button>
           </div>
 
           <!-- Card 4: Cumbia Intermedio -->
@@ -946,9 +916,6 @@
                 <li class="flex items-center gap-2"><span class="text-amber-400 font-bold">✓</span> Figuras de nudo y juego de brazos</li>
               </ul>
             </div>
-            <button onclick="openBookingModal('Cumbia Intermedio')" class="mt-6 w-full py-2.5 rounded-xl border border-amber-500/40 text-amber-300 hover:bg-amber-500/20 text-xs font-bold uppercase tracking-wider transition-colors">
-              Apartar Cumbia
-            </button>
           </div>
 
         </div>
@@ -1630,9 +1597,20 @@
 
       const waBtn = document.getElementById("modal-class-wa-btn");
       if (waBtn) {
-        const phone = (window.SITE_CONFIG?.contact?.whatsapp || "525512345678").replace(/\D/g, "");
-        const msg = `Hola Ritmo Salsero! 👋 Deseo solicitar informes sobre la clase de ${detail.title} (${day} ${time}) en Casa de Cultura. ¿Me podrían compartir costos y requisitos de inscripción?`;
-        waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        const isGroup = Boolean(window.SITE_CONFIG && window.SITE_CONFIG.whatsappType === "group" && window.SITE_CONFIG.whatsappGroupUrl && window.SITE_CONFIG.whatsappGroupUrl.trim());
+        if (isGroup) {
+          let gUrl = window.SITE_CONFIG.whatsappGroupUrl.trim();
+          if (!/^https?:\/\//i.test(gUrl)) gUrl = "https://" + gUrl;
+          waBtn.href = gUrl;
+          const span = waBtn.querySelector("span");
+          if (span) span.textContent = "Unirme al Grupo de Informes en WhatsApp";
+        } else {
+          const phone = (window.SITE_CONFIG?.whatsappNumber || window.SITE_CONFIG?.contact?.whatsapp || "525512345678").replace(/\D/g, "");
+          const msg = `Hola Ritmo Salsero! 👋 Deseo solicitar informes sobre la clase de ${detail.title} (${day} ${time}) en Casa de Cultura. ¿Me podrían compartir costos y requisitos de inscripción?`;
+          waBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+          const span = waBtn.querySelector("span");
+          if (span) span.textContent = "Solicitar Informes por WhatsApp";
+        }
       }
 
       const modal = document.getElementById("class-modal");
@@ -1711,7 +1689,7 @@
     <svg class="w-7 h-7 sm:w-8 sm:h-8" fill="currentColor" viewBox="0 0 24 24">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
     </svg>
-    <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-bold text-xs ml-0 group-hover:ml-2">
+    <span id="floating-wa-tooltip" class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300 ease-in-out font-bold text-xs ml-0 group-hover:ml-2">
       ¡Escríbenos por WhatsApp!
     </span>
   </a>
