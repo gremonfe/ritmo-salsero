@@ -90,20 +90,24 @@ const DEFAULT_SITE_CONFIG = {
   videoSectionBadge: "🎬 Pasión en la Pista",
   videoSectionTitle: "Nuestras Clases en Acción",
   videoSectionSubtitle: "Descubre el ambiente, la energía y el progreso de nuestros alumnos en Casa de Cultura. ¡Siente el ritmo de nuestra comunidad!",
+  video1Type: "instagram",
   video1Enabled: true,
-  video1Title: "Salsa Cubana - Vueltas y Figuras",
-  video1Desc: "Práctica de técnica y coordinación de vueltas en Casa de Cultura.",
-  video1Url: "",
+  video1Title: "Salsa Cubana - Vueltas y Coordinación",
+  video1Desc: "Práctica de técnica y vueltas en nuestras clases de Casa de Cultura.",
+  video1Url: "https://www.instagram.com/reel/DZ9eJ2LTJ2a/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
+  video2Type: "instagram",
   video2Enabled: true,
-  video2Title: "Cumbia y Cadencia Sonidera",
-  video2Desc: "Aprende el paso básico, cadencia y vueltas clásicas con alegría.",
-  video2Url: "",
+  video2Title: "Cumbia y Ritmo en Pista",
+  video2Desc: "Aprende el paso básico, cadencia y vueltas con alegría en pareja.",
+  video2Url: "https://www.instagram.com/reel/DaevwnWTAdk/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
+  video3Type: "facebook",
   video3Enabled: true,
-  video3Title: "Ambiente Social y Convivencia",
-  video3Desc: "Bailamos, compartimos y creamos amistades en cada clase.",
-  video3Url: "",
+  video3Title: "Ambiente y Pasión Salsera",
+  video3Desc: "Nuestra comunidad bailando y disfrutando cada semana en Casa de Cultura.",
+  video3Url: "https://www.facebook.com/reel/3895288920775495/",
+  video4Type: "instagram",
   video4Enabled: false,
-  video4Title: "Coreografía y Ritmo",
+  video4Title: "Coreografía y Pasos Libres",
   video4Desc: "Secuencias avanzadas para lucir en cualquier evento o fiesta.",
   video4Url: ""
 };
@@ -589,14 +593,34 @@ function applySiteConfigToDOM(config = null) {
 
 /**
  * Parsea y detecta la plataforma de video (Instagram, Facebook, YouTube, TikTok o MP4)
+ * Soporta URLs directas o código completo <iframe> pegado por el usuario
  */
-function parseVideoEmbedInfo(url) {
-  if (!url || !url.trim() || url.includes("example")) return null;
-  const trimmed = url.trim();
+function parseVideoEmbedInfo(input, forcedType = "auto") {
+  if (!input || !input.trim() || input.includes("example")) return null;
+  let raw = input.trim();
 
-  // 1. Instagram Reels y Posts
-  const igMatch = trimmed.match(/instagram\.com\/(?:reel|p|tv)\/([a-zA-Z0-9_-]+)/i);
-  if (igMatch) {
+  // 0. Si el usuario pegó un iframe completo, extraer el atributo src
+  const iframeSrcMatch = raw.match(/<iframe[^>]*src=["']([^"']+)["'][^>]*>/i);
+  let effectiveUrl = iframeSrcMatch ? iframeSrcMatch[1] : raw;
+
+  // Determinar la plataforma: forzada o auto-detectada
+  let platform = (forcedType && forcedType !== "auto") ? forcedType : "auto";
+  if (platform === "auto") {
+    if (/instagram\.com/i.test(effectiveUrl)) platform = "instagram";
+    else if (/facebook\.com|fb\.watch/i.test(effectiveUrl)) platform = "facebook";
+    else if (/youtube\.com|youtu\.be/i.test(effectiveUrl)) platform = "youtube";
+    else if (/tiktok\.com/i.test(effectiveUrl)) platform = "tiktok";
+    else if (/\.(mp4|webm|mov)(\?.*)?$/i.test(effectiveUrl)) platform = "direct";
+    else platform = "web";
+  }
+
+  // 1. INSTAGRAM (Reels y Posts)
+  if (platform === "instagram") {
+    const igMatch = effectiveUrl.match(/instagram\.com\/(?:reel|p|tv)\/([a-zA-Z0-9_-]+)/i);
+    const code = igMatch ? igMatch[1] : "";
+    const cleanWatch = code ? `https://www.instagram.com/reel/${code}/` : effectiveUrl;
+    const embedSrc = code ? `https://www.instagram.com/reel/${code}/embed/` : (iframeSrcMatch ? effectiveUrl : `${cleanWatch.replace(/\/$/, '')}/embed/`);
+
     return {
       platform: "instagram",
       platformName: "Instagram Reel",
@@ -604,13 +628,29 @@ function parseVideoEmbedInfo(url) {
       badgeClass: "bg-pink-500/20 text-pink-300 border-pink-500/30",
       btnClass: "bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white hover:opacity-95",
       btnText: "Ver Reel en Instagram ↗",
-      watchUrl: trimmed,
-      iframeSrc: `https://www.instagram.com/reel/${igMatch[1]}/embed`
+      watchUrl: cleanWatch,
+      iframeSrc: embedSrc
     };
   }
 
-  // 2. Facebook Videos y Reels
-  if (/facebook\.com|fb\.watch/i.test(trimmed)) {
+  // 2. FACEBOOK (Videos y Reels)
+  if (platform === "facebook") {
+    let cleanWatch = effectiveUrl;
+    // Si viene de un plugin de facebook con href=...
+    const hrefMatch = effectiveUrl.match(/[?&]href=([^&]+)/i);
+    if (hrefMatch) {
+      try {
+        cleanWatch = decodeURIComponent(hrefMatch[1]);
+      } catch (e) {
+        cleanWatch = hrefMatch[1];
+      }
+    }
+
+    let embedSrc = effectiveUrl;
+    if (!effectiveUrl.includes("plugins/video.php")) {
+      embedSrc = `https://www.facebook.com/plugins/video.php?height=476&href=${encodeURIComponent(cleanWatch)}&show_text=false&width=267&t=0`;
+    }
+
     return {
       platform: "facebook",
       platformName: "Facebook Video",
@@ -618,14 +658,15 @@ function parseVideoEmbedInfo(url) {
       badgeClass: "bg-blue-500/20 text-blue-300 border-blue-500/30",
       btnClass: "bg-[#1877F2] hover:bg-[#166fe5] text-white",
       btnText: "Ver en Facebook ↗",
-      watchUrl: trimmed,
-      iframeSrc: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(trimmed)}&show_text=false&t=0`
+      watchUrl: cleanWatch,
+      iframeSrc: embedSrc
     };
   }
 
-  // 3. YouTube y YouTube Shorts
-  const ytMatch = trimmed.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
-  if (ytMatch) {
+  // 3. YOUTUBE (Videos y Shorts)
+  if (platform === "youtube") {
+    const ytMatch = effectiveUrl.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+    const videoId = ytMatch ? ytMatch[1] : "";
     return {
       platform: "youtube",
       platformName: "YouTube",
@@ -633,14 +674,15 @@ function parseVideoEmbedInfo(url) {
       badgeClass: "bg-red-500/20 text-red-300 border-red-500/30",
       btnClass: "bg-red-600 hover:bg-red-500 text-white",
       btnText: "Ver en YouTube ↗",
-      watchUrl: trimmed,
-      iframeSrc: `https://www.youtube.com/embed/${ytMatch[1]}`
+      watchUrl: videoId ? `https://www.youtube.com/watch?v=${videoId}` : effectiveUrl,
+      iframeSrc: videoId ? `https://www.youtube.com/embed/${videoId}` : effectiveUrl
     };
   }
 
-  // 4. TikTok
-  const ttMatch = trimmed.match(/tiktok\.com\/.*\/video\/([0-9]+)/i);
-  if (ttMatch) {
+  // 4. TIKTOK
+  if (platform === "tiktok") {
+    const ttMatch = effectiveUrl.match(/tiktok\.com\/.*\/video\/([0-9]+)/i);
+    const ttId = ttMatch ? ttMatch[1] : "";
     return {
       platform: "tiktok",
       platformName: "TikTok",
@@ -648,20 +690,23 @@ function parseVideoEmbedInfo(url) {
       badgeClass: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
       btnClass: "bg-slate-900 border border-cyan-400 text-cyan-300 hover:bg-slate-800",
       btnText: "Ver en TikTok ↗",
-      watchUrl: trimmed,
-      iframeSrc: `https://www.tiktok.com/embed/v2/${ttMatch[1]}`
+      watchUrl: effectiveUrl,
+      iframeSrc: ttId ? `https://www.tiktok.com/embed/v2/${ttId}` : effectiveUrl
     };
   }
 
-  // 5. Archivo directo MP4 / WebM
-  if (/\.(mp4|webm|mov)(\?.*)?$/i.test(trimmed)) {
+  // 5. ARCHIVO DIRECTO MP4 / WebM
+  if (platform === "direct" || /\.(mp4|webm|mov)(\?.*)?$/i.test(effectiveUrl)) {
     return {
       platform: "direct",
       platformName: "Video en Vivo",
       icon: "🎥",
       badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+      btnClass: "btn-gold text-xs",
+      btnText: "Ver Video Completo ↗",
+      watchUrl: effectiveUrl,
       isVideoFile: true,
-      videoSrc: trimmed
+      videoSrc: effectiveUrl
     };
   }
 
@@ -673,8 +718,8 @@ function parseVideoEmbedInfo(url) {
     badgeClass: "bg-slate-800 text-slate-300 border-slate-700",
     btnClass: "btn-gold text-xs",
     btnText: "Ver Video ↗",
-    watchUrl: trimmed,
-    iframeSrc: trimmed
+    watchUrl: effectiveUrl,
+    iframeSrc: effectiveUrl
   };
 }
 
@@ -722,10 +767,10 @@ function renderSocialVideos(cfg) {
   if (!container) return;
 
   const rawVideos = [
-    { enabled: cfg.video1Enabled !== false, title: cfg.video1Title || "Salsa Cubana", desc: cfg.video1Desc || "", url: cfg.video1Url || "" },
-    { enabled: cfg.video2Enabled !== false, title: cfg.video2Title || "Cumbia Sonidera", desc: cfg.video2Desc || "", url: cfg.video2Url || "" },
-    { enabled: cfg.video3Enabled !== false, title: cfg.video3Title || "Ambiente Social", desc: cfg.video3Desc || "", url: cfg.video3Url || "" },
-    { enabled: Boolean(cfg.video4Enabled), title: cfg.video4Title || "Coreografía", desc: cfg.video4Desc || "", url: cfg.video4Url || "" },
+    { enabled: cfg.video1Enabled !== false, type: cfg.video1Type || "instagram", title: cfg.video1Title || "Salsa Cubana", desc: cfg.video1Desc || "", url: cfg.video1Url || "" },
+    { enabled: cfg.video2Enabled !== false, type: cfg.video2Type || "instagram", title: cfg.video2Title || "Cumbia y Ritmo", desc: cfg.video2Desc || "", url: cfg.video2Url || "" },
+    { enabled: cfg.video3Enabled !== false, type: cfg.video3Type || "facebook", title: cfg.video3Title || "Ambiente Social", desc: cfg.video3Desc || "", url: cfg.video3Url || "" },
+    { enabled: Boolean(cfg.video4Enabled), type: cfg.video4Type || "instagram", title: cfg.video4Title || "Coreografía", desc: cfg.video4Desc || "", url: cfg.video4Url || "" },
   ].filter(v => v.enabled);
 
   if (rawVideos.length === 0) {
@@ -740,9 +785,9 @@ function renderSocialVideos(cfg) {
   }
 
   container.innerHTML = rawVideos.map((item, idx) => {
-    const info = parseVideoEmbedInfo(item.url);
+    const info = parseVideoEmbedInfo(item.url, item.type);
     if (!info) {
-      // Tarjeta de previsualización / muestra estilizada
+      // Tarjeta de previsualización / muestra estilizada si aún no hay enlace
       return `
         <div class="glass-panel p-6 rounded-3xl border border-amber-500/20 flex flex-col justify-between hover:border-amber-400/40 transition-all group">
           <div>
@@ -769,21 +814,21 @@ function renderSocialVideos(cfg) {
 
     // Tarjeta con reproductor embebido activo
     return `
-      <div class="glass-panel p-5 rounded-3xl border border-slate-800 hover:border-amber-500/40 transition-all flex flex-col justify-between group">
+      <div class="glass-panel p-5 rounded-3xl border border-slate-800 hover:border-amber-500/40 transition-all flex flex-col justify-between group shadow-xl">
         <div>
           <div class="flex items-center justify-between mb-3">
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full border ${info.badgeClass} flex items-center gap-1.5">
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full border ${info.badgeClass} flex items-center gap-1.5 shadow-sm">
               <span>${info.icon}</span> ${info.platformName}
             </span>
-            <span class="text-[11px] text-slate-400 font-medium">Clase en Vivo</span>
+            <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400/80">Clase en Vivo</span>
           </div>
           <h3 class="font-serif-title font-bold text-base text-white mb-1">${item.title}</h3>
           ${item.desc ? `<p class="text-xs text-slate-400 mb-3 line-clamp-2">${item.desc}</p>` : ''}
-          <div class="w-full rounded-2xl overflow-hidden bg-black/70 border border-slate-800 shadow-inner" style="aspect-ratio: 9/16; max-height: 480px;">
+          <div class="relative w-full rounded-2xl overflow-hidden bg-slate-950/90 border border-slate-800 flex items-center justify-center mx-auto shadow-inner" style="min-height: 480px; max-height: 520px; height: 500px;">
             ${info.isVideoFile ? `
               <video src="${info.videoSrc}" controls playsinline preload="metadata" class="w-full h-full object-cover"></video>
             ` : `
-              <iframe src="${info.iframeSrc}" class="w-full h-full border-0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+              <iframe src="${info.iframeSrc}" class="w-full h-full border-0" frameborder="0" scrolling="no" allowtransparency="true" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
             `}
           </div>
         </div>
