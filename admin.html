@@ -760,6 +760,7 @@
                     <select id="cfg-video1Type" onchange="updateVideoCardTypeUI(1, this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
                       <option value="instagram">📸 Instagram Reel / Post</option>
                       <option value="facebook">📘 Facebook Video / Reel</option>
+                      <option value="direct">🎥 Video Directo MP4 (Limpio, Sin logos)</option>
                       <option value="youtube">▶️ YouTube Video / Short</option>
                       <option value="tiktok">🎵 TikTok</option>
                       <option value="auto">⚡ Auto-detectar por enlace</option>
@@ -774,7 +775,7 @@
                 <div>
                   <label class="block text-xs text-slate-400 mb-1">Enlace del Video o Código Iframe</label>
                   <input type="text" id="cfg-video1Url" placeholder="https://www.instagram.com/reel/... o <iframe src=...>" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono">
-                  <p class="text-[11px] text-slate-500 mt-1">Acepta enlaces directos de reels o el código completo <code>&lt;iframe&gt;</code> de Facebook o Instagram.</p>
+                  <p class="text-[11px] text-slate-500 mt-1">Acepta enlaces directos de reels, código <code>&lt;iframe&gt;</code> de Facebook o archivos <code>.mp4</code> limpios.</p>
                 </div>
 
                 <div>
@@ -803,6 +804,7 @@
                     <select id="cfg-video2Type" onchange="updateVideoCardTypeUI(2, this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
                       <option value="instagram">📸 Instagram Reel / Post</option>
                       <option value="facebook">📘 Facebook Video / Reel</option>
+                      <option value="direct">🎥 Video Directo MP4 (Limpio, Sin logos)</option>
                       <option value="youtube">▶️ YouTube Video / Short</option>
                       <option value="tiktok">🎵 TikTok</option>
                       <option value="auto">⚡ Auto-detectar por enlace</option>
@@ -817,7 +819,7 @@
                 <div>
                   <label class="block text-xs text-slate-400 mb-1">Enlace del Video o Código Iframe</label>
                   <input type="text" id="cfg-video2Url" placeholder="https://www.instagram.com/reel/... o <iframe src=...>" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono">
-                  <p class="text-[11px] text-slate-500 mt-1">Acepta enlaces directos de reels o el código completo <code>&lt;iframe&gt;</code> de Facebook o Instagram.</p>
+                  <p class="text-[11px] text-slate-500 mt-1">Acepta enlaces directos de reels, código <code>&lt;iframe&gt;</code> de Facebook o archivos <code>.mp4</code> limpios.</p>
                 </div>
 
                 <div>
@@ -846,6 +848,7 @@
                     <select id="cfg-video3Type" onchange="updateVideoCardTypeUI(3, this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
                       <option value="facebook">📘 Facebook Video / Reel</option>
                       <option value="instagram">📸 Instagram Reel / Post</option>
+                      <option value="direct">🎥 Video Directo MP4 (Limpio, Sin logos)</option>
                       <option value="youtube">▶️ YouTube Video / Short</option>
                       <option value="tiktok">🎵 TikTok</option>
                       <option value="auto">⚡ Auto-detectar por enlace</option>
@@ -860,7 +863,7 @@
                 <div>
                   <label class="block text-xs text-slate-400 mb-1">Enlace del Video o Código Iframe</label>
                   <input type="text" id="cfg-video3Url" placeholder="https://www.facebook.com/reel/... o <iframe src=...>" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono">
-                  <p class="text-[11px] text-slate-500 mt-1">Acepta enlaces directos de reels o el código completo <code>&lt;iframe&gt;</code> de Facebook o Instagram.</p>
+                  <p class="text-[11px] text-slate-500 mt-1">Acepta enlaces directos de reels, código <code>&lt;iframe&gt;</code> de Facebook o archivos <code>.mp4</code> limpios.</p>
                 </div>
 
                 <div>
@@ -889,6 +892,7 @@
                     <select id="cfg-video4Type" onchange="updateVideoCardTypeUI(4, this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
                       <option value="instagram">📸 Instagram Reel / Post</option>
                       <option value="facebook">📘 Facebook Video / Reel</option>
+                      <option value="direct">🎥 Video Directo MP4 (Limpio, Sin logos)</option>
                       <option value="youtube">▶️ YouTube Video / Short</option>
                       <option value="tiktok">🎵 TikTok</option>
                       <option value="auto">⚡ Auto-detectar por enlace</option>
@@ -2010,6 +2014,7 @@
       const map = {
         instagram: { text: "📸 Instagram Reel", cls: "bg-pink-500/20 text-pink-300 border-pink-500/30", placeholder: "https://www.instagram.com/reel/... o <iframe src=...>" },
         facebook: { text: "📘 Facebook Video", cls: "bg-blue-500/20 text-blue-300 border-blue-500/30", placeholder: "https://www.facebook.com/reel/... o <iframe src=...>" },
+        direct: { text: "🎥 Video Directo MP4", cls: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30", placeholder: "assets/videos/mi_video.mp4 o https://.../video.mp4" },
         youtube: { text: "▶️ YouTube", cls: "bg-red-500/20 text-red-300 border-red-500/30", placeholder: "https://www.youtube.com/watch?v=... o shorts" },
         tiktok: { text: "🎵 TikTok", cls: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30", placeholder: "https://www.tiktok.com/@.../video/..." },
         auto: { text: "⚡ Auto-detectar", cls: "bg-amber-500/20 text-amber-300 border-amber-500/30", placeholder: "Pega enlace de Instagram, Facebook, YouTube, TikTok o iframe" }

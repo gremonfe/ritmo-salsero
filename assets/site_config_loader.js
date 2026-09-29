@@ -648,7 +648,7 @@ function parseVideoEmbedInfo(input, forcedType = "auto") {
 
     let embedSrc = effectiveUrl;
     if (!effectiveUrl.includes("plugins/video.php")) {
-      embedSrc = `https://www.facebook.com/plugins/video.php?height=476&href=${encodeURIComponent(cleanWatch)}&show_text=false&width=267&t=0`;
+      embedSrc = `https://www.facebook.com/plugins/video.php?height=476&href=${encodeURIComponent(cleanWatch)}&show_text=false&show_captions=false&width=267&t=0`;
     }
 
     return {
@@ -701,9 +701,9 @@ function parseVideoEmbedInfo(input, forcedType = "auto") {
       platform: "direct",
       platformName: "Video en Vivo",
       icon: "🎥",
-      badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+      badgeClass: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
       btnClass: "btn-gold text-xs",
-      btnText: "Ver Video Completo ↗",
+      btnText: "Ver Video en Pantalla Completa ↗",
       watchUrl: effectiveUrl,
       isVideoFile: true,
       videoSrc: effectiveUrl
