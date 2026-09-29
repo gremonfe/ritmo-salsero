@@ -83,7 +83,29 @@ const DEFAULT_SITE_CONFIG = {
   // 7. Botón Llamar a la Escuela (Instalaciones Oficiales)
   callBtnText: "📞 Llamar a la Escuela",
   callBtnPhone: "",
-  callBtnEnabled: false
+  callBtnEnabled: false,
+
+  // 8. Sección de Videos Sociales (Facebook, Instagram, TikTok, YouTube)
+  videoSectionEnabled: true,
+  videoSectionBadge: "🎬 Pasión en la Pista",
+  videoSectionTitle: "Nuestras Clases en Acción",
+  videoSectionSubtitle: "Descubre el ambiente, la energía y el progreso de nuestros alumnos en Casa de Cultura. ¡Siente el ritmo de nuestra comunidad!",
+  video1Enabled: true,
+  video1Title: "Salsa Cubana - Vueltas y Figuras",
+  video1Desc: "Práctica de técnica y coordinación de vueltas en Casa de Cultura.",
+  video1Url: "",
+  video2Enabled: true,
+  video2Title: "Cumbia y Cadencia Sonidera",
+  video2Desc: "Aprende el paso básico, cadencia y vueltas clásicas con alegría.",
+  video2Url: "",
+  video3Enabled: true,
+  video3Title: "Ambiente Social y Convivencia",
+  video3Desc: "Bailamos, compartimos y creamos amistades en cada clase.",
+  video3Url: "",
+  video4Enabled: false,
+  video4Title: "Coreografía y Ritmo",
+  video4Desc: "Secuencias avanzadas para lucir en cualquier evento o fiesta.",
+  video4Url: ""
 };
 
 const SITE_CONFIG_STORAGE_KEY = "ritmo_salsero_site_config";
@@ -560,6 +582,219 @@ function applySiteConfigToDOM(config = null) {
   if (footerVenue) {
     footerVenue.textContent = `Sede: ${cfg.venueName} • "${cfg.venueQuote}"`;
   }
+
+  // 11. Galería de Videos de Redes Sociales
+  renderSocialVideos(cfg);
+}
+
+/**
+ * Parsea y detecta la plataforma de video (Instagram, Facebook, YouTube, TikTok o MP4)
+ */
+function parseVideoEmbedInfo(url) {
+  if (!url || !url.trim() || url.includes("example")) return null;
+  const trimmed = url.trim();
+
+  // 1. Instagram Reels y Posts
+  const igMatch = trimmed.match(/instagram\.com\/(?:reel|p|tv)\/([a-zA-Z0-9_-]+)/i);
+  if (igMatch) {
+    return {
+      platform: "instagram",
+      platformName: "Instagram Reel",
+      icon: "📸",
+      badgeClass: "bg-pink-500/20 text-pink-300 border-pink-500/30",
+      btnClass: "bg-gradient-to-r from-[#833AB4] via-[#FD1D1D] to-[#F77737] text-white hover:opacity-95",
+      btnText: "Ver Reel en Instagram ↗",
+      watchUrl: trimmed,
+      iframeSrc: `https://www.instagram.com/reel/${igMatch[1]}/embed`
+    };
+  }
+
+  // 2. Facebook Videos y Reels
+  if (/facebook\.com|fb\.watch/i.test(trimmed)) {
+    return {
+      platform: "facebook",
+      platformName: "Facebook Video",
+      icon: "📘",
+      badgeClass: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+      btnClass: "bg-[#1877F2] hover:bg-[#166fe5] text-white",
+      btnText: "Ver en Facebook ↗",
+      watchUrl: trimmed,
+      iframeSrc: `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(trimmed)}&show_text=false&t=0`
+    };
+  }
+
+  // 3. YouTube y YouTube Shorts
+  const ytMatch = trimmed.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+  if (ytMatch) {
+    return {
+      platform: "youtube",
+      platformName: "YouTube",
+      icon: "▶️",
+      badgeClass: "bg-red-500/20 text-red-300 border-red-500/30",
+      btnClass: "bg-red-600 hover:bg-red-500 text-white",
+      btnText: "Ver en YouTube ↗",
+      watchUrl: trimmed,
+      iframeSrc: `https://www.youtube.com/embed/${ytMatch[1]}`
+    };
+  }
+
+  // 4. TikTok
+  const ttMatch = trimmed.match(/tiktok\.com\/.*\/video\/([0-9]+)/i);
+  if (ttMatch) {
+    return {
+      platform: "tiktok",
+      platformName: "TikTok",
+      icon: "🎵",
+      badgeClass: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+      btnClass: "bg-slate-900 border border-cyan-400 text-cyan-300 hover:bg-slate-800",
+      btnText: "Ver en TikTok ↗",
+      watchUrl: trimmed,
+      iframeSrc: `https://www.tiktok.com/embed/v2/${ttMatch[1]}`
+    };
+  }
+
+  // 5. Archivo directo MP4 / WebM
+  if (/\.(mp4|webm|mov)(\?.*)?$/i.test(trimmed)) {
+    return {
+      platform: "direct",
+      platformName: "Video en Vivo",
+      icon: "🎥",
+      badgeClass: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+      isVideoFile: true,
+      videoSrc: trimmed
+    };
+  }
+
+  // Fallback
+  return {
+    platform: "web",
+    platformName: "Video Social",
+    icon: "🎬",
+    badgeClass: "bg-slate-800 text-slate-300 border-slate-700",
+    btnClass: "btn-gold text-xs",
+    btnText: "Ver Video ↗",
+    watchUrl: trimmed,
+    iframeSrc: trimmed
+  };
+}
+
+/**
+ * Renderiza la sección de videos de redes sociales y actualiza su visibilidad
+ */
+function renderSocialVideos(cfg) {
+  const videoSection = document.getElementById("videos");
+  const isVideoEnabled = (cfg.videoSectionEnabled !== false);
+
+  if (videoSection) {
+    if (isVideoEnabled) {
+      videoSection.classList.remove("hidden");
+      videoSection.style.display = "";
+    } else {
+      videoSection.classList.add("hidden");
+      videoSection.style.display = "none";
+    }
+  }
+
+  // Ocultar o mostrar links en el menú de navegación
+  document.querySelectorAll(".nav-link-videos").forEach(el => {
+    if (isVideoEnabled) {
+      el.classList.remove("hidden");
+      el.style.display = "";
+    } else {
+      el.classList.add("hidden");
+      el.style.display = "none";
+    }
+  });
+
+  if (!isVideoEnabled) return;
+
+  // Actualizar textos del encabezado
+  const badgeEl = document.getElementById("videos-badge-text");
+  if (badgeEl && cfg.videoSectionBadge) badgeEl.textContent = cfg.videoSectionBadge;
+
+  const titleEl = document.getElementById("videos-title-text");
+  if (titleEl && cfg.videoSectionTitle) titleEl.textContent = cfg.videoSectionTitle;
+
+  const subtitleEl = document.getElementById("videos-subtitle-text");
+  if (subtitleEl && cfg.videoSectionSubtitle) subtitleEl.textContent = cfg.videoSectionSubtitle;
+
+  const container = document.getElementById("videos-grid-container");
+  if (!container) return;
+
+  const rawVideos = [
+    { enabled: cfg.video1Enabled !== false, title: cfg.video1Title || "Salsa Cubana", desc: cfg.video1Desc || "", url: cfg.video1Url || "" },
+    { enabled: cfg.video2Enabled !== false, title: cfg.video2Title || "Cumbia Sonidera", desc: cfg.video2Desc || "", url: cfg.video2Url || "" },
+    { enabled: cfg.video3Enabled !== false, title: cfg.video3Title || "Ambiente Social", desc: cfg.video3Desc || "", url: cfg.video3Url || "" },
+    { enabled: Boolean(cfg.video4Enabled), title: cfg.video4Title || "Coreografía", desc: cfg.video4Desc || "", url: cfg.video4Url || "" },
+  ].filter(v => v.enabled);
+
+  if (rawVideos.length === 0) {
+    container.innerHTML = `
+      <div class="col-span-full p-8 text-center glass-panel rounded-3xl border border-slate-800 text-slate-400 text-sm">
+        <span class="text-3xl block mb-2">🎬</span>
+        <p class="font-bold text-white mb-1">Próximamente videos de nuestras clases</p>
+        <p class="text-xs text-slate-400">Activa los videos desde el Panel de Administración para ver las clases en acción.</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = rawVideos.map((item, idx) => {
+    const info = parseVideoEmbedInfo(item.url);
+    if (!info) {
+      // Tarjeta de previsualización / muestra estilizada
+      return `
+        <div class="glass-panel p-6 rounded-3xl border border-amber-500/20 flex flex-col justify-between hover:border-amber-400/40 transition-all group">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center gap-1.5">
+                <span>🎬</span> Ritmo Salsero
+              </span>
+              <span class="text-xs text-slate-400">En Vivo</span>
+            </div>
+            <div class="relative w-full rounded-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-amber-950/40 border border-slate-800 p-8 flex flex-col items-center justify-center text-center overflow-hidden min-h-[300px]">
+              <div class="w-16 h-16 rounded-full bg-amber-400/20 border-2 border-amber-400 flex items-center justify-center text-amber-300 text-2xl mb-4 group-hover:scale-110 transition-transform shadow-lg shadow-amber-400/10">
+                ▶
+              </div>
+              <h3 class="font-serif-title font-bold text-lg text-white mb-2">${item.title}</h3>
+              <p class="text-xs text-slate-300 max-w-xs leading-relaxed">${item.desc || "Video de nuestras clases en Casa de Cultura Neteotiloyan."}</p>
+            </div>
+          </div>
+          <a href="${cfg.instagramUrl || cfg.facebookUrl || '#'}" target="_blank" rel="noopener noreferrer" class="mt-4 w-full py-2.5 rounded-xl btn-outline-gold text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2">
+            <span>Ver Reels en Redes</span> ↗
+          </a>
+        </div>
+      `;
+    }
+
+    // Tarjeta con reproductor embebido activo
+    return `
+      <div class="glass-panel p-5 rounded-3xl border border-slate-800 hover:border-amber-500/40 transition-all flex flex-col justify-between group">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-[11px] font-bold px-2.5 py-1 rounded-full border ${info.badgeClass} flex items-center gap-1.5">
+              <span>${info.icon}</span> ${info.platformName}
+            </span>
+            <span class="text-[11px] text-slate-400 font-medium">Clase en Vivo</span>
+          </div>
+          <h3 class="font-serif-title font-bold text-base text-white mb-1">${item.title}</h3>
+          ${item.desc ? `<p class="text-xs text-slate-400 mb-3 line-clamp-2">${item.desc}</p>` : ''}
+          <div class="w-full rounded-2xl overflow-hidden bg-black/70 border border-slate-800 shadow-inner" style="aspect-ratio: 9/16; max-height: 480px;">
+            ${info.isVideoFile ? `
+              <video src="${info.videoSrc}" controls playsinline preload="metadata" class="w-full h-full object-cover"></video>
+            ` : `
+              <iframe src="${info.iframeSrc}" class="w-full h-full border-0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+            `}
+          </div>
+        </div>
+        ${info.watchUrl ? `
+          <a href="${info.watchUrl}" target="_blank" rel="noopener noreferrer" class="mt-4 w-full py-2.5 rounded-xl ${info.btnClass} text-xs font-bold tracking-wider flex items-center justify-center gap-2 shadow-md transition-all hover:scale-[1.02]">
+            <span>${info.btnText}</span>
+          </a>
+        ` : ''}
+      </div>
+    `;
+  }).join("");
 }
 
 // Sincronización remota para celulares y visitantes en internet (Netlify)

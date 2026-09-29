@@ -191,6 +191,9 @@
             <button onclick="switchTab('pricing')" id="tab-btn-pricing" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
               <span class="text-base">💳</span> Precios & Planes
             </button>
+            <button onclick="switchTab('videos')" id="tab-btn-videos" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">🎬</span> Videos de Redes
+            </button>
             <button onclick="switchTab('whatsapp')" id="tab-btn-whatsapp" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
               <span class="text-base">💬</span> WhatsApp Oficial
             </button>
@@ -679,6 +682,184 @@
                 </div>
               </div>
 
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB: VIDEOS DE REDES SOCIALES -->
+        <!-- ========================================== -->
+        <section id="tab-videos" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Galería de Videos de Redes Sociales</h2>
+                <p class="text-xs text-slate-400">Muestra videos de tus clases y eventos (Instagram Reels, Facebook Videos, TikTok o YouTube) directamente en tu sitio web.</p>
+              </div>
+              <span class="text-2xl text-amber-400">🎬</span>
+            </div>
+
+            <!-- Interruptor Maestro de Visibilidad de la Sección -->
+            <div class="p-5 bg-slate-900/60 rounded-2xl border border-slate-800 flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-white">Mostrar Sección de Videos en la Página Web</h3>
+                  <span id="cfg-videoSectionEnabled-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Visible</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">Si lo desactivas, la sección de videos y su enlace en el menú se ocultarán automáticamente de la página web.</p>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer ml-4 flex-shrink-0">
+                <input type="checkbox" id="cfg-videoSectionEnabled" class="sr-only peer" checked onchange="updateVideoSectionVisibilityBadge(this.checked); saveAllConfigAndPublish();">
+                <div class="w-11 h-6 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-400"></div>
+              </label>
+            </div>
+
+            <!-- Textos del Encabezado -->
+            <div class="p-5 bg-slate-900/40 rounded-2xl border border-slate-800/80 space-y-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300">Encabezado de la Sección</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Distintivo / Insignia Superior</label>
+                  <input type="text" id="cfg-videoSectionBadge" placeholder="🎬 Pasión en la Pista" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Título de la Sección</label>
+                  <input type="text" id="cfg-videoSectionTitle" placeholder="Nuestras Clases en Acción" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Subtítulo Descriptivo</label>
+                <textarea id="cfg-videoSectionSubtitle" rows="2" placeholder="Descubre el ambiente y la energía de nuestros alumnos..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none"></textarea>
+              </div>
+            </div>
+
+            <!-- Videos Configurables -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300">Videos de Clases (Hasta 4)</h3>
+                <span class="text-[11px] text-slate-400">Pega enlaces de Instagram Reels, Facebook, YouTube o TikTok</span>
+              </div>
+
+              <!-- Video 1 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-300 flex items-center justify-center text-xs font-bold">1</span>
+                    <span class="text-sm font-bold text-white">Video 1 (Instagram / Redes)</span>
+                  </div>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                    <input type="checkbox" id="cfg-video1Enabled" class="rounded bg-slate-800 border-slate-700 text-amber-400 focus:ring-0" checked>
+                    <span>Activo</span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Título del Video</label>
+                    <input type="text" id="cfg-video1Title" placeholder="Ej. Salsa Cubana - Vueltas y Figuras" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Enlace del Video (Reel, Facebook, YouTube, TikTok)</label>
+                    <input type="url" id="cfg-video1Url" placeholder="https://www.instagram.com/reel/..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-400 mb-1">Descripción Breve</label>
+                  <input type="text" id="cfg-video1Desc" placeholder="Ej. Práctica de técnica y coordinación de vueltas en Casa de Cultura." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Video 2 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center text-xs font-bold">2</span>
+                    <span class="text-sm font-bold text-white">Video 2 (Facebook / Redes)</span>
+                  </div>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                    <input type="checkbox" id="cfg-video2Enabled" class="rounded bg-slate-800 border-slate-700 text-amber-400 focus:ring-0" checked>
+                    <span>Activo</span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Título del Video</label>
+                    <input type="text" id="cfg-video2Title" placeholder="Ej. Cumbia y Cadencia Sonidera" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Enlace del Video</label>
+                    <input type="url" id="cfg-video2Url" placeholder="https://www.facebook.com/watch/?v=..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-400 mb-1">Descripción Breve</label>
+                  <input type="text" id="cfg-video2Desc" placeholder="Ej. Aprende el paso básico, cadencia y vueltas clásicas con alegría." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Video 3 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-red-500/20 text-red-300 flex items-center justify-center text-xs font-bold">3</span>
+                    <span class="text-sm font-bold text-white">Video 3 (YouTube / Shorts / Social)</span>
+                  </div>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                    <input type="checkbox" id="cfg-video3Enabled" class="rounded bg-slate-800 border-slate-700 text-amber-400 focus:ring-0" checked>
+                    <span>Activo</span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Título del Video</label>
+                    <input type="text" id="cfg-video3Title" placeholder="Ej. Ambiente Social y Convivencia" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Enlace del Video</label>
+                    <input type="url" id="cfg-video3Url" placeholder="https://www.youtube.com/shorts/..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-400 mb-1">Descripción Breve</label>
+                  <input type="text" id="cfg-video3Desc" placeholder="Ej. Bailamos, compartimos y creamos amistades en cada clase." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Video 4 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center text-xs font-bold">4</span>
+                    <span class="text-sm font-bold text-white">Video 4 (Opcional / Eventos Especiales)</span>
+                  </div>
+                  <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+                    <input type="checkbox" id="cfg-video4Enabled" class="rounded bg-slate-800 border-slate-700 text-amber-400 focus:ring-0">
+                    <span>Activo</span>
+                  </label>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Título del Video</label>
+                    <input type="text" id="cfg-video4Title" placeholder="Ej. Coreografía y Ritmo" class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-xs text-slate-400 mb-1">Enlace del Video</label>
+                    <input type="url" id="cfg-video4Url" placeholder="https://..." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-slate-400 mb-1">Descripción Breve</label>
+                  <input type="text" id="cfg-video4Desc" placeholder="Ej. Secuencias avanzadas para lucir en cualquier evento o fiesta." class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Botón de Guardado Directo para la Pestaña de Videos -->
+            <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span class="text-xs text-slate-400">💡 Al activar o desactivar videos, recuerda presionar Guardar para sincronizar en tiempo real con celulares y web.</span>
+              <button type="button" onclick="saveAllConfigAndPublish()" class="btn-gold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-extrabold flex items-center gap-2 shadow-lg shadow-amber-500/20 hover:scale-105 active:scale-95 transition-all">
+                <span>💾</span> Guardar Cambios de Videos
+              </button>
             </div>
           </div>
         </section>
@@ -1388,6 +1569,24 @@
         setVal("cfg-p3-desc", cfg.plan3.desc);
       }
 
+      // Videos de Redes Sociales
+      const videoSectionCheck = document.getElementById("cfg-videoSectionEnabled");
+      if (videoSectionCheck) {
+        videoSectionCheck.checked = (cfg.videoSectionEnabled !== false);
+        updateVideoSectionVisibilityBadge(videoSectionCheck.checked);
+      }
+      setVal("cfg-videoSectionBadge", cfg.videoSectionBadge || "🎬 Pasión en la Pista");
+      setVal("cfg-videoSectionTitle", cfg.videoSectionTitle || "Nuestras Clases en Acción");
+      setVal("cfg-videoSectionSubtitle", cfg.videoSectionSubtitle || "Descubre el ambiente, la energía y el progreso de nuestros alumnos en Casa de Cultura.");
+
+      for (let i = 1; i <= 4; i++) {
+        const enCheck = document.getElementById(`cfg-video${i}Enabled`);
+        if (enCheck) enCheck.checked = (cfg[`video${i}Enabled`] !== false && (i <= 3 || cfg[`video${i}Enabled`] === true));
+        setVal(`cfg-video${i}Title`, cfg[`video${i}Title`] || "");
+        setVal(`cfg-video${i}Url`, cfg[`video${i}Url`] || "");
+        setVal(`cfg-video${i}Desc`, cfg[`video${i}Desc`] || "");
+      }
+
       // WhatsApp
       const waType = cfg.whatsappType || "direct";
       const directRadio = document.getElementById("cfg-waType-direct");
@@ -1550,7 +1749,29 @@
         // Botón Llamar a la Escuela y Teléfono de Sede
         callBtnEnabled: callBtnEnabled,
         callBtnText: getVal("cfg-callBtnText", "📞 Llamar a la Escuela"),
-        callBtnPhone: phoneVal
+        callBtnPhone: phoneVal,
+
+        // Galería de Videos de Redes Sociales
+        videoSectionEnabled: document.getElementById("cfg-videoSectionEnabled") ? document.getElementById("cfg-videoSectionEnabled").checked : true,
+        videoSectionBadge: getVal("cfg-videoSectionBadge", "🎬 Pasión en la Pista"),
+        videoSectionTitle: getVal("cfg-videoSectionTitle", "Nuestras Clases en Acción"),
+        videoSectionSubtitle: getVal("cfg-videoSectionSubtitle", "Descubre el ambiente, la energía y el progreso de nuestros alumnos en Casa de Cultura."),
+        video1Enabled: document.getElementById("cfg-video1Enabled") ? document.getElementById("cfg-video1Enabled").checked : true,
+        video1Title: getVal("cfg-video1Title", ""),
+        video1Url: getVal("cfg-video1Url", ""),
+        video1Desc: getVal("cfg-video1Desc", ""),
+        video2Enabled: document.getElementById("cfg-video2Enabled") ? document.getElementById("cfg-video2Enabled").checked : true,
+        video2Title: getVal("cfg-video2Title", ""),
+        video2Url: getVal("cfg-video2Url", ""),
+        video2Desc: getVal("cfg-video2Desc", ""),
+        video3Enabled: document.getElementById("cfg-video3Enabled") ? document.getElementById("cfg-video3Enabled").checked : true,
+        video3Title: getVal("cfg-video3Title", ""),
+        video3Url: getVal("cfg-video3Url", ""),
+        video3Desc: getVal("cfg-video3Desc", ""),
+        video4Enabled: document.getElementById("cfg-video4Enabled") ? document.getElementById("cfg-video4Enabled").checked : false,
+        video4Title: getVal("cfg-video4Title", ""),
+        video4Url: getVal("cfg-video4Url", ""),
+        video4Desc: getVal("cfg-video4Desc", "")
       };
 
       saveSiteConfig(updated);
@@ -1696,6 +1917,19 @@
         badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
       } else {
         badge.textContent = "Oculto";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30";
+      }
+    }
+
+    // Actualizar insignia visual de estado para Galería de Videos
+    function updateVideoSectionVisibilityBadge(isChecked) {
+      const badge = document.getElementById("cfg-videoSectionEnabled-badge");
+      if (!badge) return;
+      if (isChecked) {
+        badge.textContent = "Visible";
+        badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      } else {
+        badge.textContent = "Oculta";
         badge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30";
       }
     }
@@ -2188,6 +2422,14 @@
       if (pricingToggle) {
         pricingToggle.addEventListener("change", (e) => {
           updatePricingVisibilityBadge(e.target.checked);
+        });
+      }
+
+      // Listeners para Videos
+      const videoToggle = document.getElementById("cfg-videoSectionEnabled");
+      if (videoToggle) {
+        videoToggle.addEventListener("change", (e) => {
+          updateVideoSectionVisibilityBadge(e.target.checked);
         });
       }
 

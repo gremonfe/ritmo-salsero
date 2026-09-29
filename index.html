@@ -303,6 +303,7 @@
           Horarios Pro
         </a>
         <a href="#ritmos" class="text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Ritmos y Niveles</a>
+        <a href="#videos" class="nav-link-videos text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Videos</a>
         <a href="#promociones" class="nav-link-planes text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Planes</a>
         
         <a href="#ubicacion" class="text-sm font-medium text-slate-300 hover:text-amber-400 transition-colors">Ubicación</a>
@@ -331,6 +332,7 @@
       <a href="#inicio" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-amber-400 font-medium">Inicio</a>
       <a href="#horarios" onclick="toggleMobileMenu()" class="block py-2 text-amber-400 font-semibold">Horarios Semanales</a>
       <a href="#ritmos" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-amber-400 font-medium">Ritmos y Niveles</a>
+      <a href="#videos" onclick="toggleMobileMenu()" class="nav-link-videos block py-2 text-slate-200 hover:text-amber-400 font-medium">Videos de Clases</a>
       <a href="#promociones" onclick="toggleMobileMenu()" class="nav-link-planes block py-2 text-slate-200 hover:text-amber-400 font-medium">Planes y Precios</a>
       <a href="#ubicacion" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-amber-400 font-medium">Ubicación (Casa de Cultura)</a>
       <div class="pt-2">
@@ -919,6 +921,55 @@
           </div>
 
         </div>
+      </div>
+    </section>
+ 
+    <!-- SECTION: VIDEOS & REDES SOCIALES EN ACCION -->
+    <section id="videos" class="py-16 bg-[#070D1F] relative border-t border-b border-amber-500/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-3 mb-12">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-bold uppercase tracking-widest">
+            <span>🎬</span> <span id="videos-badge-text">Pasión en la Pista</span>
+          </div>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-serif-title font-extrabold text-white">
+            <span id="videos-title-text">Nuestras Clases en</span> <span class="gold-gradient-text" id="videos-title-highlight">Acción</span>
+          </h2>
+          <p id="videos-subtitle-text" class="text-slate-300 text-sm sm:text-base">
+            Descubre el ambiente, la energía y el progreso de nuestros alumnos en Casa de Cultura. ¡Siente el ritmo de nuestra comunidad!
+          </p>
+        </div>
+
+        <!-- Video Cards Grid -->
+        <div id="videos-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto items-stretch">
+          <!-- Inyectado dinámicamente por JavaScript -->
+        </div>
+
+        <!-- Social Channels Footer CTA Banner -->
+        <div class="mt-12 p-6 rounded-3xl glass-panel border border-amber-500/20 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-5 text-center sm:text-left">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-400/20 border border-amber-400/30 flex items-center justify-center text-2xl flex-shrink-0">
+              📸
+            </div>
+            <div>
+              <h4 class="font-serif-title font-bold text-white text-base">¿Quieres ver más videos diarios?</h4>
+              <p class="text-xs text-slate-300 mt-0.5">Publicamos historias, pasos de baile, coreografías y ensayos en nuestras redes sociales oficiales.</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2.5 flex-wrap justify-center flex-shrink-0">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-instagram inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#833AB4]/80 via-[#FD1D1D]/80 to-[#F77737]/80 hover:opacity-90 text-white text-xs font-bold shadow-lg transition-all">
+              <span>Instagram</span>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-facebook inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold shadow-lg transition-all">
+              <span>Facebook</span>
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" class="dynamic-social-tiktok inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 border border-cyan-400/40 hover:bg-slate-800 text-white text-xs font-bold shadow-lg transition-all">
+              <span>TikTok</span>
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
 
