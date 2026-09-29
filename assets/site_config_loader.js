@@ -109,7 +109,40 @@ const DEFAULT_SITE_CONFIG = {
   video4Enabled: false,
   video4Title: "Coreografía y Pasos Libres",
   video4Desc: "Secuencias avanzadas para lucir en cualquier evento o fiesta.",
-  video4Url: ""
+  video4Url: "",
+
+  // 9. Nuestros Ritmos y Niveles de Baile
+  ritmosBadge: "💃 Metodología y Pasión",
+  ritmosTitle: "Nuestros Ritmos y Niveles de Baile",
+  ritmosSubtitle: "Cada clase está planeada pedagógicamente para que sientas progreso tangible desde tu primera semana.",
+
+  ritmo1Icon: "🌱",
+  ritmo1Tag: "Mar y Vie • 7 PM",
+  ritmo1Title: "Salsa Principiantes",
+  ritmo1Subtitle: "¡Aprende desde cero!",
+  ritmo1Desc: "Dominarás el tiempo musical (1-2-3, 5-6-7), postura, giros básicos y soltura corporal. Cero estrés y sin necesidad de llevar pareja.",
+  ritmo1Points: "Paso básico, lateral y cruzado\nEscucha rítmica y tiempo musical\nGiros sencillos individuales y en pareja",
+
+  ritmo2Icon: "⚡",
+  ritmo2Tag: "Lun y Jue • 7 PM",
+  ritmo2Title: "Salsa Intermedios",
+  ritmo2Subtitle: "Figuras y Dinamismo",
+  ritmo2Desc: "Aumenta tu repertorio de figuras en pista social, giros dobles, cross body lead, cambio de manos y conexión en pareja.",
+  ritmo2Points: "Enchufe, vacila y combinaciones fluidas\nTécnica de conducción y seguimiento\nShines y estilo de brazos",
+
+  ritmo3Icon: "🔥",
+  ritmo3Tag: "Mar y Jue • 8 PM",
+  ritmo3Title: "Salsa Avanzados",
+  ritmo3Subtitle: "Velocidad, Shines y Estilo",
+  ritmo3Desc: "Técnica de alto nivel para bailar con precisión a velocidades rápidas, giros múltiples limpios y expresión escénica.",
+  ritmo3Points: "Figuras complejas y sincronización fina\nGiros múltiples y equilibrio\nEstilo personal y presencia en pista",
+
+  ritmo4Icon: "🥁",
+  ritmo4Tag: "Lun y Vie • 8 PM",
+  ritmo4Title: "Cumbia Intermedio",
+  ritmo4Subtitle: "Sabor, Cadencia y Vueltas",
+  ritmo4Desc: "Aprende la cadencia latina, estilo sonidero y figuras tradicionales para disfrutar en cualquier fiesta o evento social.",
+  ritmo4Points: "Vueltas continuas y cambios de frente\nCadencia y movimiento de cadera\nFiguras de nudo y juego de brazos"
 };
 
 const SITE_CONFIG_STORAGE_KEY = "ritmo_salsero_site_config";
@@ -589,6 +622,9 @@ function applySiteConfigToDOM(config = null) {
 
   // 11. Galería de Videos de Redes Sociales
   renderSocialVideos(cfg);
+
+  // 12. Sección Nuestros Ritmos y Niveles de Baile
+  renderRitmosSection(cfg);
 }
 
 /**
@@ -840,6 +876,62 @@ function renderSocialVideos(cfg) {
       </div>
     `;
   }).join("");
+}
+
+/**
+ * Renderiza los textos y tarjetas de la sección Nuestros Ritmos y Niveles de Baile
+ */
+function renderRitmosSection(cfg) {
+  if (!cfg) return;
+
+  // Encabezado
+  const badgeEl = document.getElementById("ritmos-badge-text");
+  if (badgeEl && cfg.ritmosBadge) {
+    badgeEl.textContent = cfg.ritmosBadge;
+  }
+
+  const titleEl = document.getElementById("ritmos-title-text");
+  if (titleEl && cfg.ritmosTitle) {
+    if (cfg.ritmosTitle.includes("Niveles de Baile")) {
+      titleEl.innerHTML = cfg.ritmosTitle.replace("Niveles de Baile", '<span class="gold-gradient-text">Niveles de Baile</span>');
+    } else {
+      titleEl.textContent = cfg.ritmosTitle;
+    }
+  }
+
+  const subtitleEl = document.getElementById("ritmos-subtitle-text");
+  if (subtitleEl && cfg.ritmosSubtitle) {
+    subtitleEl.textContent = cfg.ritmosSubtitle;
+  }
+
+  // Tarjetas 1 a 4
+  for (let i = 1; i <= 4; i++) {
+    const iconEl = document.getElementById(`ritmo-${i}-icon`);
+    if (iconEl && cfg[`ritmo${i}Icon`]) iconEl.textContent = cfg[`ritmo${i}Icon`];
+
+    const tagEl = document.getElementById(`ritmo-${i}-tag`);
+    if (tagEl && cfg[`ritmo${i}Tag`]) tagEl.textContent = cfg[`ritmo${i}Tag`];
+
+    const titleCardEl = document.getElementById(`ritmo-${i}-title`);
+    if (titleCardEl && cfg[`ritmo${i}Title`]) titleCardEl.textContent = cfg[`ritmo${i}Title`];
+
+    const subtitleCardEl = document.getElementById(`ritmo-${i}-subtitle`);
+    if (subtitleCardEl && cfg[`ritmo${i}Subtitle`]) subtitleCardEl.textContent = cfg[`ritmo${i}Subtitle`];
+
+    const descEl = document.getElementById(`ritmo-${i}-desc`);
+    if (descEl && cfg[`ritmo${i}Desc`]) descEl.textContent = cfg[`ritmo${i}Desc`];
+
+    const pointsEl = document.getElementById(`ritmo-${i}-points`);
+    if (pointsEl && cfg[`ritmo${i}Points`]) {
+      const lines = cfg[`ritmo${i}Points`].split("\n").map(l => l.trim()).filter(Boolean);
+      if (lines.length > 0) {
+        const checkColor = i === 1 ? "text-emerald-400" : (i === 2 ? "text-blue-400" : (i === 3 ? "text-rose-400" : "text-amber-400"));
+        pointsEl.innerHTML = lines.map(line => `
+          <li class="flex items-center gap-2"><span class="${checkColor} font-bold">✓</span> ${line}</li>
+        `).join("");
+      }
+    }
+  }
 }
 
 // Sincronización remota para celulares y visitantes en internet (Netlify)

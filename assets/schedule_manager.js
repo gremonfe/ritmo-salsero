@@ -233,6 +233,20 @@ const THEME_STYLES = {
     accentText: "text-purple-200",
     borderTop: "border-purple-500/20"
   },
+  orange: {
+    border: "border-orange-500/40",
+    bg: "bg-gradient-to-br from-orange-950/60 to-slate-900/80",
+    badgeBg: "bg-orange-500/20 text-orange-300 border-orange-500/30",
+    accentText: "text-orange-200",
+    borderTop: "border-orange-500/20"
+  },
+  cyan: {
+    border: "border-cyan-500/40",
+    bg: "bg-gradient-to-br from-cyan-950/60 to-slate-900/80",
+    badgeBg: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
+    accentText: "text-cyan-200",
+    borderTop: "border-cyan-500/20"
+  },
   slate: {
     border: "border-dashed border-slate-800",
     bg: "bg-slate-950/20",
@@ -241,6 +255,72 @@ const THEME_STYLES = {
     borderTop: "border-slate-800"
   }
 };
+
+const SCHEDULE_COLOR_PALETTES = [
+  { key: "blue", label: "Azul Zafiro", hex: "#3b82f6", desc: "Intermedio / Casino", badgeCls: "bg-blue-500/20 text-blue-300 border-blue-500/30" },
+  { key: "emerald", label: "Verde Esmeralda", hex: "#10b981", desc: "¡Desde Cero! / Básico", badgeCls: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" },
+  { key: "amber", label: "Ámbar Dorado", hex: "#f59e0b", desc: "Cumbia / Todos los Niveles", badgeCls: "bg-amber-500/20 text-amber-300 border-amber-500/30" },
+  { key: "rose", label: "Rosa Fuego", hex: "#f43f5e", desc: "Salsa en Línea / Dinámico", badgeCls: "bg-rose-500/20 text-rose-300 border-rose-500/30" },
+  { key: "purple", label: "Púrpura Imperial", hex: "#a855f7", desc: "Avanzado / Especial", badgeCls: "bg-purple-500/20 text-purple-300 border-purple-500/30" },
+  { key: "orange", label: "Naranja Tropical", hex: "#f97316", desc: "Sabor Latino / Festival", badgeCls: "bg-orange-500/20 text-orange-300 border-orange-500/30" },
+  { key: "cyan", label: "Cian Eléctrico", hex: "#06b6d4", desc: "Moderno / Estilo", badgeCls: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30" }
+];
+
+const SCHEDULE_POPULAR_ICONS = [
+  "⚡", "🌱", "🥁", "🔥", "🇨🇺", "💃", "🕺", "⭐", "🎺", "🎶", "🎵", "🏆", "👑", "✨", "🌴", "🪘", "🎉", "👟"
+];
+
+const RAPIDOS_STORAGE_KEY = "ritmo_schedule_rapidos_presets";
+
+const DEFAULT_RAPIDOS_PRESETS = [
+  { id: "preset-cero", name: "🌱 ¡Desde Cero!", badge: "¡Desde Cero!", level: "Nivel Básico", focus: "Paso Básico y Guapea", theme: "emerald", icon: "🌱" },
+  { id: "preset-basico", name: "🔰 Nivel Básico", badge: "Nivel Básico", level: "Nivel Básico", focus: "Fundamentos y Enchufe", theme: "emerald", icon: "🌱" },
+  { id: "preset-principiante", name: "🔥 Principiante", badge: "Principiante", level: "Nivel Principiante", focus: "Cross Body Lead y Giros", theme: "rose", icon: "🔥" },
+  { id: "preset-intermedio", name: "⚡ Nivel Intermedio", badge: "Nivel Intermedio", level: "Nivel Intermedio", focus: "Rueda de Casino y Vueltas", theme: "blue", icon: "⚡" },
+  { id: "preset-avanzado", name: "⭐ Nivel Avanzado", badge: "Nivel Avanzado", level: "Nivel Avanzado", focus: "Velocidad, Shines y Estilo", theme: "purple", icon: "⭐" },
+  { id: "preset-cumbia", name: "🥁 Cumbia y Sabor", badge: "Todos los Niveles", level: "Todos los Niveles", focus: "Cadencia y Vueltas Continuas", theme: "amber", icon: "🥁" },
+  { id: "preset-casino", name: "🇨🇺 Rueda de Casino", badge: "Casino & Timba", level: "Nivel Intermedio", focus: "Nudos Cubanos y Sincronía", theme: "cyan", icon: "🇨🇺" },
+  { id: "preset-pareja", name: "👫 Trabajo en Pareja", badge: "Social & Pareja", level: "Todos los Niveles", focus: "Conducción y Fluidez en Pista", theme: "orange", icon: "💃" }
+];
+
+function loadRapidosPresets() {
+  try {
+    const raw = localStorage.getItem(RAPIDOS_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+  } catch (e) {
+    console.warn("Error leyendo preajustes rápidos:", e);
+  }
+  return [...DEFAULT_RAPIDOS_PRESETS];
+}
+
+function saveRapidosPresets(presets) {
+  try {
+    localStorage.setItem(RAPIDOS_STORAGE_KEY, JSON.stringify(presets));
+  } catch (e) {
+    console.warn("Error guardando preajustes rápidos:", e);
+  }
+  refreshAllRapidosUI();
+}
+
+function resetRapidosPresetsToDefault() {
+  if (confirm("¿Deseas restablecer los botones Rápidos a los valores sugeridos por defecto?")) {
+    saveRapidosPresets([...DEFAULT_RAPIDOS_PRESETS]);
+    showToastNotification("✨ Botones Rápidos restablecidos a valores originales.");
+  }
+}
+
+function refreshAllRapidosUI() {
+  const slots = currentSchedule?.slots || [{ id: "slot-0" }, { id: "slot-1" }];
+  slots.forEach((_, idx) => {
+    const bar = document.getElementById(`slot-${idx}-rapidos-chips-bar`);
+    if (bar) bar.innerHTML = renderRapidosButtonsHtml(idx);
+    const mgr = document.getElementById(`slot-${idx}-rapidos-manager`);
+    if (mgr) mgr.innerHTML = renderRapidosManagerHtml(idx);
+  });
+}
 
 const STORAGE_KEY = "ritmo_salsero_schedule_v2";
 
@@ -686,23 +766,37 @@ function populateEditorFields(dayIndex, focusSlot = null) {
       icon: "⚡"
     };
 
+    const activePalette = SCHEDULE_COLOR_PALETTES.find(p => p.key === classItem.theme) || SCHEDULE_COLOR_PALETTES[0];
+
     html += `
       <div class="bg-slate-900/60 p-5 rounded-2xl border border-slate-800 space-y-4 ${focusSlot === slotIndex ? "ring-2 ring-amber-400" : ""}">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-          <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold flex items-center justify-center">
-              ${slotIndex + 1}
+        <!-- Encabezado del Bloque con Preview en Vivo y Guardado Rápido -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-3">
+            <span id="slot-${slotIndex}-preview-icon" class="w-10 h-10 rounded-xl bg-slate-950 border border-slate-700 flex items-center justify-center text-xl shadow-inner flex-shrink-0">
+              ${classItem.icon || "⚡"}
             </span>
-            <h5 class="font-bold text-sm text-amber-300">Bloque ${slotIndex + 1} • ${slot.time}</h5>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h5 class="font-bold text-sm text-white">Bloque ${slotIndex + 1} • <span id="slot-${slotIndex}-time-preview">${slot.time}</span></h5>
+                <span id="slot-${slotIndex}-preview-badge" class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${activePalette.badgeCls}">
+                  ${classItem.badge || classItem.level}
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-400">Duración: ${slot.duration}</p>
+            </div>
           </div>
-          <span class="text-xs text-slate-400">${slot.duration}</span>
+
+          <button type="button" onclick="saveCurrentSlotAsRapido(${slotIndex})" class="px-3 py-1.5 rounded-xl bg-slate-800/90 hover:bg-amber-400/20 text-slate-300 hover:text-amber-300 border border-slate-700 hover:border-amber-400/50 text-[11px] font-bold transition-all flex items-center gap-1.5 self-start sm:self-auto" title="Guarda los datos de este bloque como un botón Rápido reutilizable">
+            <span>➕ Guardar como Rápido</span>
+          </button>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <!-- Horario editable -->
           <div>
             <label class="block text-xs font-semibold text-slate-300 mb-1">Horario del Bloque</label>
-            <input type="text" id="slot-${slotIndex}-time" value="${slot.time}" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+            <input type="text" id="slot-${slotIndex}-time" value="${slot.time}" oninput="document.getElementById('slot-${slotIndex}-time-preview').textContent = this.value" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
           </div>
 
           <!-- Ritmo / Título -->
@@ -711,69 +805,114 @@ function populateEditorFields(dayIndex, focusSlot = null) {
             <input type="text" id="slot-${slotIndex}-title" value="${classItem.title}" placeholder="Ej. Salsa Cubana, Cumbia, Bachata" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
           </div>
 
-          <!-- Nivel / Distintivo (Badge) con Chips rápidos -->
-          <div class="sm:col-span-2 bg-slate-950/60 p-3.5 rounded-xl border border-slate-800">
-            <div class="flex items-center justify-between mb-1.5">
-              <label class="block text-xs font-bold text-amber-300">
-                🏷️ Nivel y Distintivo de la Clase (Visible en Tarjeta)
-              </label>
-              <span class="text-[10px] text-slate-400">Edita el texto o pulsa un botón rápido</span>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-2.5">
+          <!-- BOTONES RÁPIDOS PERSONALIZABLES -->
+          <div class="sm:col-span-2 bg-slate-950/70 p-4 rounded-2xl border border-slate-800/90 space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Distintivo en Tarjeta (Badge)</label>
-                <input type="text" id="slot-${slotIndex}-badge" value="${classItem.badge || classItem.level}" placeholder="Ej. ¡Desde Cero!, Nivel Intermedio..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-amber-200 text-xs font-bold focus:border-amber-400 focus:outline-none">
+                <label class="block text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                  <span>⚡</span> Botones Rápidos (Preajustes de Nivel, Color e Icono)
+                </label>
+                <p class="text-[10px] text-slate-400">Aplica combinaciones al instante con un solo clic. Puedes modificarlos o crear los tuyos.</p>
               </div>
-              <div>
-                <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre Completo del Nivel</label>
-                <input type="text" id="slot-${slotIndex}-level" value="${classItem.level || classItem.badge}" placeholder="Ej. Nivel Básico, Nivel Intermedio..." class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
-              </div>
+              <button type="button" onclick="toggleRapidosManager(${slotIndex})" id="slot-${slotIndex}-toggle-manager-btn" class="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-amber-300 border border-slate-700 text-[10px] font-bold transition-all flex items-center gap-1">
+                <span>⚙️ Modificar Rápidos</span>
+              </button>
             </div>
 
-            <!-- Botones de selección rápida de nivel -->
-            <div class="flex flex-wrap items-center gap-1.5 pt-1.5 border-t border-slate-800/80">
-              <span class="text-[10px] text-slate-400 font-semibold mr-1">Rápidos:</span>
-              <button type="button" onclick="setSlotLevel(${slotIndex}, '¡Desde Cero!', 'Nivel Básico')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/40 text-[10px] font-bold transition-all">🌱 ¡Desde Cero!</button>
-              <button type="button" onclick="setSlotLevel(${slotIndex}, 'Nivel Básico', 'Nivel Básico')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/40 text-[10px] font-bold transition-all">🔰 Nivel Básico</button>
-              <button type="button" onclick="setSlotLevel(${slotIndex}, 'Principiante', 'Nivel Principiante')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/40 text-[10px] font-bold transition-all">🔥 Principiante</button>
-              <button type="button" onclick="setSlotLevel(${slotIndex}, 'Nivel Intermedio', 'Nivel Intermedio')" class="px-2.5 py-1 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-500/30 hover:bg-blue-500/40 text-[10px] font-bold transition-all">⚡ Nivel Intermedio</button>
-              <button type="button" onclick="setSlotLevel(${slotIndex}, 'Nivel Avanzado', 'Nivel Avanzado')" class="px-2.5 py-1 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30 hover:bg-purple-500/40 text-[10px] font-bold transition-all">⭐ Nivel Avanzado</button>
-              <button type="button" onclick="setSlotLevel(${slotIndex}, 'Todos los Niveles', 'Todos los Niveles')" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/40 text-[10px] font-bold transition-all">🥁 Todos los Niveles</button>
+            <!-- Botones Rápidos generados dinámicamente -->
+            <div id="slot-${slotIndex}-rapidos-chips-bar" class="flex flex-wrap items-center gap-1.5 pt-1">
+              ${renderRapidosButtonsHtml(slotIndex)}
             </div>
+
+            <!-- Panel de Administración / Modificación de Rápidos -->
+            <div id="slot-${slotIndex}-rapidos-manager" class="hidden mt-3 p-3.5 rounded-xl bg-slate-900/90 border border-amber-500/30 space-y-3">
+              ${renderRapidosManagerHtml(slotIndex)}
+            </div>
+          </div>
+
+          <!-- Nivel / Distintivo (Badge) -->
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Distintivo en Tarjeta (Badge)</label>
+            <input type="text" id="slot-${slotIndex}-badge" value="${classItem.badge || classItem.level}" oninput="document.getElementById('slot-${slotIndex}-preview-badge').textContent = this.value" placeholder="Ej. ¡Desde Cero!, Nivel Intermedio..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-amber-200 text-xs font-bold focus:border-amber-400 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Nombre Completo del Nivel</label>
+            <input type="text" id="slot-${slotIndex}-level" value="${classItem.level || classItem.badge}" placeholder="Ej. Nivel Básico, Nivel Intermedio..." class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
           </div>
 
           <!-- Subtítulo / Enfoque -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Subtítulo / Enfoque</label>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-semibold text-slate-300 mb-1">Subtítulo / Enfoque de la Clase</label>
             <input type="text" id="slot-${slotIndex}-focus" value="${classItem.focus || ''}" placeholder="Ej. Rueda de Casino, Vueltas y Cadencia" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
           </div>
 
-          <!-- Color / Tema -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Color de Tarjeta</label>
-            <select id="slot-${slotIndex}-theme" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
-              <option value="blue" ${classItem.theme === "blue" ? "selected" : ""}>🔵 Azul Zafiro (Intermedio / Dinámico)</option>
-              <option value="emerald" ${classItem.theme === "emerald" ? "selected" : ""}>🟢 Verde Esmeralda (¡Desde Cero! / Básico)</option>
-              <option value="amber" ${classItem.theme === "amber" ? "selected" : ""}>🟡 Ámbar Dorado (Cumbia / Todos los Niveles)</option>
-              <option value="rose" ${classItem.theme === "rose" ? "selected" : ""}>🔴 Rosa Fuego (Salsa en Línea / Avanzado)</option>
-              <option value="purple" ${classItem.theme === "purple" ? "selected" : ""}>🟣 Púrpura Imperial (Especial / Social)</option>
-            </select>
+          <!-- SELECCIÓN VISUAL DE COLOR DE TARJETA -->
+          <div class="sm:col-span-2 bg-slate-950/40 p-3.5 rounded-xl border border-slate-800/80 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <span>🎨</span> Color de Tarjeta y Resplandor
+              </label>
+              <span id="slot-${slotIndex}-theme-name-display" class="text-[11px] font-bold text-amber-300">
+                ${activePalette.label}
+              </span>
+            </div>
+
+            <!-- Botones tipo Swatches de colores -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+              ${SCHEDULE_COLOR_PALETTES.map(palette => {
+                const isSelected = (classItem.theme || "blue") === palette.key;
+                return `
+                  <button type="button" 
+                    onclick="selectSlotTheme(${slotIndex}, '${palette.key}')" 
+                    id="slot-${slotIndex}-theme-btn-${palette.key}" 
+                    class="slot-${slotIndex}-theme-swatch p-2 rounded-xl border text-left transition-all flex flex-col items-center justify-center gap-1.5 cursor-pointer ${
+                      isSelected ? 'border-amber-400 bg-slate-800/90 ring-2 ring-amber-400/50 shadow-md' : 'border-slate-800 bg-slate-900/60 hover:border-slate-600'
+                    }"
+                    title="${palette.label} (${palette.desc})">
+                    <span class="w-6 h-6 rounded-full shadow-inner flex items-center justify-center text-xs font-bold text-white" style="background-color: ${palette.hex};">
+                      <span class="swatch-check">${isSelected ? '✓' : ''}</span>
+                    </span>
+                    <span class="text-[10px] font-semibold text-slate-300 text-center leading-tight line-clamp-1">${palette.label}</span>
+                  </button>
+                `;
+              }).join("")}
+            </div>
+
+            <!-- Campo oculto para compatibilidad con guardado -->
+            <input type="hidden" id="slot-${slotIndex}-theme" value="${classItem.theme || 'blue'}">
           </div>
 
-          <!-- Icono -->
-          <div>
-            <label class="block text-xs font-semibold text-slate-300 mb-1">Icono Representativo</label>
-            <select id="slot-${slotIndex}-icon" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
-              <option value="⚡" ${classItem.icon === "⚡" ? "selected" : ""}>⚡ Rayo (Energía / Intermedio)</option>
-              <option value="🌱" ${classItem.icon === "🌱" ? "selected" : ""}>🌱 Brote (Principiantes / Desde Cero)</option>
-              <option value="🥁" ${classItem.icon === "🥁" ? "selected" : ""}>🥁 Tambor (Cumbia / Percusión)</option>
-              <option value="🔥" ${classItem.icon === "🔥" ? "selected" : ""}>🔥 Fuego (Línea / Velocidad)</option>
-              <option value="🇨🇺" ${classItem.icon === "🇨🇺" ? "selected" : ""}>🇨🇺 Bandera Cuba (Casino / Timba)</option>
-              <option value="💃" ${classItem.icon === "💃" ? "selected" : ""}>💃 Bailarina (Estilo / Técnica)</option>
-              <option value="🕺" ${classItem.icon === "🕺" ? "selected" : ""}>🕺 Bailarín (Conducción / Pareja)</option>
-              <option value="⭐" ${classItem.icon === "⭐" ? "selected" : ""}>⭐ Estrella (Destacado)</option>
-            </select>
+          <!-- SELECCIÓN VISUAL DE ICONO REPRESENTATIVO -->
+          <div class="sm:col-span-2 bg-slate-950/40 p-3.5 rounded-xl border border-slate-800/80 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <span>🎭</span> Icono Representativo
+              </label>
+              <span class="text-[10px] text-slate-400">Haz clic en un emoji o escribe tu preferido</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 flex-shrink-0">
+                <input type="text" id="slot-${slotIndex}-icon" value="${classItem.icon || '⚡'}" maxlength="4" 
+                  oninput="handleCustomIconInput(${slotIndex}, this.value)"
+                  class="w-12 h-10 text-xl text-center rounded-xl bg-slate-900 border border-slate-700 text-white font-bold focus:border-amber-400 focus:outline-none">
+                <span class="text-[10px] text-slate-400">Actual</span>
+              </div>
+
+              <!-- Barra interactiva con emojis rápidos -->
+              <div class="flex-1 flex flex-wrap items-center gap-1.5 overflow-x-auto py-1">
+                ${SCHEDULE_POPULAR_ICONS.map(emoji => `
+                  <button type="button" 
+                    onclick="selectSlotIcon(${slotIndex}, '${emoji}')" 
+                    class="slot-${slotIndex}-icon-chip w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border ${
+                      (classItem.icon || '⚡') === emoji ? 'border-amber-400 ring-1 ring-amber-400 bg-amber-400/10' : 'border-slate-800 hover:border-slate-600'
+                    } flex items-center justify-center text-sm transition-all hover:scale-110"
+                    title="Elegir ${emoji}">
+                    ${emoji}
+                  </button>
+                `).join("")}
+              </div>
+            </div>
           </div>
 
           <!-- Temario / Viñetas -->
@@ -883,7 +1022,276 @@ function saveScheduleEditor() {
 }
 
 /**
- * Asigna rápidamente un nivel y distintivo a un bloque en el editor
+ * Renderiza los botones Rápidos dinámicos para un bloque
+ */
+function renderRapidosButtonsHtml(slotIndex) {
+  const presets = loadRapidosPresets();
+  if (!presets || presets.length === 0) {
+    return `<span class="text-[10px] text-slate-500 italic">No hay botones rápidos configurados.</span>`;
+  }
+
+  const themeBadges = {
+    emerald: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/35",
+    blue: "bg-blue-500/20 text-blue-300 border-blue-500/30 hover:bg-blue-500/35",
+    amber: "bg-amber-500/20 text-amber-300 border-amber-500/30 hover:bg-amber-500/35",
+    rose: "bg-rose-500/20 text-rose-300 border-rose-500/30 hover:bg-rose-500/35",
+    purple: "bg-purple-500/20 text-purple-300 border-purple-500/30 hover:bg-purple-500/35",
+    orange: "bg-orange-500/20 text-orange-300 border-orange-500/30 hover:bg-orange-500/35",
+    cyan: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/35",
+    slate: "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+  };
+
+  return presets.map(p => {
+    const cls = themeBadges[p.theme] || themeBadges.amber;
+    return `
+      <button type="button" 
+        onclick="applySlotPreset(${slotIndex}, '${p.id}')" 
+        class="px-2.5 py-1 rounded-lg border text-[10px] font-bold transition-all shadow-sm flex items-center gap-1 hover:scale-105 active:scale-95 ${cls}"
+        title="Aplicar ${p.badge} (${p.level})">
+        <span>${p.name || p.badge}</span>
+      </button>
+    `;
+  }).join("");
+}
+
+/**
+ * Renderiza el panel administrador y editor de Rápidos
+ */
+function renderRapidosManagerHtml(slotIndex) {
+  const presets = loadRapidosPresets();
+  return `
+    <div class="space-y-3">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <div>
+          <h6 class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+            <span>⚙️</span> Modificar y Administrar Botones Rápidos
+          </h6>
+          <p class="text-[10px] text-slate-400">Edita los textos, colores o elimina los que no utilices.</p>
+        </div>
+        <button type="button" onclick="resetRapidosPresetsToDefault()" class="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] border border-slate-700 transition-colors" title="Restablecer valores originales">
+          🔄 Valores por Defecto
+        </button>
+      </div>
+
+      <!-- Lista de Rápidos actuales -->
+      <div class="space-y-2 max-h-56 overflow-y-auto pr-1 custom-scrollbar">
+        ${presets.map((p) => `
+          <div class="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-2 flex-1">
+              <span class="w-7 h-7 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center text-sm flex-shrink-0">${p.icon || '⚡'}</span>
+              <div class="flex-1">
+                <input type="text" value="${p.name || p.badge}" 
+                  onchange="updateRapidoPresetField('${p.id}', 'name', this.value)" 
+                  class="w-full px-2 py-1 rounded bg-slate-900 border border-slate-700 text-amber-200 text-xs font-bold focus:border-amber-400 focus:outline-none" title="Etiqueta del Botón">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:flex sm:items-center gap-2">
+              <input type="text" value="${p.badge || ''}" placeholder="Badge" 
+                onchange="updateRapidoPresetField('${p.id}', 'badge', this.value)" 
+                class="w-24 px-2 py-1 rounded bg-slate-900 border border-slate-700 text-slate-300 text-[11px] focus:border-amber-400 focus:outline-none" title="Distintivo / Badge">
+
+              <select onchange="updateRapidoPresetField('${p.id}', 'theme', this.value)" 
+                class="px-2 py-1 rounded bg-slate-900 border border-slate-700 text-slate-300 text-[11px] focus:border-amber-400 focus:outline-none" title="Color de Tarjeta">
+                ${SCHEDULE_COLOR_PALETTES.map(col => `
+                  <option value="${col.key}" ${p.theme === col.key ? 'selected' : ''}>${col.label}</option>
+                `).join('')}
+              </select>
+
+              <button type="button" onclick="deleteRapidoPreset('${p.id}')" 
+                class="p-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-400 border border-rose-800 text-xs flex items-center justify-center transition-colors" title="Eliminar este Rápido">
+                🗑️
+              </button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Agregar Nuevo Rápido Directamente -->
+      <div class="pt-2 border-t border-slate-800 flex flex-wrap items-center justify-between gap-2">
+        <span class="text-[11px] text-slate-400">💡 También puedes configurar un bloque y presionar <strong>"➕ Guardar como Rápido"</strong>.</span>
+        <button type="button" onclick="promptAddNewRapidoPreset()" class="px-3 py-1.5 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-500/40 hover:bg-amber-400/30 text-xs font-bold transition-all flex items-center gap-1.5">
+          <span>➕ Crear Nuevo Rápido</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Aplica un preajuste rápido al bloque especificado
+ */
+function applySlotPreset(slotIndex, presetId) {
+  const presets = loadRapidosPresets();
+  const preset = presets.find(p => p.id === presetId);
+  if (!preset) return;
+
+  const badgeInp = document.getElementById(`slot-${slotIndex}-badge`);
+  const levelInp = document.getElementById(`slot-${slotIndex}-level`);
+  const focusInp = document.getElementById(`slot-${slotIndex}-focus`);
+
+  if (badgeInp) badgeInp.value = preset.badge || preset.name;
+  if (levelInp) levelInp.value = preset.level || preset.badge || preset.name;
+  if (focusInp && preset.focus) focusInp.value = preset.focus;
+
+  if (preset.theme) selectSlotTheme(slotIndex, preset.theme);
+  if (preset.icon) selectSlotIcon(slotIndex, preset.icon);
+
+  // Actualizar badge en vivo en la cabecera
+  const previewBadge = document.getElementById(`slot-${slotIndex}-preview-badge`);
+  if (previewBadge) previewBadge.textContent = preset.badge || preset.name;
+
+  showToastNotification(`✨ Rápido aplicado: ${preset.name || preset.badge}`);
+}
+
+/**
+ * Selecciona interactivamente el color de tarjeta para un bloque
+ */
+function selectSlotTheme(slotIndex, themeKey) {
+  const themeInput = document.getElementById(`slot-${slotIndex}-theme`);
+  if (themeInput) themeInput.value = themeKey;
+
+  // Actualizar estilos de los botones de paleta
+  document.querySelectorAll(`.slot-${slotIndex}-theme-swatch`).forEach(btn => {
+    btn.className = `slot-${slotIndex}-theme-swatch p-2 rounded-xl border border-slate-800 bg-slate-900/60 hover:border-slate-600 text-left transition-all flex flex-col items-center justify-center gap-1.5 cursor-pointer`;
+    const checkEl = btn.querySelector(".swatch-check");
+    if (checkEl) checkEl.textContent = "";
+  });
+
+  const activeBtn = document.getElementById(`slot-${slotIndex}-theme-btn-${themeKey}`);
+  if (activeBtn) {
+    activeBtn.className = `slot-${slotIndex}-theme-swatch p-2 rounded-xl border border-amber-400 bg-slate-800/90 ring-2 ring-amber-400/50 shadow-md text-left transition-all flex flex-col items-center justify-center gap-1.5 cursor-pointer`;
+    const checkEl = activeBtn.querySelector(".swatch-check");
+    if (checkEl) checkEl.textContent = "✓";
+  }
+
+  // Nombre de color visible
+  const palette = SCHEDULE_COLOR_PALETTES.find(p => p.key === themeKey) || SCHEDULE_COLOR_PALETTES[0];
+  const displayEl = document.getElementById(`slot-${slotIndex}-theme-name-display`);
+  if (displayEl) displayEl.textContent = palette.label;
+
+  // Actualizar badge en cabecera del bloque
+  const previewBadge = document.getElementById(`slot-${slotIndex}-preview-badge`);
+  if (previewBadge) {
+    previewBadge.className = `text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${palette.badgeCls}`;
+  }
+}
+
+/**
+ * Selecciona un icono (emoji) para el bloque
+ */
+function selectSlotIcon(slotIndex, emoji) {
+  const iconInput = document.getElementById(`slot-${slotIndex}-icon`);
+  if (iconInput) iconInput.value = emoji;
+
+  // Actualizar chips de emojis
+  document.querySelectorAll(`.slot-${slotIndex}-icon-chip`).forEach(chip => {
+    chip.className = `slot-${slotIndex}-icon-chip w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-600 flex items-center justify-center text-sm transition-all hover:scale-110`;
+  });
+
+  const activeChips = Array.from(document.querySelectorAll(`.slot-${slotIndex}-icon-chip`)).filter(c => c.textContent.trim() === emoji);
+  activeChips.forEach(c => {
+    c.className = `slot-${slotIndex}-icon-chip w-8 h-8 rounded-lg bg-amber-400/20 border border-amber-400 ring-1 ring-amber-400 flex items-center justify-center text-sm transition-all scale-105`;
+  });
+
+  // Cabecera del bloque
+  const headerIcon = document.getElementById(`slot-${slotIndex}-preview-icon`);
+  if (headerIcon) headerIcon.textContent = emoji;
+}
+
+function handleCustomIconInput(slotIndex, val) {
+  const clean = val.trim();
+  const headerIcon = document.getElementById(`slot-${slotIndex}-preview-icon`);
+  if (headerIcon && clean) headerIcon.textContent = clean;
+}
+
+/**
+ * Guarda los valores actuales del bloque como un nuevo botón Rápido
+ */
+function saveCurrentSlotAsRapido(slotIndex) {
+  const badgeVal = document.getElementById(`slot-${slotIndex}-badge`)?.value.trim() || "Mi Nivel";
+  const levelVal = document.getElementById(`slot-${slotIndex}-level`)?.value.trim() || badgeVal;
+  const focusVal = document.getElementById(`slot-${slotIndex}-focus`)?.value.trim() || "";
+  const themeVal = document.getElementById(`slot-${slotIndex}-theme`)?.value || "blue";
+  const iconVal = document.getElementById(`slot-${slotIndex}-icon`)?.value.trim() || "⚡";
+
+  const defaultName = `${iconVal} ${badgeVal}`;
+  const customName = prompt("Ingresa el nombre o etiqueta para este nuevo botón Rápido:", defaultName);
+  if (customName === null) return;
+
+  const presets = loadRapidosPresets();
+  const newPreset = {
+    id: "custom-" + Date.now(),
+    name: customName.trim() || defaultName,
+    badge: badgeVal,
+    level: levelVal,
+    focus: focusVal,
+    theme: themeVal,
+    icon: iconVal
+  };
+
+  presets.push(newPreset);
+  saveRapidosPresets(presets);
+  showToastNotification(`✅ ¡Nuevo Rápido agregado: "${newPreset.name}"!`);
+}
+
+/**
+ * Abre o cierra la bandeja de administración de Rápidos
+ */
+function toggleRapidosManager(slotIndex) {
+  const mgr = document.getElementById(`slot-${slotIndex}-rapidos-manager`);
+  const btn = document.getElementById(`slot-${slotIndex}-toggle-manager-btn`);
+  if (!mgr) return;
+  const isHidden = mgr.classList.contains("hidden");
+  if (isHidden) {
+    mgr.classList.remove("hidden");
+    if (btn) btn.innerHTML = `<span>✕ Cerrar Editor</span>`;
+  } else {
+    mgr.classList.add("hidden");
+    if (btn) btn.innerHTML = `<span>⚙️ Modificar Rápidos</span>`;
+  }
+}
+
+function updateRapidoPresetField(presetId, field, value) {
+  const presets = loadRapidosPresets();
+  const preset = presets.find(p => p.id === presetId);
+  if (preset) {
+    preset[field] = value.trim();
+    saveRapidosPresets(presets);
+  }
+}
+
+function deleteRapidoPreset(presetId) {
+  const presets = loadRapidosPresets();
+  if (presets.length <= 1) {
+    alert("Debes mantener al menos un botón Rápido activo.");
+    return;
+  }
+  const filtered = presets.filter(p => p.id !== presetId);
+  saveRapidosPresets(filtered);
+  showToastNotification("🗑️ Rápido eliminado.");
+}
+
+function promptAddNewRapidoPreset() {
+  const name = prompt("Nombre del botón (ej. ✨ Taller Especial):");
+  if (!name || !name.trim()) return;
+
+  const presets = loadRapidosPresets();
+  presets.push({
+    id: "custom-" + Date.now(),
+    name: name.trim(),
+    badge: name.trim(),
+    level: name.trim(),
+    focus: "Técnica y Práctica",
+    theme: "amber",
+    icon: "⭐"
+  });
+  saveRapidosPresets(presets);
+  showToastNotification(`✨ Nuevo Rápido "${name}" creado.`);
+}
+
+/**
+ * Asigna rápidamente un nivel y distintivo a un bloque en el editor (compatibilidad)
  */
 function setSlotLevel(slotIndex, badgeVal, levelVal) {
   const badgeInput = document.getElementById(`slot-${slotIndex}-badge`);
@@ -1428,6 +1836,20 @@ function renderClassCardOnCanvas(ctx, x, y, width, height, classItem, dayName, t
     badgeBg = "rgba(168, 85, 247, 0.25)";
     badgeText = "#E9D5FF";
     accentColor = "#C084FC";
+  } else if (theme === "orange") {
+    bgGradStart = "#3a1a05";
+    bgGradEnd = "#1a0b02";
+    borderColor = "rgba(249, 115, 22, 0.85)";
+    badgeBg = "rgba(249, 115, 22, 0.25)";
+    badgeText = "#FED7AA";
+    accentColor = "#FB923C";
+  } else if (theme === "cyan") {
+    bgGradStart = "#082f3a";
+    bgGradEnd = "#03151b";
+    borderColor = "rgba(6, 182, 212, 0.85)";
+    badgeBg = "rgba(6, 182, 212, 0.25)";
+    badgeText = "#CFFAFE";
+    accentColor = "#22D3EE";
   }
 
   // Fondo de la tarjeta
@@ -1820,6 +2242,17 @@ window.filterSchedule = setScheduleLevelFilter;
 window.applyScheduleLevelFilter = applyScheduleLevelFilter;
 window.applyCurrentScheduleFilter = applyScheduleLevelFilter;
 window.downloadDynamicScheduleImage = downloadDynamicScheduleImage;
+window.applySlotPreset = applySlotPreset;
+window.selectSlotTheme = selectSlotTheme;
+window.selectSlotIcon = selectSlotIcon;
+window.handleCustomIconInput = handleCustomIconInput;
+window.saveCurrentSlotAsRapido = saveCurrentSlotAsRapido;
+window.toggleRapidosManager = toggleRapidosManager;
+window.updateRapidoPresetField = updateRapidoPresetField;
+window.deleteRapidoPreset = deleteRapidoPreset;
+window.promptAddNewRapidoPreset = promptAddNewRapidoPreset;
+window.resetRapidosPresetsToDefault = resetRapidosPresetsToDefault;
+window.setSlotLevel = setSlotLevel;
 
 function renderAllScheduleComponents() {
   renderScheduleTable();

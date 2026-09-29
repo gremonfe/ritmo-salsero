@@ -102,5 +102,37 @@
   "video4Enabled": false,
   "video4Title": "Coreografía y Pasos Libres",
   "video4Desc": "Secuencias avanzadas para lucir en cualquier evento o fiesta.",
-  "video4Url": ""
+  "video4Url": "",
+
+  "ritmosBadge": "💃 Metodología y Pasión",
+  "ritmosTitle": "Nuestros Ritmos y Niveles de Baile",
+  "ritmosSubtitle": "Cada clase está planeada pedagógicamente para que sientas progreso tangible desde tu primera semana.",
+
+  "ritmo1Icon": "🌱",
+  "ritmo1Tag": "Mar y Vie • 7 PM",
+  "ritmo1Title": "Salsa Principiantes",
+  "ritmo1Subtitle": "¡Aprende desde cero!",
+  "ritmo1Desc": "Dominarás el tiempo musical (1-2-3, 5-6-7), postura, giros básicos y soltura corporal. Cero estrés y sin necesidad de llevar pareja.",
+  "ritmo1Points": "Paso básico, lateral y cruzado\nEscucha rítmica y tiempo musical\nGiros sencillos individuales y en pareja",
+
+  "ritmo2Icon": "⚡",
+  "ritmo2Tag": "Lun y Jue • 7 PM",
+  "ritmo2Title": "Salsa Intermedios",
+  "ritmo2Subtitle": "Figuras y Dinamismo",
+  "ritmo2Desc": "Aumenta tu repertorio de figuras en pista social, giros dobles, cross body lead, cambio de manos y conexión en pareja.",
+  "ritmo2Points": "Enchufe, vacila y combinaciones fluidas\nTécnica de conducción y seguimiento\nShines y estilo de brazos",
+
+  "ritmo3Icon": "🔥",
+  "ritmo3Tag": "Mar y Jue • 8 PM",
+  "ritmo3Title": "Salsa Avanzados",
+  "ritmo3Subtitle": "Velocidad, Shines y Estilo",
+  "ritmo3Desc": "Técnica de alto nivel para bailar con precisión a velocidades rápidas, giros múltiples limpios y expresión escénica.",
+  "ritmo3Points": "Figuras complejas y sincronización fina\nGiros múltiples y equilibrio\nEstilo personal y presencia en pista",
+
+  "ritmo4Icon": "🥁",
+  "ritmo4Tag": "Lun y Vie • 8 PM",
+  "ritmo4Title": "Cumbia Intermedio",
+  "ritmo4Subtitle": "Sabor, Cadencia y Vueltas",
+  "ritmo4Desc": "Aprende la cadencia latina, estilo sonidero y figuras tradicionales para disfrutar en cualquier fiesta o evento social.",
+  "ritmo4Points": "Vueltas continuas y cambios de frente\nCadencia y movimiento de cadera\nFiguras de nudo y juego de brazos"
 }

@@ -188,6 +188,9 @@
             <button onclick="switchTab('schedule')" id="tab-btn-schedule" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
               <span class="text-base">📅</span> Horarios & Niveles
             </button>
+            <button onclick="switchTab('ritmos')" id="tab-btn-ritmos" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
+              <span class="text-base">💃</span> Ritmos y Niveles
+            </button>
             <button onclick="switchTab('pricing')" id="tab-btn-pricing" class="nav-tab w-full text-left px-3.5 py-2.5 rounded-xl border border-transparent transition-all flex items-center gap-2.5 text-slate-300 hover:text-white">
               <span class="text-base">💳</span> Precios & Planes
             </button>
@@ -556,6 +559,213 @@
                   <span>✏️</span> Abrir Editor de Horarios
                 </button>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- TAB: RITMOS Y NIVELES DE BAILE -->
+        <!-- ========================================== -->
+        <section id="tab-ritmos" class="tab-content hidden space-y-6">
+          <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/20 shadow-xl space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div>
+                <h2 class="text-xl font-serif-title font-bold text-white">Sección Ritmos y Niveles de Baile</h2>
+                <p class="text-xs text-slate-400">Modifica los textos, insignias, horarios y temas clave de la sección "Nuestros Ritmos y Niveles de Baile" en la página principal.</p>
+              </div>
+              <span class="text-2xl text-amber-400">💃</span>
+            </div>
+
+            <!-- Encabezado de la Sección -->
+            <div class="p-5 bg-slate-900/40 rounded-2xl border border-slate-800/80 space-y-4">
+              <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300">Encabezado de la Sección</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Badge Superior</label>
+                  <input type="text" id="cfg-ritmosBadge" placeholder="💃 Metodología y Pasión" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1">Título de la Sección</label>
+                  <input type="text" id="cfg-ritmosTitle" placeholder="Nuestros Ritmos y Niveles de Baile" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-300 mb-1">Subtítulo Descriptivo</label>
+                <textarea id="cfg-ritmosSubtitle" rows="2" placeholder="Cada clase está planeada pedagógicamente para que sientas progreso tangible desde tu primera semana." class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm focus:border-amber-400 focus:outline-none"></textarea>
+              </div>
+            </div>
+
+            <!-- 4 Tarjetas de Estilos -->
+            <div class="space-y-4">
+              <div class="flex items-center justify-between">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-amber-300">Tarjetas de Estilos y Niveles</h3>
+                <span class="text-[11px] text-slate-400">Personaliza cada uno de los 4 módulos de la sección</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Estilo 1 -->
+                <div class="p-5 bg-slate-900/60 rounded-2xl border border-emerald-500/30 space-y-3">
+                  <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xs font-bold">1</span>
+                      <span class="text-sm font-bold text-white">Tarjeta 1 (Verde Esmeralda)</span>
+                    </div>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">¡Desde Cero!</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Icono (Emoji)</label>
+                      <input type="text" id="cfg-ritmo1Icon" placeholder="🌱" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs text-center focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="block text-[11px] text-slate-400 mb-1">Etiqueta Días / Horario</label>
+                      <input type="text" id="cfg-ritmo1Tag" placeholder="Mar y Vie • 7 PM" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-emerald-300 text-xs font-semibold focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Nombre del Ritmo</label>
+                      <input type="text" id="cfg-ritmo1Title" placeholder="Salsa Principiantes" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Subtítulo / Lema</label>
+                      <input type="text" id="cfg-ritmo1Subtitle" placeholder="¡Aprende desde cero!" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Descripción del Estilo</label>
+                    <textarea id="cfg-ritmo1Desc" rows="2" placeholder="Dominarás el tiempo musical..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Puntos Clave / Temas (1 por renglón)</label>
+                    <textarea id="cfg-ritmo1Points" rows="3" placeholder="Paso básico, lateral y cruzado&#10;Escucha rítmica y tiempo musical&#10;Giros sencillos individuales y en pareja" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono"></textarea>
+                  </div>
+                </div>
+
+                <!-- Estilo 2 -->
+                <div class="p-5 bg-slate-900/60 rounded-2xl border border-blue-500/30 space-y-3">
+                  <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-300 flex items-center justify-center text-xs font-bold">2</span>
+                      <span class="text-sm font-bold text-white">Tarjeta 2 (Azul Zafiro)</span>
+                    </div>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">Intermedio</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Icono (Emoji)</label>
+                      <input type="text" id="cfg-ritmo2Icon" placeholder="⚡" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs text-center focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="block text-[11px] text-slate-400 mb-1">Etiqueta Días / Horario</label>
+                      <input type="text" id="cfg-ritmo2Tag" placeholder="Lun y Jue • 7 PM" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-blue-300 text-xs font-semibold focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Nombre del Ritmo</label>
+                      <input type="text" id="cfg-ritmo2Title" placeholder="Salsa Intermedios" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Subtítulo / Lema</label>
+                      <input type="text" id="cfg-ritmo2Subtitle" placeholder="Figuras y Dinamismo" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Descripción del Estilo</label>
+                    <textarea id="cfg-ritmo2Desc" rows="2" placeholder="Aumenta tu repertorio de figuras..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Puntos Clave / Temas (1 por renglón)</label>
+                    <textarea id="cfg-ritmo2Points" rows="3" placeholder="Enchufe, vacila y combinaciones fluidas&#10;Técnica de conducción y seguimiento&#10;Shines y estilo de brazos" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono"></textarea>
+                  </div>
+                </div>
+
+                <!-- Estilo 3 -->
+                <div class="p-5 bg-slate-900/60 rounded-2xl border border-rose-500/30 space-y-3">
+                  <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-lg bg-rose-500/20 text-rose-300 flex items-center justify-center text-xs font-bold">3</span>
+                      <span class="text-sm font-bold text-white">Tarjeta 3 (Rosa Fuego)</span>
+                    </div>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30">Avanzado</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Icono (Emoji)</label>
+                      <input type="text" id="cfg-ritmo3Icon" placeholder="🔥" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs text-center focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="block text-[11px] text-slate-400 mb-1">Etiqueta Días / Horario</label>
+                      <input type="text" id="cfg-ritmo3Tag" placeholder="Mar y Jue • 8 PM" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-rose-300 text-xs font-semibold focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Nombre del Ritmo</label>
+                      <input type="text" id="cfg-ritmo3Title" placeholder="Salsa Avanzados" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Subtítulo / Lema</label>
+                      <input type="text" id="cfg-ritmo3Subtitle" placeholder="Velocidad, Shines y Estilo" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Descripción del Estilo</label>
+                    <textarea id="cfg-ritmo3Desc" rows="2" placeholder="Técnica de alto nivel para bailar..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Puntos Clave / Temas (1 por renglón)</label>
+                    <textarea id="cfg-ritmo3Points" rows="3" placeholder="Figuras complejas y sincronización fina&#10;Giros múltiples y equilibrio&#10;Estilo personal y presencia en pista" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono"></textarea>
+                  </div>
+                </div>
+
+                <!-- Estilo 4 -->
+                <div class="p-5 bg-slate-900/60 rounded-2xl border border-amber-500/30 space-y-3">
+                  <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center text-xs font-bold">4</span>
+                      <span class="text-sm font-bold text-white">Tarjeta 4 (Ámbar Dorado)</span>
+                    </div>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">Cumbia</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Icono (Emoji)</label>
+                      <input type="text" id="cfg-ritmo4Icon" placeholder="🥁" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs text-center focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div class="col-span-2">
+                      <label class="block text-[11px] text-slate-400 mb-1">Etiqueta Días / Horario</label>
+                      <input type="text" id="cfg-ritmo4Tag" placeholder="Lun y Vie • 8 PM" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-amber-300 text-xs font-semibold focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2">
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Nombre del Ritmo</label>
+                      <input type="text" id="cfg-ritmo4Title" placeholder="Cumbia Intermedio" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs font-bold focus:border-amber-400 focus:outline-none">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] text-slate-400 mb-1">Subtítulo / Lema</label>
+                      <input type="text" id="cfg-ritmo4Subtitle" placeholder="Sabor, Cadencia y Vueltas" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Descripción del Estilo</label>
+                    <textarea id="cfg-ritmo4Desc" rows="2" placeholder="Aprende la cadencia latina..." class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Puntos Clave / Temas (1 por renglón)</label>
+                    <textarea id="cfg-ritmo4Points" rows="3" placeholder="Vueltas continuas y cambios de frente&#10;Cadencia y movimiento de cadera&#10;Figuras de nudo y juego de brazos" class="w-full px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs focus:border-amber-400 focus:outline-none font-mono"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón de Guardar Sección -->
+            <div class="pt-4 border-t border-slate-800 flex justify-end">
+              <button type="button" onclick="saveAllConfigAndPublish()" class="btn-gold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold flex items-center gap-2 shadow-lg shadow-amber-500/20">
+                <span>💾</span> Guardar Cambios de Ritmos y Niveles
+              </button>
             </div>
           </div>
         </section>
@@ -1604,6 +1814,19 @@
       // Horarios Badge
       setVal("cfg-scheduleBadge", cfg.scheduleBadge || "");
 
+      // Ritmos y Niveles
+      setVal("cfg-ritmosBadge", cfg.ritmosBadge || "💃 Metodología y Pasión");
+      setVal("cfg-ritmosTitle", cfg.ritmosTitle || "Nuestros Ritmos y Niveles de Baile");
+      setVal("cfg-ritmosSubtitle", cfg.ritmosSubtitle || "Cada clase está planeada pedagógicamente para que sientas progreso tangible desde tu primera semana.");
+      for (let i = 1; i <= 4; i++) {
+        setVal(`cfg-ritmo${i}Icon`, cfg[`ritmo${i}Icon`] || "");
+        setVal(`cfg-ritmo${i}Tag`, cfg[`ritmo${i}Tag`] || "");
+        setVal(`cfg-ritmo${i}Title`, cfg[`ritmo${i}Title`] || "");
+        setVal(`cfg-ritmo${i}Subtitle`, cfg[`ritmo${i}Subtitle`] || "");
+        setVal(`cfg-ritmo${i}Desc`, cfg[`ritmo${i}Desc`] || "");
+        setVal(`cfg-ritmo${i}Points`, cfg[`ritmo${i}Points`] || "");
+      }
+
       // Precios
       const pricingCheck = document.getElementById("cfg-pricingSectionEnabled");
       if (pricingCheck) {
@@ -1760,6 +1983,38 @@
 
         // Horarios Badge
         scheduleBadge: getVal("cfg-scheduleBadge", ""),
+
+        // Ritmos y Niveles
+        ritmosBadge: getVal("cfg-ritmosBadge", "💃 Metodología y Pasión"),
+        ritmosTitle: getVal("cfg-ritmosTitle", "Nuestros Ritmos y Niveles de Baile"),
+        ritmosSubtitle: getVal("cfg-ritmosSubtitle", "Cada clase está planeada pedagógicamente para que sientas progreso tangible desde tu primera semana."),
+        ritmo1Icon: getVal("cfg-ritmo1Icon", "🌱"),
+        ritmo1Tag: getVal("cfg-ritmo1Tag", "Mar y Vie • 7 PM"),
+        ritmo1Title: getVal("cfg-ritmo1Title", "Salsa Principiantes"),
+        ritmo1Subtitle: getVal("cfg-ritmo1Subtitle", "¡Aprende desde cero!"),
+        ritmo1Desc: getVal("cfg-ritmo1Desc", "Dominarás el tiempo musical (1-2-3, 5-6-7), postura, giros básicos y soltura corporal. Cero estrés y sin necesidad de llevar pareja."),
+        ritmo1Points: getVal("cfg-ritmo1Points", "Paso básico, lateral y cruzado\nEscucha rítmica y tiempo musical\nGiros sencillos individuales y en pareja"),
+
+        ritmo2Icon: getVal("cfg-ritmo2Icon", "⚡"),
+        ritmo2Tag: getVal("cfg-ritmo2Tag", "Lun y Jue • 7 PM"),
+        ritmo2Title: getVal("cfg-ritmo2Title", "Salsa Intermedios"),
+        ritmo2Subtitle: getVal("cfg-ritmo2Subtitle", "Figuras y Dinamismo"),
+        ritmo2Desc: getVal("cfg-ritmo2Desc", "Aumenta tu repertorio de figuras en pista social, giros dobles, cross body lead, cambio de manos y conexión en pareja."),
+        ritmo2Points: getVal("cfg-ritmo2Points", "Enchufe, vacila y combinaciones fluidas\nTécnica de conducción y seguimiento\nShines y estilo de brazos"),
+
+        ritmo3Icon: getVal("cfg-ritmo3Icon", "🔥"),
+        ritmo3Tag: getVal("cfg-ritmo3Tag", "Mar y Jue • 8 PM"),
+        ritmo3Title: getVal("cfg-ritmo3Title", "Salsa Avanzados"),
+        ritmo3Subtitle: getVal("cfg-ritmo3Subtitle", "Velocidad, Shines y Estilo"),
+        ritmo3Desc: getVal("cfg-ritmo3Desc", "Técnica de alto nivel para bailar con precisión a velocidades rápidas, giros múltiples limpios y expresión escénica."),
+        ritmo3Points: getVal("cfg-ritmo3Points", "Figuras complejas y sincronización fina\nGiros múltiples y equilibrio\nEstilo personal y presencia en pista"),
+
+        ritmo4Icon: getVal("cfg-ritmo4Icon", "🥁"),
+        ritmo4Tag: getVal("cfg-ritmo4Tag", "Lun y Vie • 8 PM"),
+        ritmo4Title: getVal("cfg-ritmo4Title", "Cumbia Intermedio"),
+        ritmo4Subtitle: getVal("cfg-ritmo4Subtitle", "Sabor, Cadencia y Vueltas"),
+        ritmo4Desc: getVal("cfg-ritmo4Desc", "Aprende la cadencia latina, estilo sonidero y figuras tradicionales para disfrutar en cualquier fiesta o evento social."),
+        ritmo4Points: getVal("cfg-ritmo4Points", "Vueltas continuas y cambios de frente\nCadencia y movimiento de cadera\nFiguras de nudo y juego de brazos"),
 
         // Logotipo Oficial
         activeLogoKey: selectedLogoKey,
